@@ -1,0 +1,17 @@
+<md-toolbar style="background-color: #7F95D1">
+  <div class="buttons" style="-webkit-app-region: no-drag;height:35px;margin: 0px">
+    <div class="macbuttons close" (click)="windowAction('close')">
+      <i class="material-icons buttonicon" style="position:absolute;cursor: pointer">clear</i>
+    </div>
+    <div class="macbuttons minimize" (click)="windowAction('min')">
+      <i class="material-icons buttonicon" style="position:absolute;cursor: pointer">remove</i>
+    </div>
+    <div class="macbuttons zoom" (click)="windowAction('max')">
+      <i class="material-icons buttonicon" style="position:absolute;cursor: pointer;">add</i>
+    </div>
+  </div>
+  <span class="item-spacer"></span>
+  <span>gPlayer</span>
+  <span class="item-spacer"></span>
+  <md-icon class="app-icon">menu</md-icon>
+</md-toolbar>

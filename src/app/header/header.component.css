@@ -1,0 +1,69 @@
+
+.macbuttons {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.close {
+  background: #ff5c5c;
+  border: 1px solid #e33e41;
+  display: inline-block;
+  align-content: center;
+}
+
+.buttonicon {
+  font-size: 10pt;
+  color: #820005;
+  visibility: hidden;
+  cursor: default;
+  margin: 0px;
+}
+
+.minimize {
+  background: #ffbd4c;
+  margin-left: 4px;
+  border: 1px solid #e09e3e;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.zoom {
+  background: #00ca56;
+  margin-left: 6px;
+  border: 1px solid #14ae46;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.buttons:hover i {
+  visibility: visible;
+  cursor: default;
+}
+
+.buttons {
+  margin: 10px;
+}
+
+.app-icon {
+  padding: 0 14px;
+}
+
+md-icon {
+  color: white;
+}
+
+span {
+  color: white;
+}
+
+.item-spacer {
+  flex: 1 1 auto;
+}
+
+mat-toolbar-row {
+    justify-content: space-between;
+}
+md-toolbar {
+  height: 32px;
+}
