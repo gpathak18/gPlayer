@@ -20,7 +20,7 @@
         <md-icon class="app-icon-gray">skip_previous</md-icon>
         </button>
         <button md-icon-button>
-        <md-icon class="app-icon-gray" (click)="play()">play_arrow</md-icon>
+        <md-icon class="app-icon-gray" (click)="play()">{{icon}}</md-icon>
         </button>
         <button md-icon-button>
         <md-icon class="app-icon-gray" (click)="pause()">skip_next</md-icon>
@@ -41,12 +41,17 @@
   <md-grid-tile rowspan="3" style="background-color: #282364;opacity: 0.7;">
     <div class="example-container mat-elevation-z8" style="width: 500px;height: 100% ">
       <div fxLayout="row" fxLayoutAlign="start center" style="width: 100%;">
+        <md-form-field style="width: 70%;margin-left: 10px" floatPlaceholder="never" color="warn">
+          <!--        <md-icon class="app-icon-gray " mdPrefix>search</md-icon>-->
+          <input mdInput value="" #filter placeholder="Find your music" style="color: white; font-size: 12px">
+        </md-form-field>
+        <span class="item-spacer "></span>
         <div fxLayout=" row " fxLayoutAlign="start center">
           <button md-icon-button>
-            <md-icon class="app-icon " aria-label="Example icon-button with a heart icon">playlist_add</md-icon>
+            <md-icon class="app-icon " aria-label="Example icon-button with a heart icon">create_new_folder</md-icon>
           </button>
           <button md-icon-button>
-          <md-icon class="app-icon " style="">playlist_add</md-icon>
+          <md-icon class="app-icon " style="">folder</md-icon>
           </button>
           <button md-icon-button>
           <md-icon class="app-icon ">playlist_play</md-icon>
@@ -55,11 +60,6 @@
           <md-icon class="app-icon ">playlist_add</md-icon>
           </button>
         </div>
-        <span class="item-spacer "></span>
-        <md-form-field style="width: 70%;" floatPlaceholder="never" color="warn">
-          <!--        <md-icon class="app-icon-gray " mdPrefix>search</md-icon>-->
-          <input mdInput value="" #filter placeholder="Find your music" style="color: white; font-size: 12px">
-        </md-form-field>
       </div>
 
       <md-table #table [dataSource]="dataSource " style="">
@@ -97,7 +97,7 @@
         </ng-container>
 
         <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
-        <md-row *mdRowDef="let row; columns: displayedColumns;" style="height: 20px" [ngClass]="{'highlight': selectedRowIndex == row.position, 'hover': hoverrow == row.position}" (click)="highlight(row)" (mouseover)="hover(row)"></md-row>
+        <md-row *mdRowDef="let row; columns: displayedColumns;" style="height: 20px" [ngClass]="{'highlight': selectedRowIndex == row.position, 'hover': hoverrow == row.position && row.position != selectedRowIndex}" (click)="highlight(row)" (mouseover)="hover(row)"></md-row>
       </md-table>
       <!--
         <md-selection-list #shoes>

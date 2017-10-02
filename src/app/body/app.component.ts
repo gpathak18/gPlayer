@@ -19,6 +19,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 })
 export class AppComponent {
   
+  icon = 'play_arrow';
   displayedColumns = ['position', 'name', 'options'];
   dataSource: ExampleDataSource | null;
  
@@ -65,10 +66,16 @@ export class AppComponent {
   }
   
   play(){
-     
-    this.wavesurfer.play();
+    
+    if(this.icon == 'pause') {
+      this.icon = 'play_arrow';
+       this.wavesurfer.pause();
   
-  }
+    } else {
+      this.icon = 'pause';
+       this.wavesurfer.play();
+    }
+   }
 
   selectedRowIndex: number = -1;
   hoverrow: number = -1;
@@ -78,7 +85,12 @@ export class AppComponent {
   }
   
   hover(row){
-    this.hoverrow = row.position;
+    if(row.position != this.selectedRowIndex){
+      this.hoverrow = row.position;
+    }else {
+      this.hoverrow = -1;
+    }
+    
   }
   
     @ViewChild('filter') filter: ElementRef;
