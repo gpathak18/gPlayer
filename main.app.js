@@ -13,7 +13,7 @@ let win
 function createWindow() {
 
   win = new BrowserWindow({
-
+    titleBarStyle: 'hidden',
     width: 500,
     height: 600,
     frame: false,
@@ -33,7 +33,7 @@ function createWindow() {
   win.once('ready-to-show', () => {
     setTimeout(function () {
       // displayNow(splashScreen, win);
-        win.show()
+      win.show()
     }, 1000);
   })
 

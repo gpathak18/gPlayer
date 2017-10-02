@@ -5,9 +5,10 @@ import { AppComponent } from './body/app.component';
 import { HeaderComponent } from './header/header.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule,MatTabsModule,MatGridListModule,MatInputModule } from '@angular/material';
+import { MatListModule, MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule,MatTabsModule,MatGridListModule,MatInputModule,MdTableModule } from '@angular/material';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import { FooterComponent } from './footer/footer.component';
+//import {CdkTableModule} from '@angular/cdk/table';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,9 @@ import { FooterComponent } from './footer/footer.component';
     MatTabsModule,
     MatGridListModule,
     FlexLayoutModule,
-    MatInputModule
+    MatInputModule,
+    MdTableModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent,HeaderComponent,FooterComponent]
