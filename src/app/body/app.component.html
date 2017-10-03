@@ -6,9 +6,15 @@
 </md-card>
 -->
     <md-grid-tile-header style="height: 30px;background-color: white;" fxLayout="column" fxLayoutAlign="center start">
+      <div>
       <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 14px;margin-left:5px">
         <b>Beat It</b>
       </span>
+      <span class="item-spacer "></span>
+      <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 12px;margin-left:5px">
+        {{songDuration}} : {{songDuration}}
+      </span>
+      </div>
       <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 12px;margin-left:5px">
         Michael Jackson
       </span>
@@ -28,7 +34,7 @@
       </div>
     </md-grid-tile-footer>
     <!--
-<div style="margin:10px;width:30%"> 
+<div style="margin:10px;width:30%">
   <md-icon class="app-icon-gray">forward</md-icon>
   <md-icon class="app-icon-gray">stop</md-icon>
   <md-icon class="app-icon-gray">pause</md-icon>
@@ -41,16 +47,16 @@
   <md-grid-tile rowspan="3" style="background-color: #282364;opacity: 0.7;">
     <div class="example-container mat-elevation-z8" style="width: 500px;height: 100% ">
       <div fxLayout="row" fxLayoutAlign="start center" style="width: 100%;">
-        <md-form-field style="width: 70%;margin-left: 10px" floatPlaceholder="never" color="warn">
+        <md-form-field style="width: 60%;margin-left: 10px" floatPlaceholder="never" color="warn">
           <!--        <md-icon class="app-icon-gray " mdPrefix>search</md-icon>-->
-          <input mdInput value="" #filter placeholder="Find your music" style="color: white; font-size: 12px">
+          <input mdInput dividerColor="warn" value="" #filter placeholder="Find your music" style="color: white; font-size: 12px">
         </md-form-field>
         <span class="item-spacer "></span>
         <div fxLayout=" row " fxLayoutAlign="start center">
-          <button md-icon-button>
+          <button md-icon-button (click)="file.click()">
             <md-icon class="app-icon " aria-label="Example icon-button with a heart icon">create_new_folder</md-icon>
           </button>
-          <button md-icon-button>
+          <button md-icon-button >
           <md-icon class="app-icon " style="">folder</md-icon>
           </button>
           <button md-icon-button>
@@ -59,6 +65,7 @@
           <button md-icon-button>
           <md-icon class="app-icon ">playlist_add</md-icon>
           </button>
+          <input type="file" #file style="display:none" />
         </div>
       </div>
 
@@ -97,7 +104,11 @@
         </ng-container>
 
         <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
-        <md-row *mdRowDef="let row; columns: displayedColumns;" style="height: 20px" [ngClass]="{'highlight': selectedRowIndex == row.position, 'hover': hoverrow == row.position && row.position != selectedRowIndex}" (click)="highlight(row)" (mouseover)="hover(row)"></md-row>
+        <md-row *mdRowDef="let row; columns: displayedColumns;" style="height: 20px"
+         [ngClass]="{'highlight': selectedRowIndex == row.position}"
+         [cellHover]="'#F5F5F5'" defaultColor="#FFFFFF" selectColor="#B39DDB"
+         (click)="highlight(row)">
+        </md-row>
       </md-table>
       <!--
         <md-selection-list #shoes>
@@ -109,3 +120,8 @@
     </div>
   </md-grid-tile>
 </md-grid-list>
+<md-sidenav-container>
+  <md-sidenav #sidenav class="example-sidenav" mode="over">
+    Jolly good!
+  </md-sidenav>
+</md-sidenav-container>

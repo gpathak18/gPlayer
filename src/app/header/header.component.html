@@ -20,12 +20,11 @@
 </md-toolbar>
 -->
 
-
 <md-grid-list cols="1" rowHeight="30px">
-  <md-grid-tile rowspan="1" style="background-color: #FFFFFF; font-family: roboto;font-size: 12px" fxLayout="row">
+  <md-grid-tile class="titlebar" rowspan="1" style="background-color: #FFFFFF; font-family: roboto;font-size: 12px" fxLayout="row">
     <span class="item-spacer"></span>
     <span style="color: mediumpurple"></span>
     <span class="item-spacer"></span>
-    <md-icon class="app-icon">menu</md-icon>
+    <md-icon class="app-icon" (click)="sidenav.open()" style="-webkit-user-select: none;-webkit-app-region: no-drag;cursor: pointer">menu</md-icon>
   </md-grid-tile>
 </md-grid-list>

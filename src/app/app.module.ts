@@ -5,16 +5,18 @@ import { AppComponent } from './body/app.component';
 import { HeaderComponent } from './header/header.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatListModule, MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule,MatTabsModule,MatGridListModule,MatInputModule,MdTableModule } from '@angular/material';
+import { MatSidenavModule,MatListModule, MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule,MatTabsModule,MatGridListModule,MatInputModule,MdTableModule } from '@angular/material';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import { FooterComponent } from './footer/footer.component';
+import { CellHoverDirective } from './body/cell-hover.directive';
 //import {CdkTableModule} from '@angular/cdk/table';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    CellHoverDirective
   ],
   imports: [
     BrowserModule,
@@ -29,7 +31,8 @@ import { FooterComponent } from './footer/footer.component';
     FlexLayoutModule,
     MatInputModule,
     MdTableModule,
-    MatListModule
+    MatListModule,
+    MatSidenavModule
   ],
   providers: [],
   bootstrap: [AppComponent,HeaderComponent,FooterComponent]
