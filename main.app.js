@@ -25,6 +25,8 @@ function createWindow() {
   })
 
   win.loadURL('http://localhost:4200')
+  win.setMaximumSize(700, 860)
+  win.setMinimumSize(500, 600)
 
   win.on('closed', () => {
     win = null
@@ -36,6 +38,8 @@ function createWindow() {
       win.show()
     }, 1000);
   })
+
+
 
 }
 

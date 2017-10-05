@@ -1,4 +1,4 @@
-<md-grid-list cols="1" rowHeight="130px">
+<md-grid-list cols="1" rowHeight="{{rowHeight}}">
   <md-grid-tile rowspan="1" style="background-color: #FFFFFF;" fxLayout="column">
     <!--
 <md-card style="height: 50px; width: 55px">
@@ -7,11 +7,11 @@
 -->
     <md-grid-tile-header style="height: 30px;background-color: white;" fxLayout="column" fxLayoutAlign="center start">
       <div>
-      <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 14px;margin-left:5px">
+        <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 14px;margin-left:5px">
         <b>Beat It</b>
       </span>
-      <span class="item-spacer "></span>
-      <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 12px;margin-left:5px">
+        <span class="item-spacer "></span>
+        <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 12px;margin-left:5px">
         {{songDuration}} : {{songDuration}}
       </span>
       </div>
@@ -19,7 +19,7 @@
         Michael Jackson
       </span>
     </md-grid-tile-header>
-    <div id="waveform" style="justify-content:center;align-items:center;width:100%;height:30%;"></div>
+    <div (window:resize)="onResize($event)" id="waveform" style="justify-content:center;align-items:center;width:100%;height:30%;"></div>
     <md-grid-tile-footer style="height: 40px; background-color: white" fxLayout="row" fxLayoutAlign="start center">
       <div fxLayout="row" fxLayoutAlign="start center" fxFelx="30">
         <button md-icon-button>
@@ -44,9 +44,9 @@
 </div>
 -->
   </md-grid-tile>
-  <md-grid-tile rowspan="3" style="background-color: #282364;opacity: 0.7;">
-    <div class="example-container mat-elevation-z8" style="width: 500px;height: 100% ">
-      <div fxLayout="row" fxLayoutAlign="start center" style="width: 100%;">
+  <md-grid-tile rowspan="1" style="background-color: #282364;opacity: 0.7;height: 100%" >
+    <div class="example-container mat-elevation-z2" style="width: 500px;height: 100%" >
+      <div fxLayout="row" fxLayoutAlign="start center" style="width: 100%;background-color: #282364">
         <md-form-field style="width: 60%;margin-left: 10px" floatPlaceholder="never" color="warn">
           <!--        <md-icon class="app-icon-gray " mdPrefix>search</md-icon>-->
           <input mdInput dividerColor="warn" value="" #filter placeholder="Find your music" style="color: white; font-size: 12px">
@@ -56,7 +56,7 @@
           <button md-icon-button (click)="file.click()">
             <md-icon class="app-icon " aria-label="Example icon-button with a heart icon">create_new_folder</md-icon>
           </button>
-          <button md-icon-button >
+          <button md-icon-button>
           <md-icon class="app-icon " style="">folder</md-icon>
           </button>
           <button md-icon-button>
@@ -65,19 +65,24 @@
           <button md-icon-button>
           <md-icon class="app-icon ">playlist_add</md-icon>
           </button>
-          <input type="file" #file style="display:none" />
+          <input type="file" #file style="display:none" (change)='changeListener($event)' multiple/>
         </div>
       </div>
 
-      <md-table #table [dataSource]="dataSource " style="">
+      <md-table #table [dataSource]="dataSource" >
         <ng-container mdColumnDef="position">
           <md-header-cell *mdHeaderCellDef class="mat-cell-sn"> No. </md-header-cell>
           <md-cell *mdCellDef="let element" class="mat-cell-sn"> {{element.position}} </md-cell>
         </ng-container>
 
+        <ng-container mdColumnDef="selection">
+          <md-header-cell *mdHeaderCellDef class="mat-cell-sl"><md-checkbox></md-checkbox></md-header-cell>
+          <md-cell *mdCellDef="let element" class="mat-cell-sl"><md-checkbox></md-checkbox>  </md-cell>
+        </ng-container>
+
         <ng-container mdColumnDef="name">
           <md-header-cell *mdHeaderCellDef class="mat-cell-song"> Song Name </md-header-cell>
-          <md-cell *mdCellDef="let element" class="mat-cell-song"> {{element.name}}</md-cell>
+          <md-cell *mdCellDef="let element" class="mat-cell-song"> {{element.name}} </md-cell>
         </ng-container>
 
         <ng-container mdColumnDef="options">
@@ -88,26 +93,23 @@
               </button>
             <md-menu #menu="mdMenu">
               <button md-menu-item>
-                <md-icon>dialpad</md-icon>
-                <span>Redial</span>
+                <md-icon>play_circle_outline</md-icon>
+                <span>Play Next</span>
               </button>
               <button md-menu-item disabled>
-                  <md-icon>voicemail</md-icon>
-                  <span>Check voicemail</span>
+                  <md-icon>remove_from_queue</md-icon>
+                  <span>Remove</span>
               </button>
               <button md-menu-item>
-                <md-icon>notifications_off</md-icon>
-                <span>Disable alerts</span>
-                </button>
+                <md-icon>cloud_download</md-icon>
+                <span>Download</span>
+              </button>
             </md-menu>
           </md-cell>
         </ng-container>
 
         <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
-        <md-row *mdRowDef="let row; columns: displayedColumns;" style="height: 20px"
-         [ngClass]="{'highlight': selectedRowIndex == row.position}"
-         [cellHover]="'#F5F5F5'" defaultColor="#FFFFFF" selectColor="#B39DDB"
-         (click)="highlight(row)">
+        <md-row *mdRowDef="let row; columns: displayedColumns;" style="height: 20px" [ngClass]="{'highlight': selectedRowIndex == row.position}" [cellHover]="'#F5F5F5'" defaultColor="#FFFFFF" selectColor="#B39DDB" (click)="highlight(row)">
         </md-row>
       </md-table>
       <!--
@@ -120,8 +122,8 @@
     </div>
   </md-grid-tile>
 </md-grid-list>
-<md-sidenav-container>
+<!-- <md-sidenav-container>
   <md-sidenav #sidenav class="example-sidenav" mode="over">
     Jolly good!
   </md-sidenav>
-</md-sidenav-container>
+</md-sidenav-container> -->
