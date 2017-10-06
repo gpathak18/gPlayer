@@ -13,6 +13,9 @@ let win
 function createWindow() {
 
   win = new BrowserWindow({
+    webPreferences: {
+      webSecurity: false
+    },
     titleBarStyle: 'hidden',
     width: 500,
     height: 600,
@@ -24,7 +27,8 @@ function createWindow() {
 
   })
 
-  win.loadURL('http://localhost:4200')
+  //  win.loadURL('http://localhost:4200')
+  win.loadURL('file:///' + __dirname + '/dist/index.html')
   win.setMaximumSize(700, 860)
   win.setMinimumSize(500, 600)
 

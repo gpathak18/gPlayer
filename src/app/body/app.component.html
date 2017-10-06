@@ -1,3 +1,4 @@
+<app-header></app-header>
 <md-grid-list cols="1" rowHeight="{{rowHeight}}">
   <md-grid-tile rowspan="1" style="background-color: #FFFFFF;" fxLayout="column">
     <!--
@@ -12,7 +13,7 @@
       </span>
         <span class="item-spacer "></span>
         <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 12px;margin-left:5px">
-        {{songDuration}} : {{songDuration}}
+        {{currentTime}} : {{songDuration}}
       </span>
       </div>
       <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 12px;margin-left:5px">
@@ -29,7 +30,7 @@
         <md-icon class="app-icon-gray" (click)="play()">{{icon}}</md-icon>
         </button>
         <button md-icon-button>
-        <md-icon class="app-icon-gray" (click)="pause()">skip_next</md-icon>
+        <md-icon class="app-icon-gray" >skip_next</md-icon>
         </button>
       </div>
     </md-grid-tile-footer>
@@ -44,8 +45,8 @@
 </div>
 -->
   </md-grid-tile>
-  <md-grid-tile rowspan="1" style="background-color: #282364;opacity: 0.7;height: 100%" >
-    <div class="example-container mat-elevation-z2" style="width: 500px;height: 100%" >
+  <md-grid-tile rowspan="1" style="background-color: #282364;opacity: 0.7;height: 100%">
+    <div class="example-container mat-elevation-z2" style="width: 500px;height: 100%">
       <div fxLayout="row" fxLayoutAlign="start center" style="width: 100%;background-color: #282364">
         <md-form-field style="width: 60%;margin-left: 10px" floatPlaceholder="never" color="warn">
           <!--        <md-icon class="app-icon-gray " mdPrefix>search</md-icon>-->
@@ -63,21 +64,25 @@
           <md-icon class="app-icon ">playlist_play</md-icon>
           </button>
           <button md-icon-button>
-          <md-icon class="app-icon ">playlist_add</md-icon>
+          <md-icon class="app-icon " (click)="remove()">playlist_add</md-icon>
           </button>
           <input type="file" #file style="display:none" (change)='changeListener($event)' multiple/>
         </div>
       </div>
 
-      <md-table #table [dataSource]="dataSource" >
+      <md-table #table [dataSource]="dataSource">
         <ng-container mdColumnDef="position">
           <md-header-cell *mdHeaderCellDef class="mat-cell-sn"> No. </md-header-cell>
           <md-cell *mdCellDef="let element" class="mat-cell-sn"> {{element.position}} </md-cell>
         </ng-container>
 
         <ng-container mdColumnDef="selection">
-          <md-header-cell *mdHeaderCellDef class="mat-cell-sl"><md-checkbox></md-checkbox></md-header-cell>
-          <md-cell *mdCellDef="let element" class="mat-cell-sl"><md-checkbox></md-checkbox>  </md-cell>
+          <md-header-cell *mdHeaderCellDef class="mat-cell-sl">
+            <md-checkbox></md-checkbox>
+          </md-header-cell>
+          <md-cell *mdCellDef="let element" class="mat-cell-sl">
+            <md-checkbox></md-checkbox>
+          </md-cell>
         </ng-container>
 
         <ng-container mdColumnDef="name">
@@ -109,7 +114,7 @@
         </ng-container>
 
         <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
-        <md-row *mdRowDef="let row; columns: displayedColumns;" style="height: 20px" [ngClass]="{'highlight': selectedRowIndex == row.position}" [cellHover]="'#F5F5F5'" defaultColor="#FFFFFF" selectColor="#B39DDB" (click)="highlight(row)">
+        <md-row *mdRowDef="let row; columns: displayedColumns;" style="height: 20px" [ngClass]="{'highlight': selectedRowIndex == row.position}" [cellHover]="'#F5F5F5'" defaultColor="#FFFFFF" selectColor="#B39DDB" (click)="playNext(row)">
         </md-row>
       </md-table>
       <!--
@@ -122,6 +127,7 @@
     </div>
   </md-grid-tile>
 </md-grid-list>
+<app-footer></app-footer>
 <!-- <md-sidenav-container>
   <md-sidenav #sidenav class="example-sidenav" mode="over">
     Jolly good!

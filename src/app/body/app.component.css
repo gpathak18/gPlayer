@@ -1,7 +1,7 @@
 :host input.md-input-element {
-    color: red;
-    font-size: 18px;
- }
+  color: red;
+  font-size: 18px;
+}
 
 .app-icon {
   padding: 0 10px;
@@ -53,6 +53,7 @@
 
 .mat-cell-song {
   flex: 0 0 70%;
+  cursor: pointer;
 }
 
 .mat-cell-op {

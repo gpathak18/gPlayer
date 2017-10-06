@@ -9,6 +9,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 
 @Component({
@@ -17,9 +18,11 @@ import 'rxjs/add/operator/distinctUntilChanged';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  fileCntr : number = 1;
   filestring: string;
   rowHeight: string = '4:1';
   songDuration: string;
+  currentTime: string;
   color: string;
   icon = 'play_arrow';
   displayedColumns = ['position', 'selection', 'name', 'options'];
@@ -48,27 +51,26 @@ export class AppComponent {
   ngOnInit() {
     this.wavesurfer = new WaveSurfer(this.options);
     this.wavesurfer.init();
-    this.load()
+    this.wavesurfer.on('ready', this.wavesurfer.play.bind(this.wavesurfer));
     this.dataSource = new ExampleDataSource();
-    //     Observable.fromEvent(this.filter.nativeElement, 'keyup')
-    //        .debounceTime(150)
-    //        .distinctUntilChanged()
-    //        .subscribe(() => {
-    //          if (!this.dataSource) { return; }
-    //          this.dataSource.filter = this.filter.nativeElement.value;
-    //        });
+
   }
 
+  onPlayerReady(){
+      
+      //this.songDuration=this.formatTime(this.wavesurfer.getDuration());
+  }
   onResize($event) {
     if (this.wavesurfer != null) {
+      console.log('not null')
       this.wavesurfer.drawer.containerWidth = this.wavesurfer.drawer.container.clientWidth;
       this.wavesurfer.drawBuffer();
-
     }
   }
 
-  load() {
-    this.wavesurfer.load('assets/sample.mp3');
+  load(path) {
+    this.wavesurfer.load(path);
+    
   }
 
   play() {
@@ -79,9 +81,38 @@ export class AppComponent {
       this.icon = 'pause';
       this.wavesurfer.play();
     }
-    this.songDuration = this.wavesurfer.getDuration();
+    
+    this.wavesurfer.on('ready', function () {
+      this.songDuration= formatTime(this.wavesurfer.getDuration());
+    });
+   
+   this.wavesurfer.on('audioprocess', function () {
+      this.currentTime = formatTime(this.getCurrentTime());
+    });
+   
   }
+  
+  playNext(row){
+    var path = this.getPath(row.position)[0].options;
+    this.wavesurfer.empty();
+    this.load(path);
+    this.wavesurfer.on('ready', this.play());
+    
+  }
+  
 
+
+//   formatTime(time): string {
+//    return [
+//        Math.floor((time % 3600) / 60), // minutes
+//        ('00' + Math.floor(time % 60)).slice(-2) // seconds
+//    ].join(':');
+//   }
+
+  getPath(position){
+    return data.value.filter(x => x.position === position);
+  }
+  
   selectedRowIndex: number = -1;
   hoverrow: number = -1;
   fileType: string = 'audio.*';
@@ -98,6 +129,13 @@ export class AppComponent {
     }
   }
 
+  remove(){
+    data.value.splice(2,1);
+    console.log(data)
+  
+  }
+  
+  
   changeListener($event): void {
     this.readFiles($event.target);
   }
@@ -110,16 +148,25 @@ export class AppComponent {
         reader.onload = function(e) {
         }
         reader.readAsDataURL(file);
-        data.push({ position: 1, selection: true, name: file.name, options: '' });
-      } else {
-        alert("File not supported!");
+        const copiedData = data.value;
+        copiedData.push({ position: this.fileCntr, selection: true, name: file.name, options: file.path });
+        this.fileCntr++;
+        data.next(copiedData);
       }
+//      else {
+//        alert("File not supported!");
+//      }
     }
-    console.log(data)
-    this.dataSource.connect();
   }
   @ViewChild('filter') filter: ElementRef;
 }
+
+  var formatTime = function (time) {
+    return [
+        Math.floor((time % 3600) / 60), // minutes
+        ('00' + Math.floor(time % 60)).slice(-2) // seconds
+    ].join(':');
+  };
 
 export interface Element {
   name: string;
@@ -128,20 +175,8 @@ export interface Element {
   selection: boolean;
 }
 
-const data: Element[] = [
-  // { position: 1, selection: true, name: 'Hydrogen', options: '' },
-  // { position: 2, selection: true, name: 'Helium', options: '' },
-  // { position: 3, selection: true, name: 'Lithium', options: '' },
-  // { position: 4, selection: true, name: 'Beryllium', options: '' },
-  // { position: 5, selection: true, name: 'Boron', options: '' },
-  // { position: 6, selection: true, name: 'Carbon', options: '' },
-  // { position: 7, selection: true, name: 'Carbon', options: '' },
-  // { position: 8, selection: true, name: 'Carbon', options: '' },
-  // { position: 9, selection: true, name: 'Carbon', options: '' },
-  // { position: 10, selection: true, name: 'Carbon', options: '' },
-  // { position: 11, selection: true, name: 'Carbon', options: '' },
-];
-
+var data: BehaviorSubject<Element[]> = new BehaviorSubject<Element[]>([]);
+ 
 /**
  * Data source to provide what data should be rendered in the table. The observable provided
  * in connect should emit exactly the data that should be rendered by the table. If the data is
@@ -149,26 +184,9 @@ const data: Element[] = [
  * we return a stream that contains only one set of data that doesn't change.
  */
 export class ExampleDataSource extends DataSource<any> {
-  //  _filterChange = new BehaviorSubject('');
-  //  get filter(): string { return this._filterChange.value; }
-  //  set filter(filter: string) { this._filterChange.next(filter); }
-
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
+  
   connect(): Observable<Element[]> {
-    //  bh: BehaviorSubject<Element[]> = new BehaviorSubject(Element[]);
-    //     const displayDataChanges = [
-    //      this._exampleDatabase.dataChange,
-    //      this._filterChange,
-    //    ];
-    //
-    //    return Observable.merge(...displayDataChanges).map(() => {
-    //      return this._exampleDatabase.data.slice().filter((item: UserData) => {
-    //        let searchStr = (item.name + item.color).toLowerCase();
-    //        return searchStr.indexOf(this.filter.toLowerCase()) != -1;
-    //      });
-    //    });
-
-   return Observable.of(data);
+    return data;
   }
 
   disconnect() { }
