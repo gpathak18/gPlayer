@@ -40,7 +40,7 @@ export class PlayerComponent implements OnInit {
   }
 
   onResize($event) {
-    if (this.wavesurfer != null) {
+    if (this.wavesurfer != null && this.wavesurfer.drawer != null) {
       console.log('not null')
       this.wavesurfer.drawer.containerWidth = this.wavesurfer.drawer.container.clientWidth;
       this.wavesurfer.drawBuffer();

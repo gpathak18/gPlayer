@@ -1,10 +1,10 @@
 <app-header></app-header>
-<md-grid-list cols="1" rowHeight="fit">
-    <md-grid-tile rowspan="30" style="background-color: #FFFFFF;" fxLayout="column">
+<md-grid-list  cols="1" rowHeight="fit" style="min-height:100%">
+    <md-grid-tile rowspan="1" style="background-color: #FFFFFF;" >
          <app-player></app-player>
     </md-grid-tile>
-    <md-grid-tile rowspan="70" style="background-color: #282364;opacity: 0.7;height: 100%">
+    <md-grid-tile #maingridtile rowspan="4" style="background-color: #282364;opacity: 0.7;"  fxLayout="column" fxLayoutAlign="start space-around">
           <app-player-body></app-player-body>
     </md-grid-tile>
 </md-grid-list>
-<app-footer></app-footer>
+
