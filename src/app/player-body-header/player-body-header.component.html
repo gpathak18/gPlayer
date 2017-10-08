@@ -1,0 +1,22 @@
+<md-grid-tile-header  style="background-color: #45c42c">
+        <md-form-field style="width: 100%;margin-left: 10px" floatPlaceholder="never" color="warn">
+          <!--        <md-icon class="app-icon-gray " mdPrefix>search</md-icon>-->
+          <input mdInput dividerColor="warn" value="" #filter placeholder="Find your music" style="color: white; font-size: 12px">
+        </md-form-field>
+        <span class="item-spacer"></span>
+        <!-- <div fxLayout=" row " fxLayoutAlign="start center"> -->
+          <button md-icon-button (click)="file.click()">
+            <md-icon class="app-icon " aria-label="Example icon-button with a heart icon">create_new_folder</md-icon>
+          </button>
+          <button md-icon-button>
+            <md-icon class="app-icon ">folder</md-icon>
+          </button>
+          <button md-icon-button>
+            <md-icon class="app-icon ">playlist_play</md-icon>
+          </button>
+          <button md-icon-button>
+            <md-icon class="app-icon " (click)="remove()">playlist_add</md-icon>
+          </button>
+          <input type="file" #file style="display:none" (change)='changeListener($event)' multiple/>
+</md-grid-tile-header>
+  

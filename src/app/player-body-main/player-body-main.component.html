@@ -1,0 +1,49 @@
+<div  [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'"  style="background-color: red">
+    <md-table #table [dataSource]="dataSource" >
+      <ng-container mdColumnDef="position">
+        <md-header-cell *mdHeaderCellDef class="mat-cell-sn"> No. </md-header-cell>
+        <md-cell *mdCellDef="let element" class="mat-cell-sn"> {{element.position}} </md-cell>
+      </ng-container>
+  
+      <ng-container mdColumnDef="selection">
+        <md-header-cell *mdHeaderCellDef class="mat-cell-sl">
+          <md-checkbox></md-checkbox>
+        </md-header-cell>
+        <md-cell *mdCellDef="let element" class="mat-cell-sl">
+          <md-checkbox></md-checkbox>
+        </md-cell>
+      </ng-container>
+  
+      <ng-container mdColumnDef="name">
+        <md-header-cell *mdHeaderCellDef class="mat-cell-song"> Song Name </md-header-cell>
+        <md-cell *mdCellDef="let element" class="mat-cell-song"> {{element.name}} </md-cell>
+      </ng-container>
+  
+      <ng-container mdColumnDef="options">
+        <md-header-cell *mdHeaderCellDef class="mat-cell-op"> Options </md-header-cell>
+        <md-cell *mdCellDef="let element" class="mat-cell-op">
+          <button md-icon-button [mdMenuTriggerFor]="menu">
+            <md-icon>more_vert</md-icon>
+          </button>
+          <md-menu #menu="mdMenu">
+            <button md-menu-item>
+              <md-icon>play_circle_outline</md-icon>
+              <span>Play Next</span>
+            </button>
+            <button md-menu-item disabled>
+              <md-icon>remove_from_queue</md-icon>
+              <span>Remove</span>
+            </button>
+            <button md-menu-item>
+              <md-icon>cloud_download</md-icon>
+              <span>Download</span>
+            </button>
+          </md-menu>
+        </md-cell>
+      </ng-container>
+      <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
+      <md-row *mdRowDef="let row; columns: displayedColumns;" style="height: 20px" [ngClass]="{'highlight': selectedRowIndex == row.position}"
+        [cellHover]="'#F5F5F5'" defaultColor="#FFFFFF" selectColor="#B39DDB" (click)="playNext(row)">
+      </md-row>
+    </md-table>
+  </div>

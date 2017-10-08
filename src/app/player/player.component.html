@@ -1,29 +1,27 @@
-
-    <md-grid-tile-header style="height: 30px;background-color: white;" fxLayout="column" fxLayoutAlign="center start">
-      <div>
-        <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 14px;margin-left:5px">
-        <b>Beat It</b>
-      </span>
-        <span class="item-spacer "></span>
-        <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 12px;margin-left:5px">
+<md-grid-tile-header style="-webkit-user-select: none;-webkit-app-region: drag;height: 40px;background-color: white;" fxLayout="row" fxLayoutAlign="start center">
+  <span class="item-spacer"></span>
+  <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 14px;margin-left:5px">
+    <b>Beat It : </b> Michael Jackson
+  </span> 
+  <span class="item-spacer"></span>
+  <span>
+    <md-icon class="app-icon-gray" style="-webkit-user-select: none;-webkit-app-region: no-drag;cursor: pointer">menu</md-icon>
+  </span>
+</md-grid-tile-header>
+<div  (window:resize)="onResize($event)" id="waveform" style="justify-content:center;align-items:center;" fxLayout="column" fxLayoutAlign="center stretch">
+</div>
+<md-grid-tile-footer style="height: 40px; background-color: white" fxLayout="row" fxLayoutAlign="start center">
+    <button md-icon-button>
+      <md-icon class="app-icon-gray">skip_previous</md-icon>
+    </button>
+    <button md-icon-button>
+      <md-icon class="app-icon-gray" (click)="play()">{{icon}}</md-icon>
+    </button>
+    <button md-icon-button>
+      <md-icon class="app-icon-gray">skip_next</md-icon>
+    </button>
+    <span class="item-spacer "></span>  
+    <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 14px;margin-left:5px"> 
         {{currentTime}} : {{songDuration}}
-      </span>
-      </div>
-      <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 12px;margin-left:5px">
-        Michael Jackson
-      </span>
-    </md-grid-tile-header>
-    <div (window:resize)="onResize($event)" id="waveform" style="justify-content:center;align-items:center;width:100%;height:30%;"></div>
-    <md-grid-tile-footer style="height: 40px; background-color: white" fxLayout="row" fxLayoutAlign="start center">
-      <div fxLayout="row" fxLayoutAlign="start center" fxFelx="30">
-        <button md-icon-button>
-        <md-icon class="app-icon-gray">skip_previous</md-icon>
-        </button>
-        <button md-icon-button>
-        <md-icon class="app-icon-gray" (click)="play()">{{icon}}</md-icon>
-        </button>
-        <button md-icon-button>
-        <md-icon class="app-icon-gray" >skip_next</md-icon>
-        </button>
-      </div>
-    </md-grid-tile-footer>
+    </span>
+</md-grid-tile-footer>

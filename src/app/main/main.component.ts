@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-main',
@@ -7,9 +7,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
-  constructor() { }
+  private tileWdHt = {
+    tileHeight : '',
+    tileWidth : ''
+  }
+  private tileHeight : string;
+  private tileWidth : string;
+
+  constructor(private el:ElementRef){ }
 
   ngOnInit() {
   }
 
+  onResize($elm){
+    let element = $elm._element.nativeElement
+    this.tileWdHt.tileHeight = element.offsetHeight;
+    this.tileWdHt.tileWidth = element.offsetWidth;  
+  }
 }

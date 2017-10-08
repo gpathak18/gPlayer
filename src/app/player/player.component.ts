@@ -17,7 +17,8 @@ export class PlayerComponent implements OnInit {
     waveColor: 'hsla(245, 48%, 26%, 0.7)',
     height: 50,
     audioRate: 1,
-    scrollParent: false,
+    scrollParent: true,
+    hideScrollbar: true,
     progressColor: 'hsla(200, 100%, 30%, 0.5)',
     cursorColor: 'dimgrey',
     barWidth: 3
@@ -25,8 +26,8 @@ export class PlayerComponent implements OnInit {
 
   private  icon = 'play_arrow';
   private wavesurfer = null;
-  private songDuration: string;
-  private currentTime: string;
+  private songDuration: string = '4:05';
+  private currentTime: string = '2:05';
 
   constructor() { }
 
@@ -34,8 +35,8 @@ export class PlayerComponent implements OnInit {
 
     this.wavesurfer = new WaveSurfer(this.options);
     this.wavesurfer.init();
-    this.wavesurfer.on('ready', this.wavesurfer.play.bind(this.wavesurfer));
-
+    //this.wavesurfer.on('ready', this.wavesurfer.play.bind(this.wavesurfer));
+    this.load('assets/sample.mp3')
 
   }
 
@@ -44,7 +45,7 @@ export class PlayerComponent implements OnInit {
       console.log('not null')
       this.wavesurfer.drawer.containerWidth = this.wavesurfer.drawer.container.clientWidth;
       this.wavesurfer.drawBuffer();
-    }
+    } 
   }
 
   load(path) {
@@ -54,7 +55,7 @@ export class PlayerComponent implements OnInit {
   play() {
     if (this.icon == 'pause') {
       this.icon = 'play_arrow';
-      this.wavesurfer.pause();
+      this.wavesurfer.pause(); 
     } else {
       this.icon = 'pause';
       this.wavesurfer.play();
@@ -80,8 +81,7 @@ export class PlayerComponent implements OnInit {
 
   getPath(position){
     // return data.value.filter(x => x.position === position);
-  }
-  
+  } 
 
 }
 

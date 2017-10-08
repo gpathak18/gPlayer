@@ -10,7 +10,7 @@
   }
   
   .app-icon-gray {
-    padding: 0 4px;
+    padding: 0 0px;
     color: #282364;
     opacity: 0.7;
     cursor: pointer;
@@ -19,50 +19,13 @@
   .item-spacer {
     flex: 1 1 auto;
   }
-  
-  .search {
-    width: 30px;
-    -webkit-transition: width 0.4s ease-in-out;
-    transition: width 0.4s ease-in-out;
-  }
-  
-  .search:focus {
-    width: 100px;
-  }
-  
-  .example-container {
-    display: flex;
-    flex-direction: column;
-    /*max-height: 500px;
-    min-width: 300px;*/
-  }
-  
+ 
   .mat-table {
     overflow: auto;
     max-height: 100%;
   
   }
   
-  .mat-cell-sn {
-    flex: 0 0 10%;
-  }
-  
-  .mat-cell-sl {
-    flex: 0 0 10%;
-  }
-  
-  .mat-cell-song {
-    flex: 0 0 70%;
-    cursor: pointer;
-  }
-  
-  .mat-cell-op {
-    flex: 0 0 10%;
-  }
-  
-  .highlight {
-    background: #B39DDB;
-  }
   
   @keyframes flicker {
     0% {
@@ -120,3 +83,6 @@
     animation: fadein 2s;
   }
   
+  :host{
+    width: 100%;
+  }
