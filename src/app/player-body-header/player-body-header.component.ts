@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { Track } from '../Itarck';
 import { PouchDbService } from '../pouch-db.service';
+import { EventEmitter } from 'events';
+import { DatastoreService } from '../datastore.service';
 
 @Component({
   selector: 'app-player-body-header',
@@ -9,13 +11,13 @@ import { PouchDbService } from '../pouch-db.service';
 })
 export class PlayerBodyHeaderComponent implements OnInit {
 
-  private selectedTracks: Track[] = new Array();
-  private fileCntr : number = 1;
-  private fileType: string = 'audio.*';
-  private selectedRowIndex: number = -1;
-  private hoverrow: number = -1;
+  @Output() addTrack = new EventEmitter();
 
-  constructor(dbservice: PouchDbService) { }
+  private selectedTracks: Track[] = new Array();
+  private fileType: string = 'audio.*';
+  private fileCntr : number = 1;
+
+  constructor(private dbservice: PouchDbService,private datastore: DatastoreService) { }
 
   ngOnInit() {
     // this.selectedFiles  = [];
@@ -29,42 +31,40 @@ export class PlayerBodyHeaderComponent implements OnInit {
         reader.onload = function(e) {
         }
         // reader.readAsDataURL(file);
-        // const copiedData = data.value;
         let track = {
-          Name: file.Name,
+          TrackNumber: this.fileCntr,
+          Name: file.name,
           Link: file.path,
           Source: 'computer'
         }
-        // track.position = this.fileCntr;
-        this.selectedTracks.push(track);
         this.fileCntr++;
-        // data.next(copiedData);
+        // this.selectedTracks.push(track);
+        console.log(track.Name)
+        // this.dbservice.put(track,'#1')
+        // console.log(this.dbservice.fetch())
+        // this.addTrack.emit(this.dbservice.fetch())
+        this.selectedTracks.push(track);
+        // this.dbservice.fetch().then(function (response) {
+        //   var docs = response.rows.map(function (row) { return row.doc; });  
+        //   console.log('doc',docs[0]);
+        //   console.log('res',response);
+        // }).catch(function (err) {
+        //   console.log(err);
+        // })
+        //this.datastore.addTrack()
+
       }
 //      else {
 //        alert("File not supported!");
 //      }
     }
+    console.log(this.selectedTracks)
+    this.datastore.addTrack(this.selectedTracks)
   }
-
-  highlight(row) {
-    this.selectedRowIndex = row.position;
-  }
-
-  hover(row) {
-    if (row.position != this.selectedRowIndex) {
-      this.hoverrow = row.position;
-    } else {
-      this.hoverrow = -1;
-    }
-  }
-
-  remove(){
-    
-  }
-  
   
   changeListener($event): void {
     this.readFiles($event.target);
+
   }
 
 }

@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import * as PouchDB from 'pouchdb'; 
+import PouchDB from 'pouchdb'; 
 
 @Injectable()
 export class PouchDbService {
@@ -12,7 +12,7 @@ export class PouchDbService {
   constructor() {
 
     if(!this.isInstantiated) {
-      this.database = new PouchDB(this.DB_NAME);
+      this.database = new PouchDB(this.DB_NAME,{auto_compaction: true});
       this.isInstantiated = true;
     }
 
@@ -26,7 +26,7 @@ export class PouchDbService {
     return this.database.get(id);
    }
 
-  public putTrack(document: any, id: string) { 
+  public put(document: any, id: string) { 
     document._id = id;
     return this.get(id).then(result => {
         document._rev = result._rev;
@@ -47,6 +47,7 @@ export class PouchDbService {
     this.database.sync(remoteDatabase, {
         live: true
     }).on('change', change => {
+      console.log('changed')
         this.listener.emit(change);
     });
  }
