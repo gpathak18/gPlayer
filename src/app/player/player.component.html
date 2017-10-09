@@ -21,6 +21,9 @@
       <md-icon class="app-icon-gray">skip_next</md-icon>
     </button>
     <span class="item-spacer "></span>  
+    <button md-icon-button (click)="isScroll=!isScroll;setScrollable()">
+      <md-icon class="app-icon-gray">timeline</md-icon>
+    </button>
     <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 14px;margin-left:5px"> 
         {{currentTime}} : {{songDuration}}
     </span>

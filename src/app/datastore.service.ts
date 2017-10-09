@@ -5,7 +5,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class DatastoreService extends DataSource<Track> {
+export class DatastoreService extends DataSource<any> {
 
   //private selectedTracks: Track[] = [];
   
@@ -15,23 +15,13 @@ export class DatastoreService extends DataSource<Track> {
   
   constructor() {
     super();
-    // this.selectedTracks.push({
-    //   TrackNumber: 1,
-    //   Name: "Song",
-    //   Link: 'Link',
-    //   Source: 'src'
-    // }) 
-    // this.currentTracks.subscribe(tracks => console.log(tracks))
   }
 
   addTrack(tracks: Track[]) {
     this.data.next(tracks)
-    console.log(this.data)
- 
   }
 
-  connect(): Observable<Track[]> {
-    
+  connect(): Observable<Track[]> {    
     return this.currentTracks;
   }
 

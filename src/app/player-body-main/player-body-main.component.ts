@@ -23,7 +23,7 @@ export class PlayerBodyMainComponent implements OnInit {
  @Input('selected_files') selectedFiles: Element[] = [];
 
   private displayedColumns = ['TrackNumber', 'Name', 'Link', 'Source'];
-  private dataSource: DatastoreService | null;
+   dataSource: DatastoreService | null;
   private hoverrow: number = -1;
   
   private selectedRowIndex: number = -1;
@@ -33,9 +33,11 @@ export class PlayerBodyMainComponent implements OnInit {
 
   }
 
-  async ngOnInit() {
-    this.dataSource = new DatastoreService();
-    await this.dataSource.connect();
+   ngOnInit() {
+    this.dataSource = this.datastore;
+    //this.dataSource.connect();
+     console.log('datasource: ',this.dataSource)
+    //this.dataSource.data.subscribe(tracks => console.log(tracks))
     this.winWdHt.tileHeight = '480'
     this.winWdHt.tileWidth = '500' 
   }

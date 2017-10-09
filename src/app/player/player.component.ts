@@ -12,12 +12,13 @@ import MinimapPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js';
 })
 export class PlayerComponent implements OnInit {
 
+  private isScroll: boolean = true;
   private options = {
     container: '#waveform',
     waveColor: 'hsla(245, 48%, 26%, 0.7)',
     height: 50,
     audioRate: 1,
-    scrollParent: true,
+    scrollParent: this.isScroll,
     hideScrollbar: true,
     progressColor: 'hsla(200, 100%, 30%, 0.5)',
     cursorColor: 'dimgrey',
@@ -35,6 +36,7 @@ export class PlayerComponent implements OnInit {
 
     this.wavesurfer = new WaveSurfer(this.options);
     this.wavesurfer.init();
+    
     //this.wavesurfer.on('ready', this.wavesurfer.play.bind(this.wavesurfer));
     this.load('assets/sample.mp3')
 
@@ -42,7 +44,6 @@ export class PlayerComponent implements OnInit {
 
   onResize($event) {
     if (this.wavesurfer != null && this.wavesurfer.drawer != null) {
-      console.log('not null')
       this.wavesurfer.drawer.containerWidth = this.wavesurfer.drawer.container.clientWidth;
       this.wavesurfer.drawBuffer();
     } 
@@ -51,7 +52,9 @@ export class PlayerComponent implements OnInit {
   load(path) {
     this.wavesurfer.load(path);
   }
-
+  setScrollable(){
+    this.wavesurfer.scrollParent = this.isScroll;
+  }
   play() {
     if (this.icon == 'pause') {
       this.icon = 'play_arrow';
