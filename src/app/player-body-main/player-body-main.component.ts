@@ -1,5 +1,5 @@
 'use strict';
-import { Component, OnInit, ViewChild, ElementRef, Input, Injectable } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, Injectable, Output, EventEmitter } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { PouchDbService } from '../pouch-db.service';
 import { Track } from '../Itarck';
 import { DatastoreService } from '../datastore.service';
+import { PlayerService } from '../player.service';
 
 
 @Component({
@@ -20,56 +21,35 @@ import { DatastoreService } from '../datastore.service';
 export class PlayerBodyMainComponent implements OnInit {
 
  @Input('winWdHt') winWdHt  = { tileHeight:'', tileWidth: ''};
- @Input('selected_files') selectedFiles: Element[] = [];
+ @Input('player') player: any = "";
+
+ @Output() playEvent = new EventEmitter();
 
   private displayedColumns = ['TrackNumber', 'Name', 'Link', 'Source'];
-   dataSource: DatastoreService | null;
+  private dataSource: DatastoreService | null;
   private hoverrow: number = -1;
-  
+  private tracks : Track[];
   private selectedRowIndex: number = -1;
 
   constructor(private dbservice: PouchDbService,private datastore: DatastoreService) { 
-
-
+   
   }
 
-   ngOnInit() {
+  ngOnInit() {
     this.dataSource = this.datastore;
-    //this.dataSource.connect();
-     console.log('datasource: ',this.dataSource)
-    //this.dataSource.data.subscribe(tracks => console.log(tracks))
+    this.dataSource.currentTracks.subscribe(track => this.tracks = track);
     this.winWdHt.tileHeight = '480'
     this.winWdHt.tileWidth = '500' 
   }
 
+  private playTrack(row){
+    let path = this.getPath(row.TrackNumber)[0].Link;
+    this.player.loadTrack(path);
+  }
+
+  private getPath(position){
+    return this.tracks.filter(track => track.TrackNumber === position);
+  } 
+
   @ViewChild('filter') filter: ElementRef;
 }
-
-
-// export interface Element {
-//   position: number;
-//   selection: boolean;
-//   name: string;
-//   options: string;
-// }
-
-// var data: BehaviorSubject<Track[]> = new BehaviorSubject<Track[]>(this.selectedFiles);
-
-// @Injectable()
-// export class ExampleDataSource extends DataSource<any> {
-
-//   private data: Track[];
-//   constructor(private datastore: DatastoreService){
-//     super();
-//     this.datastore.currentTracks.subscribe(tracks => this.data = tracks)
-//   }
-
-
-//   connect(): Observable<Track[]> {
-//     return data;
-//   }
-
-//   disconnect() { }
-// }
-
- 

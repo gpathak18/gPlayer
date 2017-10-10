@@ -12,6 +12,7 @@ import { PlayerBodyMainComponent } from './player-body-main/player-body-main.com
 import { CellHoverDirective } from './player-body-main/cell-hover.directive';
 import { PouchDbService } from './pouch-db.service';
 import { DatastoreService } from './datastore.service';
+import { PlayerService } from './player.service';
 //import {CdkTableModule} from '@angular/cdk/table';
 
 @NgModule({
@@ -39,7 +40,7 @@ import { DatastoreService } from './datastore.service';
     MatListModule,
     MatSidenavModule
   ],
-  providers: [PouchDbService,DatastoreService],
+  providers: [PouchDbService,DatastoreService,PlayerService,PlayerComponent],
   bootstrap: [MainComponent]
 })
 export class AppModule { }

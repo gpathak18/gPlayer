@@ -12,85 +12,114 @@ import MinimapPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js';
 })
 export class PlayerComponent implements OnInit {
 
-  private isScroll: boolean = true;
+  private icon = 'play_arrow';
+  private player = null;
+  private songDuration: string = '0:00';
+  private currentTime: string = '0:00';
+
   private options = {
     container: '#waveform',
     waveColor: 'hsla(245, 48%, 26%, 0.7)',
     height: 50,
     audioRate: 1,
-    scrollParent: this.isScroll,
+    scrollParent: true,
     hideScrollbar: true,
     progressColor: 'hsla(200, 100%, 30%, 0.5)',
     cursorColor: 'dimgrey',
     barWidth: 3
   };
 
-  private  icon = 'play_arrow';
-  private wavesurfer = null;
-  private songDuration: string = '4:05';
-  private currentTime: string = '2:05';
-
   constructor() { }
 
   ngOnInit() {
 
-    this.wavesurfer = new WaveSurfer(this.options);
-    this.wavesurfer.init();
-    
-    //this.wavesurfer.on('ready', this.wavesurfer.play.bind(this.wavesurfer));
-    this.load('assets/sample.mp3')
+    this.player = new WaveSurfer(this.options);
+    this.player.init();
+ 
+  }
+
+  public onResize($event) {
+    if (this.player != null && this.player.drawer != null) {
+      this.player.drawer.containerWidth = this.player.drawer.container.clientWidth;
+      this.player.drawBuffer();
+    }
+  }
+
+  private onReady(){
 
   }
 
-  onResize($event) {
-    if (this.wavesurfer != null && this.wavesurfer.drawer != null) {
-      this.wavesurfer.drawer.containerWidth = this.wavesurfer.drawer.container.clientWidth;
-      this.wavesurfer.drawBuffer();
-    } 
+  private onPause(){
+    this.player.params.container.style.opacity = 0.9;
   }
 
-  load(path) {
-    this.wavesurfer.load(path);
+  private onAudioprocess(){
+    this.songDuration = this.player.getDuration();
   }
-  setScrollable(){
-    this.wavesurfer.scrollParent = this.isScroll;
-  }
-  play() {
+
+  public play() {
+
+    let logger = function(){
+      console.log('hello',this.player)
+    }
+
     if (this.icon == 'pause') {
       this.icon = 'play_arrow';
-      this.wavesurfer.pause(); 
     } else {
       this.icon = 'pause';
-      this.wavesurfer.play();
     }
-    
-    this.wavesurfer.on('ready', function () {
-      this.songDuration= formatTime(this.wavesurfer.getDuration());
-    });
-   
-   this.wavesurfer.on('audioprocess', function () {
-      this.currentTime = formatTime(this.getCurrentTime());
-    });
-   
-  }
-  
-  playNext(row){
-    var path = this.getPath(row.position)[0].options;
-    this.wavesurfer.empty();
-    this.load(path);
-    this.wavesurfer.on('ready', this.play());
-    
+    this.player.on('audioprocess',logger())
+    console.log();
+    // this.player.on('audioprocess', function () {
+    //   console.log("topaz",this.player)
+    //   this.player.params.container.style.opacity = 0.9;
+    // });
+    // this.player.on('onReady', function () {
+
+    //   this.player.params.container.style.opacity = 0.9;
+    // });
+
+    this.player.playPause();
+    //   this.player.on('ready', function () {
+    //     this.songDuration= formatTime(this.player.getDuration());
+    //   });
+
+    //  this.player.on('audioprocess', function () {
+    //     this.currentTime = formatTime(this.getCurrentTime());
+    //   });
+
   }
 
-  getPath(position){
-    // return data.value.filter(x => x.position === position);
-  } 
+  public logger(){
+    console.log('hello',this.player)
+  }
+
+  public loadTrack(path: string) {
+    console.log('path',path)
+    this.player.load(path);
+  }
+
+  public pause() {
+    this.player.pause();
+  }
+
+  public stop() {
+    this.player.stop();
+  }
+
+  public playPause(){
+    this.player.playPause();
+  }
+ 
+  public formatTime = function (time) {
+    return [
+      Math.floor((time % 3600) / 60), // minutes
+      ('00' + Math.floor(time % 60)).slice(-2) // seconds
+    ].join(':');
+  };
+  
 
 }
 
-var formatTime = function (time) {
-  return [
-      Math.floor((time % 3600) / 60), // minutes
-      ('00' + Math.floor(time % 60)).slice(-2) // seconds
-  ].join(':');
-};
+
+

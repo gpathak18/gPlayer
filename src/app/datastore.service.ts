@@ -9,7 +9,7 @@ export class DatastoreService extends DataSource<any> {
 
   //private selectedTracks: Track[] = [];
   
-  private data: BehaviorSubject<Track[]> = new BehaviorSubject<Track[]>([]);
+   data: BehaviorSubject<Track[]> = new BehaviorSubject<Track[]>([]);
 
   currentTracks = this.data.asObservable();
   

@@ -23,7 +23,8 @@ function createWindow() {
     show: false,
     transparent: true,
     radii: [5, 5, 5, 5],
-    backgroundColor: '#ffffff'
+    backgroundColor: '#282364',
+    opacity: 0.7
 
   })
 

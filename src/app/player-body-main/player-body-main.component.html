@@ -43,7 +43,7 @@
       </ng-container>
       <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
       <md-row *mdRowDef="let row; columns: displayedColumns;" style="height: 20px" [ngClass]="{'highlight': selectedRowIndex == row.position}"
-        [cellHover]="'#F5F5F5'" defaultColor="#FFFFFF" selectColor="#B39DDB" (click)="playNext(row)">
+        [cellHover]="'#F5F5F5'" defaultColor="#FFFFFF" selectColor="#B39DDB" (click)="playTrack(row)">
       </md-row>
     </md-table>
   </div>
