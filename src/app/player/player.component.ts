@@ -16,7 +16,7 @@ export class PlayerComponent implements OnInit {
   private player = null;
   private songDuration: string = '0:00';
   private currentTime: string = '0:00';
-
+  private timeNow: string = '0:00';
   private options = {
     container: '#waveform',
     waveColor: 'hsla(245, 48%, 26%, 0.7)',
@@ -26,7 +26,9 @@ export class PlayerComponent implements OnInit {
     hideScrollbar: true,
     progressColor: 'hsla(200, 100%, 30%, 0.5)',
     cursorColor: 'dimgrey',
-    barWidth: 3
+    barWidth: 3,
+    backend: 'MediaElement'
+
   };
 
   constructor() { }
@@ -35,7 +37,21 @@ export class PlayerComponent implements OnInit {
 
     this.player = new WaveSurfer(this.options);
     this.player.init();
- 
+
+    this.player.load('/assets/sample.mp3');
+    this.player.on('audioprocess', time => {
+      if (this.player.isPlaying()) {
+        this.timeNow = this.formatTime(time)
+      }
+      this.currentTime = this.timeNow;
+    });
+
+    this.player.on('play', () => {
+      let time = this.player.getDuration();
+      this.songDuration = this.formatTime(time)
+    });
+
+
   }
 
   public onResize($event) {
@@ -45,57 +61,27 @@ export class PlayerComponent implements OnInit {
     }
   }
 
-  private onReady(){
+  private onReady() {
 
   }
 
-  private onPause(){
+  private onPause() {
     this.player.params.container.style.opacity = 0.9;
   }
 
-  private onAudioprocess(){
-    this.songDuration = this.player.getDuration();
-  }
-
   public play() {
-
-    let logger = function(){
-      console.log('hello',this.player)
-    }
 
     if (this.icon == 'pause') {
       this.icon = 'play_arrow';
     } else {
       this.icon = 'pause';
     }
-    this.player.on('audioprocess',logger())
-    console.log();
-    // this.player.on('audioprocess', function () {
-    //   console.log("topaz",this.player)
-    //   this.player.params.container.style.opacity = 0.9;
-    // });
-    // this.player.on('onReady', function () {
-
-    //   this.player.params.container.style.opacity = 0.9;
-    // });
 
     this.player.playPause();
-    //   this.player.on('ready', function () {
-    //     this.songDuration= formatTime(this.player.getDuration());
-    //   });
-
-    //  this.player.on('audioprocess', function () {
-    //     this.currentTime = formatTime(this.getCurrentTime());
-    //   });
-
-  }
-
-  public logger(){
-    console.log('hello',this.player)
   }
 
   public loadTrack(path: string) {
-    console.log('path',path)
+    console.log('path', path)
     this.player.load(path);
   }
 
@@ -107,19 +93,14 @@ export class PlayerComponent implements OnInit {
     this.player.stop();
   }
 
-  public playPause(){
+  public playPause() {
     this.player.playPause();
   }
- 
-  public formatTime = function (time) {
-    return [
-      Math.floor((time % 3600) / 60), // minutes
-      ('00' + Math.floor(time % 60)).slice(-2) // seconds
-    ].join(':');
-  };
-  
+
+  public formatTime(time): string {
+    var minutes = Math.floor((time % 3600) / 60);
+    var seconds = ('00' + Math.floor(time % 60)).slice(-2);
+    return minutes + ':' + seconds;
+  }
 
 }
-
-
-

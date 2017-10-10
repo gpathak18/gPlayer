@@ -45,6 +45,8 @@ export class PlayerBodyMainComponent implements OnInit {
   private playTrack(row){
     let path = this.getPath(row.TrackNumber)[0].Link;
     this.player.loadTrack(path);
+    this.player.loadTrack('/assets/sample.mp3');
+    
   }
 
   private getPath(position){
