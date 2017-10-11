@@ -12,4 +12,11 @@
     /* height: 40px; */
     background-color: #ffffff;
   }
+
+  .item-spacer {
+    flex: 1 1 auto;
+  }
   
+  .mat-dialog-container {
+    max-width: 100vw !important;
+}

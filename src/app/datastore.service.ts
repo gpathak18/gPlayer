@@ -7,9 +7,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class DatastoreService extends DataSource<any> {
 
-  //private selectedTracks: Track[] = [];
-  
-   data: BehaviorSubject<Track[]> = new BehaviorSubject<Track[]>([]);
+  private data: BehaviorSubject<Track[]> = new BehaviorSubject<Track[]>([]);
 
   currentTracks = this.data.asObservable();
   

@@ -1,0 +1,19 @@
+<h1 md-dialog-title>SignIn to Google Drive</h1>
+<div md-dialog-content>
+  <form class="signin-form">
+    <md-form-field class="full-width">
+      <md-icon class="app-icon" mdPrefix>user</md-icon>
+      <input mdInput placeholder="User ID">
+    </md-form-field>
+    <md-form-field class="full-width">
+      <md-icon class="app-icon" mdPrefix>user</md-icon>
+      <input mdInput placeholder="Password">
+    </md-form-field>
+    <button md-icon-button (click)="openDialog()">
+      SignIn
+    </button>
+    <button md-icon-button warn>
+      Cancel
+    </button>
+  </form>
+</div>

@@ -18,7 +18,7 @@ function createWindow() {
     },
     titleBarStyle: 'hidden',
     width: 500,
-    height: 600,
+    height: 700,
     frame: false,
     show: false,
     transparent: true,
@@ -43,8 +43,6 @@ function createWindow() {
       win.show()
     }, 1000);
   })
-
-
 
 }
 

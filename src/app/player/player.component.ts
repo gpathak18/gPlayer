@@ -3,6 +3,8 @@ import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import MinimapPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js';
+import Utility from '../Utility';
+
 
 
 @Component({
@@ -11,7 +13,7 @@ import MinimapPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js';
   styleUrls: ['./player.component.css']
 })
 export class PlayerComponent implements OnInit {
-
+  
   private icon = 'play_arrow';
   private player = null;
   private songDuration: string = '0:00';
@@ -34,21 +36,23 @@ export class PlayerComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-
     this.player = new WaveSurfer(this.options);
     this.player.init();
-
     this.player.load('/assets/sample.mp3');
+  }
+
+  private setupPlayerEvents() {
+
     this.player.on('audioprocess', time => {
       if (this.player.isPlaying()) {
-        this.timeNow = this.formatTime(time)
+        this.timeNow = Utility.formatTime(time)
       }
       this.currentTime = this.timeNow;
     });
 
     this.player.on('play', () => {
       let time = this.player.getDuration();
-      this.songDuration = this.formatTime(time)
+      this.songDuration = Utility.formatTime(time)
     });
 
 
@@ -97,10 +101,6 @@ export class PlayerComponent implements OnInit {
     this.player.playPause();
   }
 
-  public formatTime(time): string {
-    var minutes = Math.floor((time % 3600) / 60);
-    var seconds = ('00' + Math.floor(time % 60)).slice(-2);
-    return minutes + ':' + seconds;
-  }
+
 
 }

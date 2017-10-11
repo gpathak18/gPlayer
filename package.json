@@ -28,6 +28,8 @@
     "@angular/router": "^4.2.4",
     "@types/jdataview": "0.0.29",
     "core-js": "^2.4.1",
+    "google-auth-library": "^0.11.0",
+    "googleapis": "^22.2.0",
     "jdataview": "^2.5.0",
     "leveldown": "^2.0.0",
     "pouchdb": "^6.3.4",

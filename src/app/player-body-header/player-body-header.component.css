@@ -20,10 +20,18 @@
     flex: 1 1 auto;
   }
   
+  .mat-form-field-underline {
+    background-color: red;
+  }
+ 
+  :host/deep/ .mat-input-underline {
+    background-color: white
+  }
 
+  :host/deep/ .mat-input-placeholder {
+    color: white
+  }
   
-
-
   
   
   
