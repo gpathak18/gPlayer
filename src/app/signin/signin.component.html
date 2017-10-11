@@ -1,19 +1,19 @@
-<h1 md-dialog-title>SignIn to Google Drive</h1>
+<h1 md-dialog-title>Sign-In to Google Drive</h1>
 <div md-dialog-content>
   <form class="signin-form">
     <md-form-field class="full-width">
-      <md-icon class="app-icon" mdPrefix>user</md-icon>
+      <md-icon class="app-icon" mdSuffix>person</md-icon>
       <input mdInput placeholder="User ID">
     </md-form-field>
     <md-form-field class="full-width">
-      <md-icon class="app-icon" mdPrefix>user</md-icon>
+      <md-icon class="app-icon" mdSuffix>vpn_key</md-icon>
       <input mdInput placeholder="Password">
     </md-form-field>
-    <button md-icon-button (click)="openDialog()">
-      SignIn
-    </button>
-    <button md-icon-button warn>
-      Cancel
+    <!-- <button md-raised-button color="primary" (click)="handleAuthClick(event)"> -->
+        <div id="signInButton"><img src="assets/btn_google_signin.png" style="width:200px; height: 50px"/></div>
+      <!-- </button> -->
+    <button md-raised-button color="warn">
+      Close
     </button>
   </form>
 </div>

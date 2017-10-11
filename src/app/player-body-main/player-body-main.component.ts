@@ -38,7 +38,7 @@ export class PlayerBodyMainComponent implements OnInit {
   ngOnInit() {
     this.dataSource = this.datastore;
     this.dataSource.currentTracks.subscribe(track => this.tracks = track);
-    this.winWdHt.tileHeight = '480'
+    this.winWdHt.tileHeight = '560'
     this.winWdHt.tileWidth = '500' 
   }
 
