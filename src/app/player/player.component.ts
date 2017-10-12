@@ -19,25 +19,29 @@ export class PlayerComponent implements OnInit {
   private songDuration: string = '0:00';
   private currentTime: string = '0:00';
   private timeNow: string = '0:00';
+  private isScroll : boolean = true;
   private options = {
     container: '#waveform',
     waveColor: 'hsla(245, 48%, 26%, 0.7)',
     height: 50,
     audioRate: 1,
-    scrollParent: true,
+    scrollParent: this.isScroll,
     hideScrollbar: true,
     progressColor: 'hsla(200, 100%, 30%, 0.5)',
     cursorColor: 'dimgrey',
     barWidth: 3,
-    backend: 'MediaElement'
+    backend: 'MediaElement',
+    autoCenter: true
 
   };
 
   constructor() { }
 
   ngOnInit() {
+    
     this.player = new WaveSurfer(this.options);
     this.player.init();
+    this.setupPlayerEvents();
     this.player.load('/assets/sample.mp3');
   }
 
@@ -58,6 +62,11 @@ export class PlayerComponent implements OnInit {
 
   }
 
+  private setZoom() {
+    this.player.zoom(1)
+  }
+
+      
   public onResize($event) {
     if (this.player != null && this.player.drawer != null) {
       this.player.drawer.containerWidth = this.player.drawer.container.clientWidth;

@@ -9,10 +9,11 @@
       <md-icon class="app-icon" mdSuffix>vpn_key</md-icon>
       <input mdInput placeholder="Password">
     </md-form-field>
+    <!-- <img src="assets/btn_google_signin.png" style="width:200px; height: 50px"/> -->
     <!-- <button md-raised-button color="primary" (click)="handleAuthClick(event)"> -->
-        <div id="signInButton"><img src="assets/btn_google_signin.png" style="width:200px; height: 50px"/></div>
+    <button  type="button" id="singin" #signin (click)="handleAuthClick($event)">Sign In</button>
       <!-- </button> -->
-    <button md-raised-button color="warn">
+    <button type="button" id="signout" #signout (click)="handleSignoutClick($event)">
       Close
     </button>
   </form>
