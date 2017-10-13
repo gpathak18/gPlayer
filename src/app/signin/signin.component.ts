@@ -58,8 +58,8 @@ export class SigninComponent implements OnInit {
 
   initClient() {
 
-    let CLIENT_ID = '229531087270-53rom75k0edcco9t9nlu4b455d9rfa2b.apps.googleusercontent.com';
-    let API_KEY = 'AIzaSyBrakDAC9qOA9ZsuW0NGwPj6Q6lCEctCyw';
+    let CLIENT_ID = '';
+    let API_KEY = '';
     let DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
     let SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';
     let that = this;
