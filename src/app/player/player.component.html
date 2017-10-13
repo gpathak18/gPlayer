@@ -1,37 +1,37 @@
-<md-grid-tile-header style="-webkit-user-select: none;-webkit-app-region: drag;height: 40px;background-color: white;" fxLayout="row" fxLayoutAlign="start center">
+<mat-grid-tile-header style="-webkit-user-select: none;-webkit-app-region: drag;height: 40px;background-color: white;" fxLayout="row" fxLayoutAlign="start center">
   <span class="item-spacer"></span>
   <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 14px;margin-left:5px">
     <b>Beat It : </b> Michael Jackson
   </span> 
   <span class="item-spacer"></span>
   <span>
-    <md-icon class="app-icon-gray" style="-webkit-user-select: none;-webkit-app-region: no-drag;cursor: pointer">menu</md-icon>
+    <mat-icon class="app-icon-gray" style="-webkit-user-select: none;-webkit-app-region: no-drag;cursor: pointer">menu</mat-icon>
   </span>
-</md-grid-tile-header>
+</mat-grid-tile-header>
 <div  (window:resize)="onResize($event)" id="waveform" style="justify-content:center;align-items:center;" fxLayout="column" fxLayoutAlign="center stretch">
-    <!-- <md-progress-bar mode="indeterminate"></md-progress-bar> -->
+    <!-- <mat-progress-bar mode="indeterminate"></mat-progress-bar> -->
     
 </div>
-<md-grid-tile-footer style="height: 40px; background-color: white" fxLayout="row" fxLayoutAlign="start center">
-    <button md-icon-button>
-      <md-icon class="app-icon-gray">skip_previous</md-icon>
+<mat-grid-tile-footer style="height: 40px; background-color: white" fxLayout="row" fxLayoutAlign="start center">
+    <button mat-icon-button>
+      <mat-icon class="app-icon-gray">skip_previous</mat-icon>
     </button>
-    <button md-icon-button>
-      <md-icon class="app-icon-gray" (click)="togglePlayPauseState()">{{icon}}</md-icon>
+    <button mat-icon-button>
+      <mat-icon class="app-icon-gray" (click)="togglePlayPauseState()">{{icon}}</mat-icon>
     </button>
-    <button md-icon-button>
-      <md-icon class="app-icon-gray">skip_next</md-icon>
+    <button mat-icon-button>
+      <mat-icon class="app-icon-gray">skip_next</mat-icon>
     </button>
     <span class="item-spacer "></span>  
-    <button md-icon-button >
-        <md-icon class="app-icon-gray">equalizer</md-icon>
+    <button mat-icon-button >
+        <mat-icon class="app-icon-gray" (click)="openDialog()">equalizer</mat-icon>
     </button>
-    <!-- <button md-icon-button [@zoomState]="zoomState" (click)="toggleZoomState()"> -->
-        <button md-icon-button  (click)="toggleZoomState()">
+    <!-- <button mat-icon-button [@zoomState]="zoomState" (click)="toggleZoomState()"> -->
+        <button mat-icon-button  (click)="toggleZoomState()">
             
-      <md-icon class="app-icon-gray">timeline</md-icon>
+      <mat-icon class="app-icon-gray">timeline</mat-icon>
     </button>
     <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 14px;margin-left:5px"> 
         {{currentTime}} : {{songDuration}}
     </span>
-</md-grid-tile-footer>
+</mat-grid-tile-footer>

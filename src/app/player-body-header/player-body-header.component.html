@@ -1,32 +1,39 @@
-<md-grid-tile-header  style="background-color: #282364">
-        <md-form-field style="width: 100%;margin-left: 10px" floatPlaceholder="never" color="warn">
-          <!--        <md-icon class="app-icon-gray " mdPrefix>search</md-icon>-->
-          <input mdInput dividerColor="warn" value="" #filter placeholder="Find your music" style="color: white; font-size: 12px">
-        </md-form-field>
+<mat-grid-tile-header  style="background-color: #282364">
+        <mat-form-field style="width: 100%;margin-left: 10px" floatPlaceholder="never" color="warn">
+          <!--        <mat-icon class="app-icon-gray " matPrefix>search</mat-icon>-->
+          <input matInput dividerColor="warn" value="" #filter placeholder="Find your music" style="color: white; font-size: 12px">
+        </mat-form-field>
         <span class="item-spacer"></span>
         <!-- <div fxLayout=" row " fxLayoutAlign="start center"> -->
-          <button md-icon-button (click)="file.click()">
-            <md-icon class="app-icon " aria-label="Example icon-button with a heart icon">create_new_folder</md-icon>
+          <button mat-icon-button (click)="file.click()">
+            <mat-icon class="app-icon " aria-label="Example icon-button with a heart icon">create_new_folder</mat-icon>
           </button>
-          <button md-icon-button>
-            <md-icon class="app-icon ">recent_actors</md-icon>
+          <button mat-icon-button>
+            <mat-icon class="app-icon ">recent_actors</mat-icon>
           </button>
-          <button md-icon-button>
-            <md-icon class="app-icon " md-icon-button [mdMenuTriggerFor]="playlistmenu">queue_music</md-icon>
+          <button mat-icon-button>
+            <mat-icon class="app-icon " mat-icon-button [matMenuTriggerFor]="playlistmenu">queue_music</mat-icon>
           </button>
           <input type="file" #file style="display:none" (change)='changeListener($event)' multiple/>
-</md-grid-tile-header>
-<md-menu #playlistmenu="mdMenu">
-    <md-input-container class="mx-4" (click)="stopPropagation($event)">
-        <md-icon class="app-icon-gray " mdSuffix>search</md-icon>
-        <input mdInput  placeholder="Add Playlist" style=" font-size: 12px">
-    </md-input-container>
-    <button md-menu-item >
-      <md-icon>remove_from_queue</md-icon>
-      <span>Remove</span>
-    </button>
-    <button md-menu-item>
-      <md-icon>cloud_download</md-icon>
-      <span>Download</span>
-    </button>
-</md-menu>  
+</mat-grid-tile-header>
+<mat-menu #playlistmenu="matMenu">
+    <mat-list dense>
+        <mat-list-item>
+            <mat-input-container  floatPlaceholder="never" (click)="stopPropagation($event)">
+                <mat-icon class="app-icon-gray " matSuffix style="margin: 0px" (click)="addPlaylist($event)">playlist_add</mat-icon>
+                <input matInput  placeholder="Add Playlist" style=" font-size: 14px">
+            </mat-input-container>        
+        </mat-list-item>
+        <mat-divider></mat-divider>        
+        <mat-list-item *ngFor="let playlist of playLists ">
+            <button mat-icon-button (click)="stopPropagation($event)" >
+            <mat-icon class="app-icon-gray">playlist_play</mat-icon>
+            </button>
+            <span style="margin-left: 16px;font-size: 14px" >{{playlist.name}}</span>
+            <span class="item-spacer "></span>   
+            <!-- <button mat-icon-button >      -->
+            <mat-icon class="app-icon-gray" (click)="stopPropagation($event);delete()">close</mat-icon>
+            <!-- </button>     -->
+        </mat-list-item>       
+      </mat-list>   
+</mat-menu>  

@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  MatSidenavModule, MatListModule, MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule,
-  MdIconModule, MatTabsModule, MatGridListModule, MatInputModule, MdTableModule, MatDialogModule, MatProgressBarModule
+  MatSidenavModule, MatListModule, MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule,
+  MatIconModule, MatTabsModule, MatGridListModule, MatInputModule, MatTableModule, MatDialogModule, MatProgressBarModule, MatSliderModule
 } from '@angular/material';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { MainComponent } from './main/main.component';
@@ -38,7 +38,7 @@ const appRoutes: Routes = [
     ErrorComponent,
     EqualizerComponent
   ],
-  entryComponents: [SigninComponent],
+  entryComponents: [SigninComponent,EqualizerComponent],
   imports: [
     RouterModule.forRoot(
       appRoutes,
@@ -46,20 +46,21 @@ const appRoutes: Routes = [
     ),
     BrowserModule,
     BrowserAnimationsModule,
-    MdButtonModule,
-    MdMenuModule,
-    MdCardModule,
-    MdToolbarModule,
-    MdIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatIconModule,
     MatTabsModule,
     MatGridListModule,
     FlexLayoutModule,
     MatInputModule,
-    MdTableModule,
+    MatTableModule,
     MatListModule,
     MatSidenavModule,
     MatDialogModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatSliderModule
   ],
   providers: [PouchDbService, DatastoreService, PlayerService, PlayerComponent],
   bootstrap: [MainComponent]

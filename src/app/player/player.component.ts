@@ -5,6 +5,8 @@ import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import MinimapPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js';
 import Utility from '../Utility';
+import { MatDialog } from '@angular/material';
+import { EqualizerComponent } from '../equalizer/equalizer.component';
 
 
 
@@ -27,7 +29,7 @@ import Utility from '../Utility';
 export class PlayerComponent implements OnInit {
 
   private zoomState = 'zoomOut'
-  private playPauseState = 'play'
+  private playPauseState = 'pause'
 
   private icon = 'play_arrow';
   private player = null;
@@ -53,7 +55,7 @@ export class PlayerComponent implements OnInit {
   private zoomValue;
   private zoomMin;
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
 
@@ -83,7 +85,10 @@ export class PlayerComponent implements OnInit {
 
   }
 
-
+  openDialog() {
+    this.dialog.open(EqualizerComponent, {
+    });
+  }
 
   easeInOutQuad(t, b, c, d) {
       t /= d/2;
@@ -97,11 +102,12 @@ export class PlayerComponent implements OnInit {
     this.zoomState = this.zoomState === 'zoomIn' ? 'zoomOut' : 'zoomIn';
 
     if(this.zoomState === 'zoomIn'){
-      for (var i = 1; i < 21; i++) {
-        setTimeout(() => this.player.zoom(Number(i)), 1000);
-      }
+      // for (var i = 1; i < 21; i++) {
+      //   setTimeout(() => this.player.zoom(Number(i)), 1000);
+      // }
+      this.player.zoom(1)
     } else {
-      this.player.zoom(100)
+      this.player.zoom(20)
     }
   }
  
@@ -110,7 +116,7 @@ export class PlayerComponent implements OnInit {
     if (this.playPauseState === 'play') {
       this.icon = 'pause';
     } else {
-      this.icon = 'play';
+      this.icon = 'play_arrow';
     }
     this.player.playPause();
   }

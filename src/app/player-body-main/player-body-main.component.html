@@ -1,49 +1,49 @@
 <div  [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'" >
-    <md-table #table [dataSource]="dataSource" >
-      <ng-container mdColumnDef="TrackNumber">
-        <md-header-cell *mdHeaderCellDef class="mat-cell-sn"> No. </md-header-cell>
-        <md-cell *mdCellDef="let track" class="mat-cell-sn"> {{track.TrackNumber}} </md-cell>
+    <mat-table #table [dataSource]="dataSource" >
+      <ng-container matColumnDef="TrackNumber">
+        <mat-header-cell *matHeaderCellDef class="mat-cell-sn"> No. </mat-header-cell>
+        <mat-cell *matCellDef="let track" class="mat-cell-sn"> {{track.TrackNumber}} </mat-cell>
       </ng-container>
   
-      <ng-container mdColumnDef="Link">
-        <md-header-cell *mdHeaderCellDef class="mat-cell-sl">
-          <md-checkbox></md-checkbox>
-        </md-header-cell>
-        <md-cell *mdCellDef="let track" class="mat-cell-sl">
-          <md-checkbox></md-checkbox>
-        </md-cell>
+      <ng-container matColumnDef="Link">
+        <mat-header-cell *matHeaderCellDef class="mat-cell-sl">
+          <mat-checkbox></mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let track" class="mat-cell-sl">
+          <mat-checkbox></mat-checkbox>
+        </mat-cell>
       </ng-container>
   
-      <ng-container mdColumnDef="Name">
-        <md-header-cell *mdHeaderCellDef class="mat-cell-song"> Song Name </md-header-cell>
-        <md-cell *mdCellDef="let track" class="mat-cell-song"> {{track.Name}} </md-cell>
+      <ng-container matColumnDef="Name">
+        <mat-header-cell *matHeaderCellDef class="mat-cell-song"> Song Name </mat-header-cell>
+        <mat-cell *matCellDef="let track" class="mat-cell-song"> {{track.Name}} </mat-cell>
       </ng-container>
   
-      <ng-container mdColumnDef="Source">
-        <md-header-cell *mdHeaderCellDef class="mat-cell-op"> Options </md-header-cell>
-        <md-cell *mdCellDef="let track" class="mat-cell-op">
-          <button md-icon-button [mdMenuTriggerFor]="menu">
-            <md-icon>more_vert</md-icon>
+      <ng-container matColumnDef="Source">
+        <mat-header-cell *matHeaderCellDef class="mat-cell-op"> Options </mat-header-cell>
+        <mat-cell *matCellDef="let track" class="mat-cell-op">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
           </button>
-          <md-menu #menu="mdMenu">
-            <button md-menu-item>
-              <md-icon>play_circle_outline</md-icon>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>play_circle_outline</mat-icon>
               <span>Play Next</span>
             </button>
-            <button md-menu-item disabled>
-              <md-icon>remove_from_queue</md-icon>
+            <button mat-menu-item disabled>
+              <mat-icon>remove_from_queue</mat-icon>
               <span>Remove</span>
             </button>
-            <button md-menu-item>
-              <md-icon>cloud_download</md-icon>
+            <button mat-menu-item>
+              <mat-icon>cloud_download</mat-icon>
               <span>Download</span>
             </button>
-          </md-menu>
-        </md-cell>
+          </mat-menu>
+        </mat-cell>
       </ng-container>
-      <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
-      <md-row *mdRowDef="let row; columns: displayedColumns;" style="height: 20px" [ngClass]="{'highlight': selectedRowIndex == row.position}"
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" style="height: 20px" [ngClass]="{'highlight': selectedRowIndex == row.position}"
         [cellHover]="'#F5F5F5'" defaultColor="#FFFFFF" selectColor="#B39DDB" (click)="playTrack(row)">
-      </md-row>
-    </md-table>
+      </mat-row>
+    </mat-table>
   </div>

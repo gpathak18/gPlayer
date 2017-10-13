@@ -1,16 +1,16 @@
-<h1 md-dialog-title>Sign-In to Google Drive</h1>
-<div md-dialog-content>
+<h1 mat-dialog-title>Sign-In to Google Drive</h1>
+<div mat-dialog-content>
   <form class="signin-form">
-    <md-form-field class="full-width">
-      <md-icon class="app-icon" mdSuffix>person</md-icon>
-      <input mdInput placeholder="User ID">
-    </md-form-field>
-    <md-form-field class="full-width">
-      <md-icon class="app-icon" mdSuffix>vpn_key</md-icon>
-      <input mdInput placeholder="Password">
-    </md-form-field>
+    <mat-form-field class="full-width">
+      <mat-icon class="app-icon" matSuffix>person</mat-icon>
+      <input matInput placeholder="User ID">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-icon class="app-icon" matSuffix>vpn_key</mat-icon>
+      <input matInput placeholder="Password">
+    </mat-form-field>
     <!-- <img src="assets/btn_google_signin.png" style="width:200px; height: 50px"/> -->
-    <!-- <button md-raised-button color="primary" (click)="handleAuthClick(event)"> -->
+    <!-- <button mat-raised-button color="primary" (click)="handleAuthClick(event)"> -->
     <button  type="button" id="singin" #signin (click)="handleAuthClick($event)">Sign In</button>
       <!-- </button> -->
     <button type="button" id="signout" #signout (click)="handleSignoutClick($event)">

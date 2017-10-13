@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { SigninComponent } from '../signin/signin.component';
 
 @Component({
@@ -9,7 +9,7 @@ import { SigninComponent } from '../signin/signin.component';
 })
 export class PlayerBodyFooterComponent implements OnInit {
 
-  constructor(public dialog: MdDialog) { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
   }

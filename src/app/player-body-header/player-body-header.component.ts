@@ -18,12 +18,17 @@ export class PlayerBodyHeaderComponent implements OnInit {
   private fileType: string = 'audio.*';
   private fileCntr : number = 1;
   private playList : Playlist;
+  private playLists;
+  private playlistName: string;
+  
   constructor(private dbservice: PouchDbService,private datastore: DatastoreService) { }
 
   ngOnInit() {
+ 
 
     this.dbservice.get('DEFAULT_PLAYLIST').then( (doc) => {
         this.playList = doc;
+        this.playLists = [{name: this.playList.Name}];
     }).catch( (err) => {
       if(err.status === 404){
         console.log(err)
@@ -32,9 +37,22 @@ export class PlayerBodyHeaderComponent implements OnInit {
   
   }
 
+  addPlaylist(event){
+    this.playLists.push({name: 'ABC'}); 
+    console.log("HERE!");
+    
+  }
+
+  delete(event){
+    this.playLists.splice(1,1); 
+    console.log("HERE!");
+    
+  }
+
   stopPropagation(event){
     event.stopPropagation();
     console.log("Clicked!");
+   
   }
   
   readFiles(inputValue: any): void {
