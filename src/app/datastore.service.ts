@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class DatastoreService extends DataSource<any> {
 
-  private data: BehaviorSubject<Track[]> = new BehaviorSubject<Track[]>([]);
+  private data: BehaviorSubject<Array<Track>> = new BehaviorSubject<Array<Track>>([]);
 
   currentTracks = this.data.asObservable();
   
@@ -15,11 +15,11 @@ export class DatastoreService extends DataSource<any> {
     super();
   }
 
-  addTrack(tracks: Track[]) {
+  addTrack(tracks: Array<Track>) {
     this.data.next(tracks)
   }
 
-  connect(): Observable<Track[]> {    
+  connect(): Observable<Array<Track>> {    
     return this.currentTracks;
   }
 

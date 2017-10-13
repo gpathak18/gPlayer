@@ -9,7 +9,7 @@
   </span>
 </md-grid-tile-header>
 <div  (window:resize)="onResize($event)" id="waveform" style="justify-content:center;align-items:center;" fxLayout="column" fxLayoutAlign="center stretch">
-    <md-progress-bar mode="indeterminate"></md-progress-bar>
+    <!-- <md-progress-bar mode="indeterminate"></md-progress-bar> -->
     
 </div>
 <md-grid-tile-footer style="height: 40px; background-color: white" fxLayout="row" fxLayoutAlign="start center">
@@ -17,13 +17,18 @@
       <md-icon class="app-icon-gray">skip_previous</md-icon>
     </button>
     <button md-icon-button>
-      <md-icon class="app-icon-gray" (click)="play()">{{icon}}</md-icon>
+      <md-icon class="app-icon-gray" (click)="togglePlayPauseState()">{{icon}}</md-icon>
     </button>
     <button md-icon-button>
       <md-icon class="app-icon-gray">skip_next</md-icon>
     </button>
     <span class="item-spacer "></span>  
-    <button md-icon-button (click)="setZoom()">
+    <button md-icon-button >
+        <md-icon class="app-icon-gray">equalizer</md-icon>
+    </button>
+    <!-- <button md-icon-button [@zoomState]="zoomState" (click)="toggleZoomState()"> -->
+        <button md-icon-button  (click)="toggleZoomState()">
+            
       <md-icon class="app-icon-gray">timeline</md-icon>
     </button>
     <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 14px;margin-left:5px"> 

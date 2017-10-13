@@ -3,6 +3,7 @@ import { Track } from '../Itarck';
 import { PouchDbService } from '../pouch-db.service';
 import { EventEmitter } from 'events';
 import { DatastoreService } from '../datastore.service';
+import { Playlist } from '../IPlaylist';
 
 @Component({
   selector: 'app-player-body-header',
@@ -13,16 +14,29 @@ export class PlayerBodyHeaderComponent implements OnInit {
 
   @Output() addTrack = new EventEmitter();
 
-  private selectedTracks: Track[] = new Array();
+  private selectedTracks: Array<Track> = new Array();
   private fileType: string = 'audio.*';
   private fileCntr : number = 1;
-
+  private playList : Playlist;
   constructor(private dbservice: PouchDbService,private datastore: DatastoreService) { }
 
   ngOnInit() {
-    // this.selectedFiles  = [];
+
+    this.dbservice.get('DEFAULT_PLAYLIST').then( (doc) => {
+        this.playList = doc;
+    }).catch( (err) => {
+      if(err.status === 404){
+        console.log(err)
+      }
+    });
+  
   }
 
+  stopPropagation(event){
+    event.stopPropagation();
+    console.log("Clicked!");
+  }
+  
   readFiles(inputValue: any): void {
     var files = inputValue.files;
     for (var file of files) {
@@ -58,8 +72,11 @@ export class PlayerBodyHeaderComponent implements OnInit {
 //        alert("File not supported!");
 //      }
     }
-    console.log(this.selectedTracks)
+    console.log(this.playList)
+    this.playList.Tracks.Items = this.selectedTracks;
+    this.playList.Tracks.TotalItemCount = this.selectedTracks.length
     this.datastore.addTrack(this.selectedTracks)
+    this.dbservice.put(this.playList,'DEFAULT_PLAYLIST')
   }
   
   changeListener($event): void {

@@ -19,6 +19,7 @@ import { PlayerService } from './player.service';
 import { SigninComponent } from './signin/signin.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ErrorComponent } from './error/error.component';
+import { EqualizerComponent } from './equalizer/equalizer.component';
 
 const appRoutes: Routes = [
   { path: 'sign', component: SigninComponent },
@@ -34,7 +35,8 @@ const appRoutes: Routes = [
     PlayerBodyFooterComponent,
     PlayerBodyMainComponent,
     SigninComponent,
-    ErrorComponent
+    ErrorComponent,
+    EqualizerComponent
   ],
   entryComponents: [SigninComponent],
   imports: [

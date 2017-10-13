@@ -11,6 +11,7 @@ import { PouchDbService } from '../pouch-db.service';
 import { Track } from '../Itarck';
 import { DatastoreService } from '../datastore.service';
 import { PlayerService } from '../player.service';
+import { Playlist } from '../IPlaylist';
 
 
 @Component({
@@ -28,11 +29,27 @@ export class PlayerBodyMainComponent implements OnInit {
   private displayedColumns = ['TrackNumber', 'Name', 'Link', 'Source'];
   private dataSource: DatastoreService | null;
   private hoverrow: number = -1;
-  private tracks : Track[];
+  private tracks : Array<Track>;
   private selectedRowIndex: number = -1;
+  private defaulttrack : Track;
+  private currentPlaylist: Playlist;
+  private defaultPlaylist: Playlist = {
+    "TrackCount": 0,
+    "UserIsOwner": true,
+    "IsHidden": true,
+    "CollectionStateToken": '0.0.0.1',
+    "Tracks": {
+      "Items": [this.defaulttrack],
+      "TotalItemCount": 0
+    },
+    "_id": '',
+    "Name": 'defaultPlaylist',
+    "Link": '',
+  };
 
   constructor(private dbservice: PouchDbService,private datastore: DatastoreService) { 
-   
+
+
   }
 
   ngOnInit() {
@@ -40,6 +57,20 @@ export class PlayerBodyMainComponent implements OnInit {
     this.dataSource.currentTracks.subscribe(track => this.tracks = track);
     this.winWdHt.tileHeight = '560'
     this.winWdHt.tileWidth = '500' 
+    this.loadDefaultPlaylist();
+  }
+
+  private loadDefaultPlaylist(){
+
+    this.dbservice.get('DEFAULT_PLAYLIST').then( (doc) => {
+      this.defaultPlaylist = doc;
+      this.datastore.addTrack(this.defaultPlaylist.Tracks.Items)
+    }).catch( (err) => {
+      if(err.status === 404){
+        this.dbservice.put(this.defaultPlaylist,'DEFAULT_PLAYLIST')
+      }
+    });
+
   }
 
   private playTrack(row){

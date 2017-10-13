@@ -9,14 +9,24 @@
             <md-icon class="app-icon " aria-label="Example icon-button with a heart icon">create_new_folder</md-icon>
           </button>
           <button md-icon-button>
-            <md-icon class="app-icon ">folder</md-icon>
+            <md-icon class="app-icon ">recent_actors</md-icon>
           </button>
           <button md-icon-button>
-            <md-icon class="app-icon ">playlist_play</md-icon>
-          </button>
-          <button md-icon-button>
-            <md-icon class="app-icon " (click)="remove()">playlist_add</md-icon>
+            <md-icon class="app-icon " md-icon-button [mdMenuTriggerFor]="playlistmenu">queue_music</md-icon>
           </button>
           <input type="file" #file style="display:none" (change)='changeListener($event)' multiple/>
 </md-grid-tile-header>
-  
+<md-menu #playlistmenu="mdMenu">
+    <md-input-container class="mx-4" (click)="stopPropagation($event)">
+        <md-icon class="app-icon-gray " mdSuffix>search</md-icon>
+        <input mdInput  placeholder="Add Playlist" style=" font-size: 12px">
+    </md-input-container>
+    <button md-menu-item >
+      <md-icon>remove_from_queue</md-icon>
+      <span>Remove</span>
+    </button>
+    <button md-menu-item>
+      <md-icon>cloud_download</md-icon>
+      <span>Download</span>
+    </button>
+</md-menu>  
