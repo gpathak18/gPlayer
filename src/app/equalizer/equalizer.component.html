@@ -1,20 +1,55 @@
-<div fxLayout="row" fxLayoutAlign="start center">
-  <mat-slider class="slider-class" [disabled]="disabled" [invert]="invert" [max]="max" [min]="min" [step]="step" [thumb-label]="thumbLabel"
-    [tick-interval]="tickInterval" [value]="value" [vertical]="vertical">
-  </mat-slider>
-  <mat-slider class="slider-class" [disabled]="disabled" [invert]="invert" [max]="max" [min]="min" [step]="step" [thumb-label]="thumbLabel"
-  [tick-interval]="tickInterval" [value]="value" [vertical]="vertical">
-</mat-slider>
-<mat-slider class="slider-class" [disabled]="disabled" [invert]="invert" [max]="max" [min]="min" [step]="step" [thumb-label]="thumbLabel"
-[tick-interval]="tickInterval" [value]="value" [vertical]="vertical">
-</mat-slider>
-<mat-slider class="slider-class" [disabled]="disabled" [invert]="invert" [max]="max" [min]="min" [step]="step" [thumb-label]="thumbLabel"
-[tick-interval]="tickInterval" [value]="value" [vertical]="vertical">
-</mat-slider>
-<mat-slider class="slider-class" [disabled]="disabled" [invert]="invert" [max]="max" [min]="min" [step]="step" [thumb-label]="thumbLabel"
-[tick-interval]="tickInterval" [value]="value" [vertical]="vertical">
-</mat-slider>
-<mat-slider class="slider-class" [disabled]="disabled" [invert]="invert" [max]="max" [min]="min" [step]="step" [thumb-label]="thumbLabel"
-[tick-interval]="tickInterval" [value]="value" [vertical]="vertical">
-</mat-slider>
+<!-- <mat-form-field   floatPlaceholder="never"> -->
+    <!-- <mat-select placeholder="Favorite food">
+        <mat-option *ngFor="let preset of presets" [value]="preset">
+            {{ preset }}
+        </mat-option>
+    </mat-select> -->
+  <!-- <input matInput type="text" placeholder="Select Preset" style="width:100%; font-size:14px" aria-label="Number" 
+  matInput [formControl]="presetControl" [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option (onValueChange)="setEqSetting($event)" style="font-size:14px" *ngFor="let preset of filteredPresets | async" [value]="preset">
+      {{ preset }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field> -->
+
+<mat-button-toggle-group #group="matButtonToggleGroup" style="width:100%;height:40px;margin-bottom:8px">
+    <mat-button-toggle value="Bass Boost" (click)="setEqPreset('BassBoost')" checked>
+      <mat-icon>vibration</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="Music" (click)="setEqPreset('Music')">
+      <mat-icon>music_note</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="Nature" (click)="setEqPreset('Acoustic')">
+      <mat-icon>nature</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="Movies" (click)="setEqPreset('Movies')">
+      <mat-icon>local_movies</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="Landscape" (click)="setEqPreset('Relax')">
+        <mat-icon>landscape</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value="Random" (click)="setEqPreset('Random')">
+        <mat-icon>casino</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle  value="Flat" (click)="setEqPreset('Flat')" style="background-color: rgba(113, 42, 179, 0.795)">
+        <mat-icon>more_vert</mat-icon>
+      </mat-button-toggle>
+       <!-- <mat-button-toggle value="Flat" checked (click)="setEqPreset('Flat')">
+          <mat-icon>casino</mat-icon>
+      </mat-button-toggle> -->
+</mat-button-toggle-group>
+<div fxLayoutAlign="center center" style="width:100%">
+    <span>{{group.value}}</span>
 </div>
+<div cdk-focus-region-start fxLayout="row" fxLayoutAlign="start center"> 
+  <div cdk-focus-region-start fxLayout="column" fxLayoutAlign="start center" *ngFor="let eqSlider of eqSliders " style="width:35px">  
+  <mat-slider class="slider-class"  [id]="eqSlider.f" max='40' min='-40' step="1" thumbLabel=true [value]="eqSlider.value" (input)="updateEqBand($event)" vertical=true>
+  </mat-slider>
+  <span>{{eqSlider.f}}</span>
+  </div>  
+</div>
+<!-- [matMenuTriggerFor]="eqpresetmenu" -->
+<mat-menu #eqpresetmenu="matMenu">
+    <button mat-menu-item  *ngFor="let preset of presets">{{preset}}</button>
+</mat-menu>  

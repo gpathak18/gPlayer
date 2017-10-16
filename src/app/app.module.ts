@@ -1,10 +1,11 @@
+import {PlaylistService} from './playlist.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatSidenavModule, MatListModule, MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule,
-  MatIconModule, MatTabsModule, MatGridListModule, MatInputModule, MatTableModule, MatDialogModule, MatProgressBarModule, MatSliderModule
+  MatIconModule, MatTabsModule, MatGridListModule, MatInputModule, MatTableModule, MatDialogModule, MatProgressBarModule, MatSliderModule, MatAutocompleteModule, MatFormFieldModule, MatButtonToggleModule
 } from '@angular/material';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { MainComponent } from './main/main.component';
@@ -20,6 +21,7 @@ import { SigninComponent } from './signin/signin.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ErrorComponent } from './error/error.component';
 import { EqualizerComponent } from './equalizer/equalizer.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 const appRoutes: Routes = [
   { path: 'sign', component: SigninComponent },
@@ -41,8 +43,9 @@ const appRoutes: Routes = [
   entryComponents: [SigninComponent,EqualizerComponent],
   imports: [
     RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
+      appRoutes
+      // ,
+      // { enableTracing: true } // <-- debugging purposes only
     ),
     BrowserModule,
     BrowserAnimationsModule,
@@ -60,9 +63,14 @@ const appRoutes: Routes = [
     MatSidenavModule,
     MatDialogModule,
     MatProgressBarModule,
-    MatSliderModule
+    MatSliderModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    FormsModule, 
+    ReactiveFormsModule,
+    MatButtonToggleModule
   ],
-  providers: [PouchDbService, DatastoreService, PlayerService, PlayerComponent],
+  providers: [PouchDbService, DatastoreService, PlayerService, PlaylistService],
   bootstrap: [MainComponent]
 })
 export class AppModule { }

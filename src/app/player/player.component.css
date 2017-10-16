@@ -2,7 +2,14 @@
     color: red;
     font-size: 18px;
   }
-  
+  .slider-class {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+.mat-slider-vertical {
+    height: 100 px;
+}
   .app-icon {
     padding: 0 10px;
     color: white;

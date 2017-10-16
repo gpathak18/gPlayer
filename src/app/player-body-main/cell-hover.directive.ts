@@ -21,6 +21,7 @@ export class CellHoverDirective {
 
   @HostListener('mouseenter') onMouseEnter() {
     this.highlight(this.hoverColor || this.defaultColor || 'white');
+    // this.el.childNodes[1].nodeValue = '<>'
   }
 
   @HostListener('mouseleave') onMouseLeave() {

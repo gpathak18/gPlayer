@@ -18,7 +18,7 @@ export class PouchDbService {
 
   }
 
-  public fetch() {
+  public fetchAll() {
     return this.database.allDocs({include_docs: true});
   }
 
@@ -26,10 +26,18 @@ export class PouchDbService {
     return this.database.get(id);
   }
 
-  public put(document: any, id: string) { 
-    console.log('now')
-    document._id = id;
-    return this.get(id).then(result => {
+  public delete(id: string) {
+    this.database.get(id).then( (doc) => {
+      return this.database.remove(doc._id, doc._rev);
+    }).then( (result) => {
+      console.log(result);
+    }).catch( (error) => {
+      console.log(error);
+    });
+  }
+
+  public put(document: any, id?: string) { 
+    return this.get(document._id).then( result => {
         document._rev = result._rev;
         return this.database.put(document);
     }, error => {

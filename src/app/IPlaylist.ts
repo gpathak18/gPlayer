@@ -11,7 +11,7 @@ export interface Playlist {
     "_id": string,
     "Name": string,
     "ImageUrl"?:string,
-    "Link": string,
+    "Link"?: string,
     "Source"?: string,
     "CompatibleSources"?:  string
 }

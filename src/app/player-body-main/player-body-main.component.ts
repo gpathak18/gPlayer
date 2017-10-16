@@ -1,3 +1,4 @@
+import {PlaylistService} from '../playlist.service';
 'use strict';
 import { Component, OnInit, ViewChild, ElementRef, Input, Injectable, Output, EventEmitter } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
@@ -33,22 +34,9 @@ export class PlayerBodyMainComponent implements OnInit {
   private selectedRowIndex: number = -1;
   private defaulttrack : Track;
   private currentPlaylist: Playlist;
-  private defaultPlaylist: Playlist = {
-    "TrackCount": 0,
-    "UserIsOwner": true,
-    "IsHidden": true,
-    "CollectionStateToken": '0.0.0.1',
-    "Tracks": {
-      "Items": [this.defaulttrack],
-      "TotalItemCount": 0
-    },
-    "_id": '',
-    "Name": 'defaultPlaylist',
-    "Link": '',
-  };
 
-  constructor(private dbservice: PouchDbService,private datastore: DatastoreService) { 
-
+  constructor(private playlistService: PlaylistService,private datastore: DatastoreService) { 
+    
 
   }
 
@@ -57,20 +45,7 @@ export class PlayerBodyMainComponent implements OnInit {
     this.dataSource.currentTracks.subscribe(track => this.tracks = track);
     this.winWdHt.tileHeight = '560'
     this.winWdHt.tileWidth = '500' 
-    this.loadDefaultPlaylist();
-  }
-
-  private loadDefaultPlaylist(){
-
-    this.dbservice.get('DEFAULT_PLAYLIST').then( (doc) => {
-      this.defaultPlaylist = doc;
-      this.datastore.addTrack(this.defaultPlaylist.Tracks.Items)
-    }).catch( (err) => {
-      if(err.status === 404){
-        this.dbservice.put(this.defaultPlaylist,'DEFAULT_PLAYLIST')
-      }
-    });
-
+    this.playlistService.loadMainlibrary()
   }
 
   private playTrack(row){

@@ -16,7 +16,10 @@
   
       <ng-container matColumnDef="Name">
         <mat-header-cell *matHeaderCellDef class="mat-cell-song"> Song Name </mat-header-cell>
-        <mat-cell *matCellDef="let track" class="mat-cell-song"> {{track.Name}} </mat-cell>
+        <mat-cell *matCellDef="let track" class="mat-cell-song"> 
+          {{track.Name}} 
+          <mat-icon class="app-icon-gray" *ngIf="showIcon">timeline</mat-icon>
+        </mat-cell>
       </ng-container>
   
       <ng-container matColumnDef="Source">

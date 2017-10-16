@@ -7,6 +7,7 @@ import MinimapPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js';
 import Utility from '../Utility';
 import { MatDialog } from '@angular/material';
 import { EqualizerComponent } from '../equalizer/equalizer.component';
+import { Observable } from 'rxjs/Observable';
 
 
 
@@ -28,9 +29,11 @@ import { EqualizerComponent } from '../equalizer/equalizer.component';
 })
 export class PlayerComponent implements OnInit {
 
+  private songName: string = "Beat It"
+  private artist: string = "Michael Jackson"
   private zoomState = 'zoomOut'
   private playPauseState = 'pause'
-
+  private volumeIcon = 'volume_up'
   private icon = 'play_arrow';
   private player = null;
   private songDuration: string = '0:00';
@@ -47,13 +50,50 @@ export class PlayerComponent implements OnInit {
     progressColor: 'hsla(200, 100%, 30%, 0.5)',
     cursorColor: 'dimgrey',
     barWidth: 3,
-    backend: 'MediaElement',
+    backend: 'WebAudio',
     autoCenter: true
-
   };
 
   private zoomValue;
   private zoomMin;
+
+  @ViewChild('volume') volume: ElementRef;
+  private filters;
+  private bassFilter;
+
+  private EQ = [
+    {
+      f: 32,
+      type: 'lowshelf'
+    }, {
+      f: 64,
+      type: 'peaking'
+    }, {
+      f: 125,
+      type: 'peaking'
+    }, {
+      f: 250,
+      type: 'peaking'
+    }, {
+      f: 500,
+      type: 'peaking'
+    }, {
+      f: 1000,
+      type: 'peaking'
+    }, {
+      f: 2000,
+      type: 'peaking'
+    }, {
+      f: 4000,
+      type: 'peaking'
+    }, {
+      f: 8000,
+      type: 'peaking'
+    }, {
+      f: 16000,
+      type: 'highshelf'
+    }
+  ];
 
   constructor(public dialog: MatDialog) { }
 
@@ -61,11 +101,27 @@ export class PlayerComponent implements OnInit {
 
     this.player = new WaveSurfer(this.options);
     this.player.init();
-    this.setupPlayerEvents();
-    this.zoomValue = this.player.params.minPxPerSec;
-    this.zoomMin = this.player.params.minPxPerSec;
-    console.log(this.zoomValue,this.zoomMin )
+    this.player.createBackend();
     this.player.load('/assets/sample.mp3');
+    this.setupPlayerEvents();
+    this.setupPlayerEqFilters();
+    this.player.setVolume(60/100)
+ 
+  }
+
+  private setupPlayerEqFilters(){
+
+    this.filters = this.EQ.map( (band) => {
+      var filter = this.player.backend.ac.createBiquadFilter();
+      filter.type = band.type;
+      filter.gain.value = 0;
+      filter.Q.value = 1;
+      filter.frequency.value = band.f;
+      return filter;
+    });
+
+    this.player.backend.setFilters(this.filters);
+
   }
 
   private setupPlayerEvents() {
@@ -82,43 +138,57 @@ export class PlayerComponent implements OnInit {
       this.songDuration = Utility.formatTime(time)
     });
 
-
-  }
-
-  openDialog() {
-    this.dialog.open(EqualizerComponent, {
+    this.player.on('finish', () => {
+      this.playPauseState = 'pause'
+      this.setPalyPauseIcon();
+    });
+    
+    this.player.on('ready', () => {
     });
   }
 
-  easeInOutQuad(t, b, c, d) {
-      t /= d/2;
-      if (t < 1) return c/2*t*t + b;
-      t--;
-      return -c/2 * (t*(t-2) - 1) + b;
+  updateVolume($event){
+    let value = $event.value
+
+    if(value === 0){
+      this.volumeIcon = 'volume_mute'
+    }else if(value < 50){
+      this.volumeIcon = 'volume_down'
+    }else{
+      this.volumeIcon = 'volume_up'
+    }
+
+    this.player.setVolume($event.value/100)
   }
- 
+
+ private  openDialog() {
+    this.dialog.open(EqualizerComponent, {
+      width: '480px',
+      data: { filters: this.filters },
+    });
+  }
 
   private toggleZoomState() {
     this.zoomState = this.zoomState === 'zoomIn' ? 'zoomOut' : 'zoomIn';
-
     if(this.zoomState === 'zoomIn'){
-      // for (var i = 1; i < 21; i++) {
-      //   setTimeout(() => this.player.zoom(Number(i)), 1000);
-      // }
       this.player.zoom(1)
     } else {
       this.player.zoom(20)
     }
   }
  
-  private togglePlayPauseState(){
-    this.playPauseState = this.playPauseState === 'play' ? 'pause' : 'play';
+  private setPalyPauseIcon(){
     if (this.playPauseState === 'play') {
       this.icon = 'pause';
     } else {
       this.icon = 'play_arrow';
     }
-    this.player.playPause();
+  }
+
+  private togglePlayPauseState(){
+    this.playPauseState = this.playPauseState === 'play' ? 'pause' : 'play';
+    this.setPalyPauseIcon();
+    this.player.playPause();      
   }
 
   public onResize($event) {
@@ -138,11 +208,9 @@ export class PlayerComponent implements OnInit {
 
   public play() {
 
- 
   }
 
   public loadTrack(path: string) {
-    console.log('path', path)
     this.player.load(path);
   }
 
@@ -157,7 +225,5 @@ export class PlayerComponent implements OnInit {
   public playPause() {
     this.player.playPause();
   }
-
-
 
 }

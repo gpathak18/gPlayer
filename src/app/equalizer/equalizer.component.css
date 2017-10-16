@@ -1,7 +1,28 @@
 slider-class {
     margin: 10px;
+    padding: 10px;
 }
 
 .mat-slider-vertical {
-    height: 300px;
+    height: 100px;
 }
+
+span {
+    font-family: Roboto;
+    font-size: 14px;
+    margin-top: 5px;
+    color: gray;
+}
+
+.app-icon {
+    /* padding: 0 14px; */
+    /* color: #282364; */
+    color: white;
+  }
+  .app-icon-cl {
+    padding: 0 14px;
+    /* color: #282364; */
+  }
+/* :host/deep/ .mat-input-placeholder {
+    font-size: 12px;
+} */

@@ -12,8 +12,11 @@
             <mat-icon class="app-icon ">recent_actors</mat-icon>
           </button>
           <button mat-icon-button>
-            <mat-icon class="app-icon " mat-icon-button [matMenuTriggerFor]="playlistmenu">queue_music</mat-icon>
+            <mat-icon class="app-icon " mat-icon-button >library_music</mat-icon>
           </button>
+          <button mat-icon-button>
+            <mat-icon class="app-icon " mat-icon-button [matMenuTriggerFor]="playlistmenu">queue_music</mat-icon>
+          </button>        
           <input type="file" #file style="display:none" (change)='changeListener($event)' multiple/>
 </mat-grid-tile-header>
 <mat-menu #playlistmenu="matMenu">
@@ -21,18 +24,18 @@
         <mat-list-item>
             <mat-input-container  floatPlaceholder="never" (click)="stopPropagation($event)">
                 <mat-icon class="app-icon-gray " matSuffix style="margin: 0px" (click)="addPlaylist($event)">playlist_add</mat-icon>
-                <input matInput  placeholder="Add Playlist" style=" font-size: 14px">
+                <input matInput  placeholder="Add Playlist" [(ngModel)]="playlistname" style=" font-size: 14px">
             </mat-input-container>        
         </mat-list-item>
-        <mat-divider></mat-divider>        
-        <mat-list-item *ngFor="let playlist of playLists ">
+        <!-- <mat-divider></mat-divider>         -->
+        <mat-list-item *ngFor="let playlist of playLists">
             <button mat-icon-button (click)="stopPropagation($event)" >
-            <mat-icon class="app-icon-gray">playlist_play</mat-icon>
+            <mat-icon class="app-icon-gray" [id]="playlist.Name">playlist_play</mat-icon>
             </button>
-            <span style="margin-left: 16px;font-size: 14px" >{{playlist.name}}</span>
-            <span class="item-spacer "></span>   
+            <span style="margin-left: 16px;font-size: 14px" [id]="playlist.Name" >{{playlist.Name}}</span>
+            <span class="item-spacer"></span>   
             <!-- <button mat-icon-button >      -->
-            <mat-icon class="app-icon-gray" (click)="stopPropagation($event);delete()">close</mat-icon>
+            <mat-icon class="app-icon-gray" [id]="playlist.Name" (click)="stopPropagation($event);deletePlaylist($event)">close</mat-icon>
             <!-- </button>     -->
         </mat-list-item>       
       </mat-list>   
