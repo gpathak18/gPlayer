@@ -20,7 +20,7 @@ import { Playlist } from '../playlist';
   templateUrl: './player-body-main.component.html',
   styleUrls: ['./player-body-main.component.css']
 })
-export class PlayerBodyMainComponent implements OnInit {
+export class PlayerBodyMainComponent implements OnInit  {
 
  @Input('winWdHt') winWdHt  = { tileHeight: '', tileWidth: ''};
  @Input('player') player: any = '';
@@ -33,12 +33,8 @@ export class PlayerBodyMainComponent implements OnInit {
   private tracks: Array<Track>;
   private selectedRowIndex = -1;
   private currentPlaylist: Playlist;
-  private mainLibrary: Playlist = new Playlist('');
 
   constructor(private playlistService: PlaylistService, private datastore: DatastoreService) {
-
-
-
   }
 
   ngOnInit() {
@@ -46,7 +42,7 @@ export class PlayerBodyMainComponent implements OnInit {
     this.winWdHt.tileHeight = '560';
     this.winWdHt.tileWidth = '500';
     // this.mainLibrary = this.playlistService.getMainLibrary();
-    // this.dataSource.currentTracks.subscribe(tracks => this.mainLibrary.tracks = tracks);
+    this.dataSource.currentTracks.subscribe(tracks => this.tracks = tracks);
 
   }
 
@@ -57,7 +53,11 @@ export class PlayerBodyMainComponent implements OnInit {
   }
 
   private getPath(position) {
-    return this.tracks.filter(track => track.trackNumber === position);
+    return this.tracks.filter(track => {
+      console.log(track)
+      console.log(track.trackNumber)
+      track.trackNumber === position
+    });
   }
 
   // tslint:disable-next-line:member-ordering

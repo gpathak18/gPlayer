@@ -4,6 +4,7 @@ import { PouchDbService } from './pouch-db.service';
 import { Playlist } from './playlist';
 import { Track } from './track';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 
 @Injectable()

@@ -70,6 +70,7 @@ export class PlayerBodyHeaderComponent implements OnInit {
 
   private readFiles(inputValue: any): void {
     this.mainLibrary = this.playlistService.getMainLibrary();
+    this.fileCntr = Number(this.mainLibrary.trackCount)+1;
     const files = inputValue.files;
     for (const file of files) {
       if (file.type.match(this.fileType)) {
@@ -82,6 +83,8 @@ export class PlayerBodyHeaderComponent implements OnInit {
         track.trackNumber = this.fileCntr;
         track.source = 'local';
         track.link = file.path;
+
+       console.log(JSON.stringify(track))
 
         this.fileCntr++;
         console.log(this.mainLibrary.tracks);
