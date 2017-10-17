@@ -1,3 +1,5 @@
+import {DatastoreService} from '../datastore.service';
+import {PlaylistService} from '../playlist.service';
 import { Component, OnInit, ElementRef } from '@angular/core';
 
 @Component({
@@ -10,18 +12,20 @@ export class MainComponent implements OnInit {
   private tileWdHt = {
     tileHeight : '',
     tileWidth : ''
-  }
-  private tileHeight : string;
-  private tileWidth : string;
+  };
 
-  constructor(private el:ElementRef){ }
+  private tileHeight: string;
+  private tileWidth: string;
+
+  constructor(private el: ElementRef, private playlistService: PlaylistService, private datastore: DatastoreService) { }
 
   ngOnInit() {
+    this.playlistService.initService();
   }
 
-  onResize($elm){
-    let element = $elm._element.nativeElement
+  onResize($elm) {
+    const element = $elm._element.nativeElement;
     this.tileWdHt.tileHeight = element.offsetHeight;
-    this.tileWdHt.tileWidth = element.offsetWidth;  
+    this.tileWdHt.tileWidth = element.offsetWidth;
   }
 }

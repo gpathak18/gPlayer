@@ -5,9 +5,10 @@ import WaveSurfer from 'wavesurfer.js';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatSidenavModule, MatListModule, MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule,
-  MatIconModule, MatTabsModule, MatGridListModule, MatInputModule, MatTableModule, MatDialogModule, MatProgressBarModule, MatSliderModule, MatAutocompleteModule, MatFormFieldModule, MatButtonToggleModule
+  MatIconModule, MatTabsModule, MatGridListModule, MatInputModule, MatTableModule, MatDialogModule,
+  MatProgressBarModule, MatSliderModule, MatAutocompleteModule, MatFormFieldModule, MatButtonToggleModule
 } from '@angular/material';
-import { FlexLayoutModule } from "@angular/flex-layout";
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { MainComponent } from './main/main.component';
 import { PlayerComponent } from './player/player.component';
 import { PlayerBodyHeaderComponent } from './player-body-header/player-body-header.component';
@@ -40,7 +41,7 @@ const appRoutes: Routes = [
     ErrorComponent,
     EqualizerComponent
   ],
-  entryComponents: [SigninComponent,EqualizerComponent],
+  entryComponents: [SigninComponent, EqualizerComponent],
   imports: [
     RouterModule.forRoot(
       appRoutes
@@ -66,7 +67,7 @@ const appRoutes: Routes = [
     MatSliderModule,
     MatAutocompleteModule,
     MatFormFieldModule,
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule,
     MatButtonToggleModule
   ],

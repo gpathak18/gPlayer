@@ -16,11 +16,11 @@ export class PlayerService {
     this.playerComponent.loadTrack(path);
   }
 
-  public play(){
+  public play() {
     this.playerComponent.play();
   }
 
-  public pause(){
+  public pause() {
     this.playerComponent.pause();
   }
    //this.player.on('ready', this.player.play.bind(this.player));

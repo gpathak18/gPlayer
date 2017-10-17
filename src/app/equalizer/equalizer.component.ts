@@ -14,7 +14,7 @@ export class EqualizerComponent implements OnInit {
   minLength = 0;
   presetControl: FormControl = new FormControl();
   filteredPresets: any;
-  selectedPreset: string = 'Flat'
+  selectedPreset = 'Flat';
   presets = [
     'Acoustic',
     'Bass Booster',
@@ -63,7 +63,7 @@ export class EqualizerComponent implements OnInit {
     TrebleBooster: [3, 6, 4, 2, 6, 7, 8, 2, 1, 4],
     TrebleReducer: [3, 6, 4, 2, 6, 7, 8, 2, 1, 4],
     VocalBooster: [3, 6, 4, 2, 6, 7, 8, 2, 1, 4]
-  }
+  };
   private eqSliders = [
     {
       f: 32,
@@ -125,7 +125,7 @@ export class EqualizerComponent implements OnInit {
 
   filterPresets(val: string) {
     if (val && val.length >= this.minLength) {
-      return this.presets.filter(s => s.toLowerCase().indexOf(val.toLowerCase()) === 0)
+      return this.presets.filter(s => s.toLowerCase().indexOf(val.toLowerCase()) === 0);
     } else {
       return this.presets;
     }
@@ -134,14 +134,14 @@ export class EqualizerComponent implements OnInit {
   setEqSliderValue() {
     this.eqSliders[0].value = this.filters.filters[0].gain.value;
     this.eqSliders[1].value = this.filters.filters[1].gain.value;
-    this.eqSliders[2].value = this.filters.filters[2].gain.value
-    this.eqSliders[3].value = this.filters.filters[3].gain.value
-    this.eqSliders[4].value = this.filters.filters[4].gain.value
-    this.eqSliders[5].value = this.filters.filters[5].gain.value
-    this.eqSliders[6].value = this.filters.filters[6].gain.value
-    this.eqSliders[7].value = this.filters.filters[7].gain.value
-    this.eqSliders[8].value = this.filters.filters[8].gain.value
-    this.eqSliders[9].value = this.filters.filters[9].gain.value
+    this.eqSliders[2].value = this.filters.filters[2].gain.value;
+    this.eqSliders[3].value = this.filters.filters[3].gain.value;
+    this.eqSliders[4].value = this.filters.filters[4].gain.value;
+    this.eqSliders[5].value = this.filters.filters[5].gain.value;
+    this.eqSliders[6].value = this.filters.filters[6].gain.value;
+    this.eqSliders[7].value = this.filters.filters[7].gain.value;
+    this.eqSliders[8].value = this.filters.filters[8].gain.value;
+    this.eqSliders[9].value = this.filters.filters[9].gain.value;
   }
 
   setEqPreset(selectedPreset) {
@@ -162,16 +162,16 @@ export class EqualizerComponent implements OnInit {
       presetSetting = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     }
 
-    this.eqSliders[0].value = this.filters.filters[0].gain.value = Number(presetSetting[0])
-    this.eqSliders[1].value = this.filters.filters[1].gain.value = Number(presetSetting[1])
-    this.eqSliders[2].value = this.filters.filters[2].gain.value = Number(presetSetting[2])
-    this.eqSliders[3].value = this.filters.filters[3].gain.value = Number(presetSetting[3])
-    this.eqSliders[4].value = this.filters.filters[4].gain.value = Number(presetSetting[4])
-    this.eqSliders[5].value = this.filters.filters[5].gain.value = Number(presetSetting[5])
-    this.eqSliders[6].value = this.filters.filters[6].gain.value = -Number(presetSetting[6])
-    this.eqSliders[7].value = this.filters.filters[7].gain.value = Number(presetSetting[7])
-    this.eqSliders[8].value = this.filters.filters[8].gain.value = Number(presetSetting[8])
-    this.eqSliders[9].value = this.filters.filters[9].gain.value = Number(presetSetting[9])
+    this.eqSliders[0].value = this.filters.filters[0].gain.value = Number(presetSetting[0]);
+    this.eqSliders[1].value = this.filters.filters[1].gain.value = Number(presetSetting[1]);
+    this.eqSliders[2].value = this.filters.filters[2].gain.value = Number(presetSetting[2]);
+    this.eqSliders[3].value = this.filters.filters[3].gain.value = Number(presetSetting[3]);
+    this.eqSliders[4].value = this.filters.filters[4].gain.value = Number(presetSetting[4]);
+    this.eqSliders[5].value = this.filters.filters[5].gain.value = Number(presetSetting[5]);
+    this.eqSliders[6].value = this.filters.filters[6].gain.value = Number(presetSetting[6]);
+    this.eqSliders[7].value = this.filters.filters[7].gain.value = Number(presetSetting[7]);
+    this.eqSliders[8].value = this.filters.filters[8].gain.value = Number(presetSetting[8]);
+    this.eqSliders[9].value = this.filters.filters[9].gain.value = Number(presetSetting[9]);
   }
 
 
@@ -179,60 +179,49 @@ export class EqualizerComponent implements OnInit {
 
   updateEqBand($event) {
 
-    let id = $event.source._elementRef.nativeElement.id;
+    const id = $event.source._elementRef.nativeElement.id;
 
     switch (id) {
       case '32':
-        this.filters.filters[0].gain.value = $event.value
+        this.filters.filters[0].gain.value = $event.value;
         break;
       case '64':
-        this.filters.filters[1].gain.value = $event.value
+        this.filters.filters[1].gain.value = $event.value;
         break;
       case '125':
-        this.filters.filters[2].gain.value = $event.value
+        this.filters.filters[2].gain.value = $event.value;
         break;
       case '250':
-        this.filters.filters[3].gain.value = $event.value
+        this.filters.filters[3].gain.value = $event.value;
         break;
       case '500':
-        this.filters.filters[4].gain.value = $event.value
+        this.filters.filters[4].gain.value = $event.value;
         break;
       case '1K':
-        this.filters.filters[5].gain.value = $event.value
+        this.filters.filters[5].gain.value = $event.value;
         break;
       case '2K':
-        this.filters.filters[6].gain.value = $event.value
+        this.filters.filters[6].gain.value = $event.value;
         break;
       case '4K':
-        this.filters.filters[7].gain.value = $event.value
+        this.filters.filters[7].gain.value = $event.value;
         break;
       case '8K':
-        this.filters.filters[8].gain.value = $event.value
+        this.filters.filters[8].gain.value = $event.value;
         break;
       case '16K':
-        this.filters.filters[9].gain.value = $event.value
+        this.filters.filters[9].gain.value = $event.value;
         break;
       default:
 
     }
-    console.log(id)
+    console.log(id);
 
   }
-
-  get tickInterval(): number | 'auto' {
-    return this.showTicks ? (this.autoTicks ? 'auto' : this._tickInterval) : 0;
-  }
-
-  set tickInterval(v) {
-    this._tickInterval = Number(v);
-  }
-
-  private _tickInterval = 1;
-
 
   ngOnInit() {
     this.setEqSliderValue();
-    this.changePosition()
+    this.changePosition();
   }
 
   changePosition() {

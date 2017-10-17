@@ -102,7 +102,7 @@ export class PlayerComponent implements OnInit {
     this.player = new WaveSurfer(this.options);
     this.player.init();
     this.player.createBackend();
-    this.player.load('/assets/sample.mp3');
+    // this.player.load('/assets/sample.mp3');
     this.setupPlayerEvents();
     this.setupPlayerEqFilters();
     this.player.setVolume(60/100)

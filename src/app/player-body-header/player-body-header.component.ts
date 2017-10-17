@@ -1,10 +1,10 @@
 import { Component, OnInit, Output, Input } from '@angular/core';
-import { Track } from '../Itarck';
 import { PouchDbService } from '../pouch-db.service';
 import { EventEmitter } from 'events';
 import { DatastoreService } from '../datastore.service';
 import { PlaylistService } from '../playlist.service';
 import { Playlist } from '../playlist';
+import { Track } from '../track';
 
 @Component({
   selector: 'app-player-body-header',
@@ -13,103 +13,92 @@ import { Playlist } from '../playlist';
 })
 export class PlayerBodyHeaderComponent implements OnInit {
 
-  private playlistname: string = '';
+  private playlistname = '';
 
   private selectedTracks: Array<Track> = new Array();
-  private fileType: string = 'audio.*';
-  private fileCntr : number = 1;
-  private playList : Playlist;
+  private fileType = 'audio.*';
+  private fileCntr = 1;
+  private mainLibrary: Playlist;
   private playLists = [];
   private playlistName: string;
-  
-  constructor(private dbservice: PouchDbService,private datastore: DatastoreService,private playlistService: PlaylistService) { }
+
+  constructor(private dbservice: PouchDbService, private datastore: DatastoreService, private playlistService: PlaylistService) { }
 
   ngOnInit() {
- 
-    this.loadPlaylists()
-  console.log(this.playLists)
+
+    this.loadPlaylists();
   }
 
-  private addPlaylist($event){
-    if(this.playlistname != null && this.playlistname.length > 0){
-      let plylst = new Playlist(this.playlistname)
+  // tslint:disable-next-line:one-line
+  private addPlaylist($event) {
+    if (this.playlistname != null && this.playlistname.length > 0) {
+      const plylst = new Playlist(this.playlistname);
       this.dbservice.put(plylst).then ((result) => {
-        this.playLists.push(plylst); 
+        this.playLists.push(plylst);
       }).catch((error) => {
-        console.log('could add playlist')
-      })
-      
+        console.log('could add playlist');
+      });
+
     }
   }
 
+  // tslint:disable-next-line:one-line
   private deletePlaylist($event){
-    this.playLists.splice(0,1); 
-    this.dbservice.delete($event.target.id)   
+    this.playLists.splice(0, 1);
+    this.dbservice.delete($event.target.id);
   }
 
   private loadPlaylists() {
 
     this.playlistService.getAllPlaylists().then((result) => {
-      let rows = result.rows
-      for (let row of rows) {
-        if(row.doc.Name !== 'MAIN_LIBRARY') {
-
+      const rows = result.rows;
+      for (const row of rows) {
+        if (row.doc.Name !== 'MAIN_LIBRARY') {
           this.playLists.push(row.doc);
         }
      }
-     console.log(this.playLists)
+     console.log(this.playLists);
 
     }).catch((error) => {
-      console.log(error)
-    });    
+      console.log(error);
+    });
   }
 
-  private stopPropagation(event){
+  private stopPropagation(event) {
     event.stopPropagation();
   }
-  
+
   private readFiles(inputValue: any): void {
-    var files = inputValue.files;
-    for (var file of files) {
+    this.mainLibrary = this.playlistService.getMainLibrary();
+    const files = inputValue.files;
+    for (const file of files) {
       if (file.type.match(this.fileType)) {
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = function(e) {
-        }
+        };
         // reader.readAsDataURL(file);
-        let track = {
-          TrackNumber: this.fileCntr,
-          Name: file.name,
-          Link: file.path,
-          Source: 'computer'
-        }
+
+        const track = new Track(file.name);
+        track.trackNumber = this.fileCntr;
+        track.source = 'local';
+        track.link = file.path;
+
         this.fileCntr++;
-        // this.selectedTracks.push(track);
-        console.log(track.Name)
-        // this.dbservice.put(track,'#1')
-        // console.log(this.dbservice.fetch())
-        // this.addTrack.emit(this.dbservice.fetch())
-        this.selectedTracks.push(track);
-        // this.dbservice.fetch().then(function (response) {
-        //   var docs = response.rows.map(function (row) { return row.doc; });  
-        //   console.log('doc',docs[0]);
-        //   console.log('res',response);
-        // }).catch(function (err) {
-        //   console.log(err);
-        // })
-        //this.datastore.addTrack()
+        console.log(this.mainLibrary.tracks);
+        this.mainLibrary.tracks.push(track);
 
       }
 //      else {
 //        alert("File not supported!");
 //      }
     }
-    console.log(this.playList)
-    // this.playList.Tracks.Items = this.selectedTracks;
-    // this.playList.Tracks.TotalItemCount = this.selectedTracks.length
-    // this.datastore.addTrack(this.selectedTracks)
-    // this.dbservice.put(this.playList,'DEFAULT_PLAYLIST')
+
+    this.mainLibrary.trackCount = this.mainLibrary.tracks.length;
+    this.datastore.addTrack(this.mainLibrary.tracks);
+    this.dbservice.put(this.mainLibrary, 'MAIN_LIBRARY');
+
   }
-  
+
   changeListener($event): void {
     this.readFiles($event.target);
   }

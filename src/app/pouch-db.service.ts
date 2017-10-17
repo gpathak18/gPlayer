@@ -7,7 +7,7 @@ export class PouchDbService {
   private isInstantiated: boolean;
   private database: any;
   private listener: EventEmitter<any> = new EventEmitter();
-  private DB_NAME: string = 'USER.AABBCC';
+  private DB_NAME = 'USER.AABBCC';
 
   constructor() {
 
