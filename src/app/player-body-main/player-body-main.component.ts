@@ -13,6 +13,7 @@ import { DatastoreService } from '../datastore.service';
 import { PlayerService } from '../player.service';
 import { Track } from '../track';
 import { Playlist } from '../playlist';
+import { MatSnackBar } from '@angular/material';
 
 
 @Component({
@@ -32,18 +33,24 @@ export class PlayerBodyMainComponent implements OnInit  {
   private hoverrow = -1;
   private tracks: Array<Track>;
   private selectedRowIndex = -1;
-  private currentPlaylist: Playlist;
+  private userPlaylists = [];
 
-  constructor(private playlistService: PlaylistService, private datastore: DatastoreService) {
+  constructor(private playlistService: PlaylistService, private datastore: DatastoreService, public snackBar: MatSnackBar) {
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 
   ngOnInit() {
     this.dataSource = this.datastore;
     this.winWdHt.tileHeight = '560';
     this.winWdHt.tileWidth = '500';
-    // this.mainLibrary = this.playlistService.getMainLibrary();
+    this.playlistService.user_playlists.subscribe(value => this.userPlaylists.push(value));
     this.dataSource.currentTracks.subscribe(tracks => this.tracks = tracks);
-
+    console.log(this.userPlaylists);
   }
 
   private playTrack(row) {
@@ -54,9 +61,7 @@ export class PlayerBodyMainComponent implements OnInit  {
 
   private getPath(position) {
     return this.tracks.filter(track => {
-      console.log(track)
-      console.log(track.trackNumber)
-      track.trackNumber === position
+      // track.trackNumber === position
     });
   }
 

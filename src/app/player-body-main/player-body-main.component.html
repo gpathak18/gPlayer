@@ -1,52 +1,62 @@
-<div  [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'" >
-    <mat-table #table [dataSource]="dataSource" >
-      <ng-container matColumnDef="TrackNumber">
-        <mat-header-cell *matHeaderCellDef class="mat-cell-sn"> No. </mat-header-cell>
-        <mat-cell *matCellDef="let track" class="mat-cell-sn"> {{track.TrackNumber}} </mat-cell>
-      </ng-container>
-  
-      <ng-container matColumnDef="Link">
-        <mat-header-cell *matHeaderCellDef class="mat-cell-sl">
-          <mat-checkbox></mat-checkbox>
-        </mat-header-cell>
-        <mat-cell *matCellDef="let track" class="mat-cell-sl">
-          <mat-checkbox></mat-checkbox>
-        </mat-cell>
-      </ng-container>
-  
-      <ng-container matColumnDef="Name">
-        <mat-header-cell *matHeaderCellDef class="mat-cell-song"> Song Name </mat-header-cell>
-        <mat-cell *matCellDef="let track" class="mat-cell-song"> 
-          {{track.Name}} 
-          <mat-icon class="app-icon-gray" *ngIf="showIcon">timeline</mat-icon>
-        </mat-cell>
-      </ng-container>
-  
-      <ng-container matColumnDef="Source">
-        <mat-header-cell *matHeaderCellDef class="mat-cell-op"> Options </mat-header-cell>
-        <mat-cell *matCellDef="let track" class="mat-cell-op">
-          <button mat-icon-button [matMenuTriggerFor]="menu">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-          <mat-menu #menu="matMenu">
-            <button mat-menu-item>
-              <mat-icon>play_circle_outline</mat-icon>
-              <span>Play Next</span>
-            </button>
-            <button mat-menu-item disabled>
-              <mat-icon>remove_from_queue</mat-icon>
-              <span>Remove</span>
-            </button>
-            <button mat-menu-item>
-              <mat-icon>cloud_download</mat-icon>
-              <span>Download</span>
-            </button>
-          </mat-menu>
-        </mat-cell>
-      </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;" style="height: 20px" [ngClass]="{'highlight': selectedRowIndex == row.position}"
-        [cellHover]="'#F5F5F5'" defaultColor="#FFFFFF" selectColor="#B39DDB" (click)="playTrack(row)">
-      </mat-row>
-    </mat-table>
-  </div>
+<div [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'">
+  <mat-table #table [dataSource]="dataSource">
+    <ng-container matColumnDef="TrackNumber">
+      <mat-header-cell *matHeaderCellDef class="mat-cell-sn"> No. </mat-header-cell>
+      <mat-cell *matCellDef="let track" class="mat-cell-sn"> {{track.TrackNumber}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Link">
+      <mat-header-cell *matHeaderCellDef class="mat-cell-sl">
+        <mat-checkbox></mat-checkbox>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let track" class="mat-cell-sl">
+        <mat-checkbox></mat-checkbox>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Name">
+      <mat-header-cell *matHeaderCellDef class="mat-cell-song"> Song Name </mat-header-cell>
+      <mat-cell *matCellDef="let track" class="mat-cell-song">
+        {{track.Name}}
+        <mat-icon class="app-icon-gray" *ngIf="showIcon">timeline</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Source">
+      <mat-header-cell *matHeaderCellDef class="mat-cell-op"> Options </mat-header-cell>
+      <mat-cell *matCellDef="let track" class="mat-cell-op">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" style="height: 20px" [ngClass]="{'highlight': selectedRowIndex == row.position}"
+      [cellHover]="'#F5F5F5'" defaultColor="#FFFFFF" selectColor="#B39DDB" (click)="playTrack(row)">
+    </mat-row>
+  </mat-table>
+</div>
+<mat-menu #menu="matMenu" style="font-size: 10px">
+  <button mat-menu-item>
+    <mat-icon>play_circle_outline</mat-icon>
+    <span>Play Next</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>queue_music</mat-icon>
+    <span>Queue Track</span>
+  </button>
+  <button mat-menu-item [matMenuTriggerFor]="playlists">
+    <mat-icon>playlist_add</mat-icon>
+    <span>Add to Playlist</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>cloud_download</mat-icon>
+    <span>Download</span>
+  </button>
+</mat-menu>
+<mat-menu #playlists="matMenu" >
+  <button  mat-menu-item (click)="openSnackBar('Song Added to playlist.', 'Done')" *ngFor="let playlist of userPlaylists"> 
+    <mat-icon>playlist_add</mat-icon>
+    <span>{{playlist.Name}}</span>
+  </button>
+</mat-menu>

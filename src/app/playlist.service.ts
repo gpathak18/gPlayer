@@ -1,9 +1,9 @@
-import {DatastoreService} from './datastore.service';
+import { DatastoreService } from './datastore.service';
 import { Injectable } from '@angular/core';
 import { PouchDbService } from './pouch-db.service';
 import { Playlist } from './playlist';
 import { Track } from './track';
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 
 
@@ -12,7 +12,8 @@ export class PlaylistService {
 
   private mainLibrary: Playlist;
   private isInstantiated: boolean;
-  private userPlaylists = [];
+  public user_playlists = new Subject<Playlist>();
+  public delete_playlist = new Subject();
 
   constructor(private dbservice: PouchDbService, private datastore: DatastoreService) {
 
@@ -22,23 +23,26 @@ export class PlaylistService {
     if (!this.isInstantiated) {
       this.loadMainlibrary().then((result) => {
         this.mainLibrary = result;
-        // this.datastore.currentTracks.subscribe(tracks => this.mainLibrary.tracks = tracks);
         this.datastore.addTrack(this.mainLibrary.tracks);
       }).catch((error) => {
         console.log('Error: Main Library: ', error);
       });
 
-      this.getAllPlaylists().then((result) => {
-        const rows = result.rows;
-        for (const row of rows) {
-          if (row.doc.Name !== 'MAIN_LIBRARY') {
-            this.userPlaylists.push(row.doc);
-          }
-       }
-      }).catch((error) => {
-        console.log('Error: User Playlist: ', error);
-      });
+      this.loadUserPlaylists();
     }
+  }
+
+  public loadUserPlaylists() {
+    this.getAllPlaylists().then((result) => {
+      const rows = result.rows;
+      for (const row of rows) {
+        if (row.doc.Name !== 'MAIN_LIBRARY') {
+          this.user_playlists.next(row.doc);
+        }
+      }
+    }).catch((error) => {
+      console.log('Error: User Playlist: ', error);
+    });
   }
 
   public initMainLibrary(): Playlist {
@@ -54,6 +58,7 @@ export class PlaylistService {
 
     return new Promise((resolve, reject) => {
       this.dbservice.get('MAIN_LIBRARY').catch((err) => {
+
         if (err.status === 404) {
           const mainLibrary = this.initMainLibrary();
           this.dbservice.put(mainLibrary, 'MAIN_LIBRARY');
@@ -70,7 +75,9 @@ export class PlaylistService {
         reject(err);
       });
     });
+
   }
+
 
   public getAllPlaylists(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -84,14 +91,9 @@ export class PlaylistService {
     });
   }
 
-  public getUserPlaylists(): any {
-    return this.userPlaylists;
-  }
-
   public getMainLibrary(): Playlist {
-   return this.mainLibrary;
+    return this.mainLibrary;
   }
-
 
   public addToMainLibrary(track: Track) {
 
@@ -101,8 +103,22 @@ export class PlaylistService {
 
   }
 
-  public createPlaylist(plyLstName: string) {
-    this.dbservice.put(plyLstName);
+  public createPlaylist(plyLst: Playlist) {
+    this.dbservice.put(plyLst).then((result) => {
+      if (result.ok) {
+        this.user_playlists.next(plyLst);
+        console.log(this.user_playlists);
+      }
+    }).catch((error) => {
+      console.log('Error', error);
+    });
+  }
+
+  public deletePlaylist(plyLst) {
+    this.dbservice.delete(plyLst.Name);
+    this.delete_playlist.next(plyLst);
+    this.user_playlists.map((val) => console.log(val));
+
   }
 
   public addToPlaylist(track: Track) {
@@ -111,10 +127,6 @@ export class PlaylistService {
 
   public deleteFromPlaylist(track: Track) {
 
-  }
-
-  public deletePlaylist(plyLstName: string) {
-    this.dbservice.delete(plyLstName);
   }
 
 }

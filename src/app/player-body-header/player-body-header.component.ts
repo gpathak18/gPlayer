@@ -29,39 +29,23 @@ export class PlayerBodyHeaderComponent implements OnInit {
     this.loadPlaylists();
   }
 
-  // tslint:disable-next-line:one-line
   private addPlaylist($event) {
     if (this.playlistname != null && this.playlistname.length > 0) {
       const plylst = new Playlist(this.playlistname);
-      this.dbservice.put(plylst).then ((result) => {
-        this.playLists.push(plylst);
-      }).catch((error) => {
-        console.log('could add playlist');
-      });
-
+      console.log('ADDING playlist');
+      this.playlistService.createPlaylist(plylst);
     }
   }
 
-  // tslint:disable-next-line:one-line
-  private deletePlaylist($event){
-    this.playLists.splice(0, 1);
-    this.dbservice.delete($event.target.id);
+  private deletePlaylist($event) {
+    const plylist = this.playLists.find((value) => value.Name === $event.target.id);
+    this.playlistService.deletePlaylist(plylist);
+    // this.playLists.splice(0, 1);
+    // this.dbservice.delete(plylist.Name);
   }
 
   private loadPlaylists() {
-
-    this.playlistService.getAllPlaylists().then((result) => {
-      const rows = result.rows;
-      for (const row of rows) {
-        if (row.doc.Name !== 'MAIN_LIBRARY') {
-          this.playLists.push(row.doc);
-        }
-     }
-     console.log(this.playLists);
-
-    }).catch((error) => {
-      console.log(error);
-    });
+    this.playlistService.user_playlists.subscribe(value => this.playLists.push(value));
   }
 
   private stopPropagation(event) {
@@ -70,36 +54,28 @@ export class PlayerBodyHeaderComponent implements OnInit {
 
   private readFiles(inputValue: any): void {
     this.mainLibrary = this.playlistService.getMainLibrary();
-    this.fileCntr = Number(this.mainLibrary.trackCount)+1;
+    this.fileCntr = Number(this.mainLibrary.trackCount) + 1;
     const files = inputValue.files;
     for (const file of files) {
       if (file.type.match(this.fileType)) {
         const reader = new FileReader();
         reader.onload = function(e) {
         };
-        // reader.readAsDataURL(file);
 
         const track = new Track(file.name);
         track.trackNumber = this.fileCntr;
         track.source = 'local';
         track.link = file.path;
 
-       console.log(JSON.stringify(track))
-
         this.fileCntr++;
         console.log(this.mainLibrary.tracks);
         this.mainLibrary.tracks.push(track);
-
       }
-//      else {
-//        alert("File not supported!");
-//      }
-    }
 
+    }
     this.mainLibrary.trackCount = this.mainLibrary.tracks.length;
     this.datastore.addTrack(this.mainLibrary.tracks);
     this.dbservice.put(this.mainLibrary, 'MAIN_LIBRARY');
-
   }
 
   changeListener($event): void {

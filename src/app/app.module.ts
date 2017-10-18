@@ -6,7 +6,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatSidenavModule, MatListModule, MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule,
   MatIconModule, MatTabsModule, MatGridListModule, MatInputModule, MatTableModule, MatDialogModule,
-  MatProgressBarModule, MatSliderModule, MatAutocompleteModule, MatFormFieldModule, MatButtonToggleModule
+  MatProgressBarModule, MatSliderModule, MatAutocompleteModule, MatFormFieldModule, MatButtonToggleModule,
+  MatSnackBarModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MainComponent } from './main/main.component';
@@ -69,7 +70,8 @@ const appRoutes: Routes = [
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatSnackBarModule
   ],
   providers: [PouchDbService, DatastoreService, PlayerService, PlaylistService],
   bootstrap: [MainComponent]
