@@ -33,7 +33,7 @@ export class PlayerBodyMainComponent implements OnInit  {
   private hoverrow = -1;
   private tracks: Array<Track>;
   private selectedRowIndex = -1;
-  private userPlaylists = [];
+  private userPlaylists: Array<Playlist>;
 
   constructor(private playlistService: PlaylistService, private datastore: DatastoreService, public snackBar: MatSnackBar) {
   }
@@ -48,7 +48,7 @@ export class PlayerBodyMainComponent implements OnInit  {
     this.dataSource = this.datastore;
     this.winWdHt.tileHeight = '560';
     this.winWdHt.tileWidth = '500';
-    this.playlistService.user_playlists.subscribe(value => this.userPlaylists.push(value));
+    this.playlistService.user_playlists.subscribe(value => this.userPlaylists = value);
     this.dataSource.currentTracks.subscribe(tracks => this.tracks = tracks);
     console.log(this.userPlaylists);
   }

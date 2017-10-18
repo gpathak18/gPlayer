@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import PouchDB from 'pouchdb'; 
+import PouchDB from 'pouchdb';
 
 @Injectable()
 export class PouchDbService {
@@ -11,8 +11,8 @@ export class PouchDbService {
 
   constructor() {
 
-    if(!this.isInstantiated) {
-      this.database = new PouchDB(this.DB_NAME,{auto_compaction: true});
+    if (!this.isInstantiated) {
+      this.database = new PouchDB(this.DB_NAME, { auto_compaction: true});
       this.isInstantiated = true;
     }
 
@@ -27,21 +27,17 @@ export class PouchDbService {
   }
 
   public delete(id: string) {
-    this.database.get(id).then( (doc) => {
+    return this.database.get(id).then( (doc) => {
       return this.database.remove(doc._id, doc._rev);
-    }).then( (result) => {
-      console.log(result);
-    }).catch( (error) => {
-      console.log(error);
     });
   }
 
-  public put(document: any, id?: string) { 
+  public put(document: any, id?: string) {
     return this.get(document._id).then( result => {
         document._rev = result._rev;
         return this.database.put(document);
     }, error => {
-        if(error.status == "404") {
+        if (error.status === '404') {
             return this.database.put(document);
         } else {
             return new Promise((resolve, reject) => {
@@ -51,17 +47,17 @@ export class PouchDbService {
     });
   }
 
-  public sync(remote: string) { 
-    let remoteDatabase = new PouchDB(remote);
+  public sync(remote: string) {
+    const remoteDatabase = new PouchDB(remote);
     this.database.sync(remoteDatabase, {
         live: true
     }).on('change', change => {
-      console.log('changed')
+      console.log('changed');
         this.listener.emit(change);
     });
  }
 
-  public getChangeListener() { 
+  public getChangeListener() {
     return this.listener;
   }
 

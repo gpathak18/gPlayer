@@ -24,6 +24,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ErrorComponent } from './error/error.component';
 import { EqualizerComponent } from './equalizer/equalizer.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { PlayerBodyPlaylistsComponent } from './player-body-playlists/player-body-playlists.component';
 
 const appRoutes: Routes = [
   { path: 'sign', component: SigninComponent },
@@ -40,7 +41,8 @@ const appRoutes: Routes = [
     PlayerBodyMainComponent,
     SigninComponent,
     ErrorComponent,
-    EqualizerComponent
+    EqualizerComponent,
+    PlayerBodyPlaylistsComponent
   ],
   entryComponents: [SigninComponent, EqualizerComponent],
   imports: [

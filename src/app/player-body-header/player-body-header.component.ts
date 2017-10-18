@@ -19,7 +19,7 @@ export class PlayerBodyHeaderComponent implements OnInit {
   private fileType = 'audio.*';
   private fileCntr = 1;
   private mainLibrary: Playlist;
-  private playLists = [];
+  private playLists: Array<Playlist> = new Array();
   private playlistName: string;
 
   constructor(private dbservice: PouchDbService, private datastore: DatastoreService, private playlistService: PlaylistService) { }
@@ -38,14 +38,15 @@ export class PlayerBodyHeaderComponent implements OnInit {
   }
 
   private deletePlaylist($event) {
-    const plylist = this.playLists.find((value) => value.Name === $event.target.id);
-    this.playlistService.deletePlaylist(plylist);
+    // const plylist = this.playLists.find((value) => value.name === $event.target.id);
+    this.playlistService.deletePlaylist($event.target.id);
     // this.playLists.splice(0, 1);
     // this.dbservice.delete(plylist.Name);
   }
 
   private loadPlaylists() {
-    this.playlistService.user_playlists.subscribe(value => this.playLists.push(value));
+    // this.playlistService.user_playlists.subscribe(value => this.playLists.push(value));
+    this.playlistService.user_playlists.subscribe(value => this.playLists = value);
   }
 
   private stopPropagation(event) {

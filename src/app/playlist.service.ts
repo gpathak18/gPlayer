@@ -12,8 +12,9 @@ export class PlaylistService {
 
   private mainLibrary: Playlist;
   private isInstantiated: boolean;
-  public user_playlists = new Subject<Playlist>();
-  public delete_playlist = new Subject();
+  public user_playlists = new Subject<Array<Playlist>>();
+  public playlists: Array<Playlist> = new Array();
+
 
   constructor(private dbservice: PouchDbService, private datastore: DatastoreService) {
 
@@ -37,9 +38,10 @@ export class PlaylistService {
       const rows = result.rows;
       for (const row of rows) {
         if (row.doc.Name !== 'MAIN_LIBRARY') {
-          this.user_playlists.next(row.doc);
+          this.playlists.push(row.doc);
         }
       }
+      this.user_playlists.next(this.playlists);
     }).catch((error) => {
       console.log('Error: User Playlist: ', error);
     });
@@ -106,7 +108,8 @@ export class PlaylistService {
   public createPlaylist(plyLst: Playlist) {
     this.dbservice.put(plyLst).then((result) => {
       if (result.ok) {
-        this.user_playlists.next(plyLst);
+        this.playlists.push(plyLst);
+        this.user_playlists.next(this.playlists);
         console.log(this.user_playlists);
       }
     }).catch((error) => {
@@ -114,13 +117,13 @@ export class PlaylistService {
     });
   }
 
-  public deletePlaylist(plyLst) {
-    console.log(plyLst)
-    this.dbservice.delete(plyLst.Name);
-    this.delete_playlist.next(plyLst);
-    console.log(this.user_playlists)
-    this.user_playlists.map((val) => console.log(val));
-
+  public deletePlaylist(plyLst_id: string) {
+    this.dbservice.delete(plyLst_id).then( (result) => {
+      this.playlists = this.playlists.filter((value: any) => value.Name !== plyLst_id);
+      this.user_playlists.next(this.playlists);
+    }).catch( (error) => {
+      console.log(error);
+    });
   }
 
   public addToPlaylist(track: Track) {
