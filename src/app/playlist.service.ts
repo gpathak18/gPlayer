@@ -115,8 +115,10 @@ export class PlaylistService {
   }
 
   public deletePlaylist(plyLst) {
+    console.log(plyLst)
     this.dbservice.delete(plyLst.Name);
     this.delete_playlist.next(plyLst);
+    console.log(this.user_playlists)
     this.user_playlists.map((val) => console.log(val));
 
   }

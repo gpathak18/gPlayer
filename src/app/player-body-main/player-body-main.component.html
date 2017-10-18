@@ -56,7 +56,7 @@
 </mat-menu>
 <mat-menu #playlists="matMenu" >
   <button  mat-menu-item (click)="openSnackBar('Song Added to playlist.', 'Done')" *ngFor="let playlist of userPlaylists"> 
-    <mat-icon>playlist_add</mat-icon>
+    <mat-icon style="margin: 2px">playlist_add</mat-icon>
     <span>{{playlist.Name}}</span>
   </button>
 </mat-menu>
