@@ -37,7 +37,7 @@ export class PouchDbService {
         document._rev = result._rev;
         return this.database.put(document);
     }, error => {
-        if (error.status === '404') {
+        if (error.status === 404) {
             return this.database.put(document);
         } else {
             return new Promise((resolve, reject) => {
