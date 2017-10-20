@@ -25,7 +25,7 @@ export class PlayerBodyMainComponent implements OnInit  {
 
  @Input('winWdHt') winWdHt  = { tileHeight: '', tileWidth: ''};
  @Input('player') player: any = '';
-
+ @Input('selectedTab') tabIndex;
  @Output() playEvent = new EventEmitter();
 
   private displayedColumns = ['TrackNumber', 'Name', 'Link', 'Source'];
@@ -35,7 +35,7 @@ export class PlayerBodyMainComponent implements OnInit  {
   private selectedRowIndex = -1;
   private userPlaylists: Array<Playlist>;
   private selectedTrack: any;
-  selectedIndex = 2;
+  // selectedIndex = this.ta;
 
   constructor(private playlistService: PlaylistService, private datastore: DatastoreService, public snackBar: MatSnackBar) {
   }
@@ -67,9 +67,14 @@ export class PlayerBodyMainComponent implements OnInit  {
     this.winWdHt.tileHeight = '560';
     this.winWdHt.tileWidth = '500';
     this.playlistService.user_playlists.subscribe(value => this.userPlaylists = value);
-    this.dataSource.currentTracks.subscribe(tracks => this.tracks = tracks);
-    console.log(this.userPlaylists);
+    this.dataSource.currentTracks.subscribe(tracks => this.tracks = tracks)
+    
   }
+
+  // ngOnChanges(){
+  //   console.log(this.tabIndex);
+  //   // this.selectedIndex = this.tabIndex;
+  // }
 
   private setSelectedTrack(_track) {
     this.selectedTrack = _track;

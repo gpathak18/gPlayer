@@ -1,7 +1,7 @@
-<div [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'">
+<!-- <div [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'"> -->
 
-    <mat-tab-group    [selectedIndex]="selectedIndex">
-        <mat-tab label="Tab 1">
+    <mat-tab-group [selectedIndex]="tabIndex" [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'">
+        <mat-tab label="library">
             <mat-table #table [dataSource]="dataSource">
                 <ng-container matColumnDef="TrackNumber">
                   <mat-header-cell *matHeaderCellDef class="mat-cell-sn"> No. </mat-header-cell>
@@ -53,8 +53,8 @@
                 <span>Add to Playlist</span>
               </button>
               <button mat-menu-item>
-                <mat-icon>cloud_download</mat-icon>
-                <span>Download</span>
+                <mat-icon>close</mat-icon>
+                <span>Remove</span>
               </button>
             </mat-menu>
             <mat-menu #playlists="matMenu" >
@@ -64,9 +64,9 @@
               </button>
             </mat-menu>
         </mat-tab>
-        <mat-tab label="Tab 2">
-          Content 2
+        <mat-tab label="playlists">
+          <app-player-body-playlists></app-player-body-playlists>
         </mat-tab>
       </mat-tab-group>
-</div>
+<!-- </div> -->
   

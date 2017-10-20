@@ -21,7 +21,7 @@ export class PlayerBodyHeaderComponent implements OnInit {
   private mainLibrary: Playlist;
   private playLists: Array<Playlist> = new Array();
   private playlistName: string;
-
+  selTab = 0;
   constructor(private dbservice: PouchDbService, private datastore: DatastoreService, private playlistService: PlaylistService) { }
 
   ngOnInit() {
@@ -29,6 +29,9 @@ export class PlayerBodyHeaderComponent implements OnInit {
     this.loadPlaylists();
   }
 
+  setTab(tab){
+    this.selTab = tab;
+  }
   private addPlaylist($event) {
     if (this.playlistname != null && this.playlistname.length > 0) {
       const plylst = new Playlist(this.playlistname);

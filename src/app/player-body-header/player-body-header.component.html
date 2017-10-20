@@ -9,13 +9,13 @@
             <mat-icon class="app-icon " aria-label="Example icon-button with a heart icon">create_new_folder</mat-icon>
           </button>
           <button mat-icon-button>
-            <mat-icon class="app-icon ">recent_actors</mat-icon>
+            <mat-icon class="app-icon " (click)="setTab(0)">recent_actors</mat-icon>
           </button>
           <button mat-icon-button>
-            <mat-icon class="app-icon " mat-icon-button >library_music</mat-icon>
+            <mat-icon class="app-icon " mat-icon-button (click)="setTab(1)">library_music</mat-icon>
           </button>
           <button mat-icon-button>
-            <mat-icon class="app-icon " mat-icon-button [matMenuTriggerFor]="playlistmenu">queue_music</mat-icon>
+            <mat-icon class="app-icon " mat-icon-button [matMenuTriggerFor]="playlistmenu" >queue_music</mat-icon>
           </button>        
           <input type="file" #file style="display:none" (change)='changeListener($event)' multiple/>
 </mat-grid-tile-header>
