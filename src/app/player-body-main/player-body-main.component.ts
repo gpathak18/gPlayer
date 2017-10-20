@@ -35,6 +35,7 @@ export class PlayerBodyMainComponent implements OnInit  {
   private selectedRowIndex = -1;
   private userPlaylists: Array<Playlist>;
   private selectedTrack: any;
+  selectedIndex = 2;
 
   constructor(private playlistService: PlaylistService, private datastore: DatastoreService, public snackBar: MatSnackBar) {
   }
@@ -45,6 +46,7 @@ export class PlayerBodyMainComponent implements OnInit  {
     theTrack.trackNumber = this.selectedTrack.TrackNumber;
     theTrack.link = this.selectedTrack.Link;
     theTrack.source = this.selectedTrack.Source;
+ 
 
     this.playlistService.addToPlaylist(theTrack, plslst).then((result) => {
       this.showConfirmMessage('Track Added');
