@@ -126,11 +126,12 @@ export class PlaylistService {
     });
   }
 
-  public addToPlaylist(track: Track) {
-
+  public addToPlaylist(track: any, plylst?: any): Promise<any> {
+    plylst.Tracks.push(track);
+    return this.dbservice.put(plylst);
   }
 
-  public deleteFromPlaylist(track: Track) {
+  public deleteFromPlaylist(track: Track)  {
 
   }
 

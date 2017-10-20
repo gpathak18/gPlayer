@@ -34,12 +34,28 @@ export class PlayerBodyMainComponent implements OnInit  {
   private tracks: Array<Track>;
   private selectedRowIndex = -1;
   private userPlaylists: Array<Playlist>;
+  private selectedTrack: any;
 
   constructor(private playlistService: PlaylistService, private datastore: DatastoreService, public snackBar: MatSnackBar) {
   }
 
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
+  openSnackBar(plslst: Playlist, action: string) {
+
+    let theTrack = new Track(this.selectedTrack.Name);
+    theTrack.trackNumber = this.selectedTrack.TrackNumber;
+    theTrack.link = this.selectedTrack.Link;
+    theTrack.source = this.selectedTrack.Source;
+
+    this.playlistService.addToPlaylist(theTrack, plslst).then((result) => {
+      this.showConfirmMessage('Track Added');
+    }).catch((error) => {
+      console.log('error', error);
+      this.showConfirmMessage('Could not add track');
+    });
+  }
+
+  private showConfirmMessage(msg) {
+    this.snackBar.open(msg, 'Done', {
       duration: 2000,
     });
   }
@@ -51,6 +67,10 @@ export class PlayerBodyMainComponent implements OnInit  {
     this.playlistService.user_playlists.subscribe(value => this.userPlaylists = value);
     this.dataSource.currentTracks.subscribe(tracks => this.tracks = tracks);
     console.log(this.userPlaylists);
+  }
+
+  private setSelectedTrack(_track) {
+    this.selectedTrack = _track;
   }
 
   private playTrack(row) {

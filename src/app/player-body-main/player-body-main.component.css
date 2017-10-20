@@ -39,8 +39,14 @@
     background: #B39DDB;
   }
   
+  :host/deep/ .mat-tab-header {
+    display: none;
+ }
 
-
+ /* ::ng-deep .tabs .mat-tab-list .mat-tab-labels {
+  display: none;
+ } */
+  /* ::ng-deep .tabs .mat-tab-list .mat-tab-labels { display: none; } */
   
   
   
