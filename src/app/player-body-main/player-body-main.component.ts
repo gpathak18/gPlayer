@@ -42,7 +42,7 @@ export class PlayerBodyMainComponent implements OnInit  {
 
   openSnackBar(plslst: Playlist, action: string) {
 
-    let theTrack = new Track(this.selectedTrack.Name);
+    const theTrack = new Track(this.selectedTrack.Name);
     theTrack.trackNumber = this.selectedTrack.TrackNumber;
     theTrack.link = this.selectedTrack.Link;
     theTrack.source = this.selectedTrack.Source;
@@ -67,8 +67,7 @@ export class PlayerBodyMainComponent implements OnInit  {
     this.winWdHt.tileHeight = '560';
     this.winWdHt.tileWidth = '500';
     this.playlistService.user_playlists.subscribe(value => this.userPlaylists = value);
-    this.dataSource.currentTracks.subscribe(tracks => this.tracks = tracks)
-    
+    this.dataSource.currentTracks.subscribe(tracks => this.tracks = tracks);
   }
 
   // ngOnChanges(){

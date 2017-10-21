@@ -29,7 +29,7 @@ export class PlayerBodyHeaderComponent implements OnInit {
     this.loadPlaylists();
   }
 
-  setTab(tab){
+  setTab(tab) {
     this.selTab = tab;
   }
   private addPlaylist($event) {
