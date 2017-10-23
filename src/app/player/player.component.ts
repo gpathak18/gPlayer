@@ -144,6 +144,12 @@ export class PlayerComponent implements OnInit {
     });
     
     this.player.on('ready', () => {
+
+    });
+
+    this.player.on('stop', () => {
+      this.playPauseState = 'pause'
+      this.setPalyPauseIcon();
     });
   }
 

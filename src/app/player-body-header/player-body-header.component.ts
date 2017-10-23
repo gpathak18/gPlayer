@@ -5,6 +5,8 @@ import { DatastoreService } from '../datastore.service';
 import { PlaylistService } from '../playlist.service';
 import { Playlist } from '../playlist';
 import { Track } from '../track';
+var fs = require('fs');
+var mm = require('musicmetadata');
 
 @Component({
   selector: 'app-player-body-header',
@@ -27,6 +29,8 @@ export class PlayerBodyHeaderComponent implements OnInit {
   ngOnInit() {
 
     this.loadPlaylists();
+
+
   }
 
   setTab(tab) {
@@ -56,16 +60,55 @@ export class PlayerBodyHeaderComponent implements OnInit {
     event.stopPropagation();
   }
 
+  
+
   private readFiles(inputValue: any): void {
     this.mainLibrary = this.playlistService.getMainLibrary();
     this.fileCntr = Number(this.mainLibrary.trackCount) + 1;
     const files = inputValue.files;
+    const HEADER_SIZE = 10;
+    var arrayBuffer;
+    let synchToInt = synch => {
+      const mask = 0b01111111;
+      let b1 = synch & mask;
+      let b2 = (synch >> 8) & mask;
+      let b3 = (synch >> 16) & mask;
+      let b4 = (synch >> 24) & mask;
+    
+      return b1 | (b2 << 7) | (b3 << 14) | (b4 << 21);
+    };
     for (const file of files) {
       if (file.type.match(this.fileType)) {
         const reader = new FileReader();
+       
         reader.onload = function(e) {
+           arrayBuffer = reader.result;
+
+           let header = new DataView(arrayBuffer, 0, HEADER_SIZE);       
+           let major = header.getUint8(3);
+           let minor = header.getUint8(4);
+           let version = `ID3v2.${major}.${minor}`;
+           console.log(version);
+           let size = synchToInt(header.getUint32(6));
+           let offset = HEADER_SIZE;
+           let id3Size = HEADER_SIZE + size;
+
+           let decodeFrame = (buffer, offset) => {
+            let header = new DataView(buffer, offset, HEADER_SIZE + 1);
+            if (header.getUint8(0) === 0) { return; }
+          };
+         
+          //  while (offset < id3Size) {
+          //   let frame = decodeFrame(arrayBuffer, offset);
+          //   if (!frame) { break; }
+          //   console.log(`${frame.id}: ${frame.value.length > 200 ? '...' : frame.value}`);
+          //   offset += frame.size;
+          //  }
+
         };
 
+        reader.readAsArrayBuffer(file);
+          
         const track = new Track(file.name);
         track.trackNumber = this.fileCntr;
         track.source = 'local';
@@ -74,7 +117,13 @@ export class PlayerBodyHeaderComponent implements OnInit {
         this.fileCntr++;
         console.log(this.mainLibrary.tracks);
         this.mainLibrary.tracks.push(track);
+
+        var parser = mm(fs.createReadStream('assets/sample.mp3'), function (err, metadata) {
+          if (err) throw err;
+          console.log(metadata);
+        });
       }
+
 
     }
     this.mainLibrary.trackCount = this.mainLibrary.tracks.length;

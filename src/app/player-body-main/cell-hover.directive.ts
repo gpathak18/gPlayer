@@ -14,6 +14,7 @@ export class CellHoverDirective {
   @Input() defaultColor: string;
   @Input() selectColor: string;
   @Input('cellHover') hoverColor: string;
+  @Input() selectedRowIndex: string;
 
   constructor(el: ElementRef) {
     this.el = el.nativeElement;
@@ -35,6 +36,7 @@ export class CellHoverDirective {
 
   private highlight(color: string) {
     this.el.style.backgroundColor = color;
+    // console.log(this.selectedRowIndex)
   }
 
 }

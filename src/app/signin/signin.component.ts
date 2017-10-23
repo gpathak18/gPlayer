@@ -4,10 +4,12 @@ import {MAT_DIALOG_DATA} from '@angular/material';
 import {parse} from 'url';
 import qs from 'qs';
 declare const window: any;
-const { BrowserWindow } = window.require("electron").remote
+// const { BrowserWindow } = window.require("electron").remote
 // const BrowserWindow = window.require("electron")
 // import * as drive from 'googledrive';
 declare var gapi: any;
+
+
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -18,7 +20,7 @@ export class SigninComponent implements OnInit {
   @ViewChild('signin') authorizeButton: ElementRef;
   @ViewChild('signout') signoutButton: ElementRef;
 
-  public authWindow = new BrowserWindow({ width: 800, height: 600, show: false });
+  // public authWindow = new BrowserWindow({ width: 800, height: 600, show: false });
   
   constructor( @Inject(MAT_DIALOG_DATA) public data: any, private thisDomElm: ElementRef) { }
 
@@ -35,17 +37,17 @@ export class SigninComponent implements OnInit {
       }
     });
 
-    this.authWindow.on('closed', () => {
-      throw new Error('Auth window was closed by user')
-    })
+    // this.authWindow.on('closed', () => {
+    //   throw new Error('Auth window was closed by user')
+    // })
   
-    this.authWindow.webContents.on('will-navigate', (event, url) => {
-      // handleNavigation(url)
-    })
+    // this.authWindow.webContents.on('will-navigate', (event, url) => {
+    //   // handleNavigation(url)
+    // })
   
-    this.authWindow.webContents.on('did-get-redirect-request', (event, oldUrl, newUrl) => {
-      // handleNavigation(newUrl)
-    })
+    // this.authWindow.webContents.on('did-get-redirect-request', (event, oldUrl, newUrl) => {
+    //   // handleNavigation(newUrl)
+    // })
   
     // this.authWindow.loadURL(authUrl)
 

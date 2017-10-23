@@ -5,7 +5,17 @@
             <mat-table #table [dataSource]="dataSource">
                 <ng-container matColumnDef="TrackNumber">
                   <mat-header-cell *matHeaderCellDef class="mat-cell-sn"> No. </mat-header-cell>
-                  <mat-cell *matCellDef="let track" class="mat-cell-sn"> {{track.TrackNumber}} </mat-cell>
+                  <mat-cell *matCellDef="let track" class="mat-cell-sn" > 
+                      <div fxLayout="row" fxLayoutAlign="center center"   *ngIf="selectedRowIndex != track.TrackNumber;then trackNum else playButton"></div>
+                      <ng-template #playButton>
+                          <button mat-icon-button style="margin-left: -12px" (click)="playTrack(track)">
+                            <mat-icon> play_circle_outline</mat-icon>
+                          </button>
+                        </ng-template>
+                      <ng-template #trackNum>
+                        <span>{{track.TrackNumber}}</span>
+                      </ng-template>                     
+                   </mat-cell>
                 </ng-container>
             
                 <ng-container matColumnDef="Link">
@@ -21,7 +31,7 @@
                   <mat-header-cell *matHeaderCellDef class="mat-cell-song"> Song Name </mat-header-cell>
                   <mat-cell *matCellDef="let track" class="mat-cell-song">
                     {{track.Name}}
-                    <mat-icon class="app-icon-gray" *ngIf="showIcon">timeline</mat-icon>
+                    <!-- <mat-icon class="app-icon-gray" *ngIf="showIcon">timeline</mat-icon> -->
                   </mat-cell>
                 </ng-container>
             
@@ -34,16 +44,18 @@
                   </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns;" style="height: 20px" [ngClass]="{'highlight': selectedRowIndex == row.TrackNumber}"
-                  [cellHover]="'#F5F5F5'" defaultColor="#FFFFFF" selectColor="#B39DDB" (click)="playTrack(row)">
+                <mat-row *matRowDef="let row; columns: displayedColumns;" style="height: 20px" 
+                  [cellHover]="'#F5F5F5'" defaultColor="#FFFFFF" selectColor="#B39DDB"  
+                  [selectedRowIndex]="row.TrackNumber" (mouseenter)="selectedRowIndex=row.TrackNumber">
                 </mat-row>
               </mat-table>
             
-            <mat-menu #menu="matMenu" style="font-size: 10px">
+            <mat-menu #menu="matMenu" style="font-size: 10px" dense>
               <button mat-menu-item>
                 <mat-icon>play_circle_outline</mat-icon>
                 <span>Play Next</span>
               </button>
+              <mat-divider></mat-divider>
               <button mat-menu-item>
                 <mat-icon>queue_music</mat-icon>
                 <span>Queue Track</span>
@@ -52,10 +64,18 @@
                 <mat-icon>playlist_add</mat-icon>
                 <span>Add to Playlist</span>
               </button>
-              <button mat-menu-item>
+              <button mat-menu-item (click)="openSnackBar(playlist, 'Done')" >
                 <mat-icon>close</mat-icon>
                 <span>Remove</span>
               </button>
+              <mat-divider></mat-divider>
+              <div mat-menu-item>
+                  <mat-icon style="margin-right: 0px">star_border</mat-icon>
+                  <mat-icon style="margin-right: 0px">star_border</mat-icon>
+                  <mat-icon style="margin-right: 0px">star_border</mat-icon>
+                  <mat-icon style="margin-right: 0px">star_border</mat-icon>
+                  <mat-icon style="margin-right: 0px">star_border</mat-icon>
+              </div>
             </mat-menu>
             <mat-menu #playlists="matMenu" >
               <button  mat-menu-item (click)="openSnackBar(playlist, 'Done')" *ngFor="let playlist of userPlaylists"> 

@@ -11,6 +11,9 @@
     cursor: pointer;
   }
   
+  .zero-margin {
+    margin-right: 0px
+  }
   
   .mat-table {
     overflow: auto;
@@ -20,6 +23,7 @@
   
   .mat-cell-sn {
     flex: 0 0 10%;
+    margin: 0 auto;
   }
   
   .mat-cell-sl {
@@ -28,7 +32,7 @@
   
   .mat-cell-song {
     flex: 0 0 70%;
-    cursor: pointer;
+    /* cursor: pointer; */
   }
   
   .mat-cell-op {
@@ -43,6 +47,13 @@
     display: none;
  }
 
+ :host/deep/ .mat-menu-item {
+   height: 30px;
+ }
+ span {
+  font-size: 14px;
+  color: rgba(0,0,0,.87);
+}
  /* ::ng-deep .tabs .mat-tab-list .mat-tab-labels {
   display: none;
  } */

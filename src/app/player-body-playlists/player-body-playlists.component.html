@@ -1,28 +1,42 @@
 <mat-grid-list cols="3" rowHeight="fit" [style.height]="winWdHt.tileHeight-90+'px'">
-    <mat-grid-tile colspan="1" style="background-color: rgb(164, 207, 164)">
+    <mat-grid-tile colspan="1" style="background-color: white">
           <mat-list  class="mat-list-style">
-              <mat-list-item *ngFor="let playlist of playLists" fxLayout="row" fxLayoutAlign="start" class="mat-list-items"  [id]="playlist.Name" (click)="selectedPlylst($event)">
+              <mat-list-item *ngFor="let playlist of playLists" fxLayout="row" fxLayoutAlign="start" 
+              class="mat-list-items"  [id]="playlist.Name" (click)="selectedPlylst($event)" [cellHover]="'#F5F5F5'">
                   <!-- <button mat-button style="width: 100%"  [id]="playlist.Name" (click)="selectedPlylst($event)" style="background-color: white"> -->
                       <!-- <mat-icon class="app-icon">playlist</mat-icon> -->
                       <span class="item-spacer">{{playlist.Name}}</span>
                       <span class="item-spacer"></span>
-                      <mat-icon class="app-icon">close</mat-icon>
-                 <!-- </button> -->    
+                      <mat-icon class="app-icon">close</mat-icon>                  <!-- </button> -->    
               </mat-list-item>  
-              <mat-divider style="width:100%"></mat-divider> 
           </mat-list>
     </mat-grid-tile>
-    <mat-grid-tile colspan="2"  style="background-color: rgb(169, 177, 68)">
+    <mat-grid-tile colspan="2"  style="background-color: white">
         <mat-list  class="mat-list-style">
-            <mat-list-item *ngFor="let track of currentTracks" fxLayout="row" fxLayoutAlign="start" class="mat-list-items"  [id]="track.Name">
+            <mat-list-item  *ngFor="let track of currentTracks" fxLayout="row" fxLayoutAlign="start" 
+            class="mat-list-items"  [id]="track.Name"  [cellHover]="'#F5F5F5'">
                 <!-- <button mat-button style="width: 100%"  [id]="playlist.Name" (click)="selectedPlylst($event)" style="background-color: white"> -->
                     <!-- <mat-icon class="app-icon">playlist</mat-icon> -->
-                    <span class="item-spacer">{{track.Name}}</span>
+                    <span class="item-spacer" >{{track.Name}}</span>
                     <span class="item-spacer"></span>
-                    <mat-icon class="app-icon">close</mat-icon>
+                    <mat-icon class="app-icon" [matMenuTriggerFor]="menu">more_vert</mat-icon>
                <!-- </button> -->    
             </mat-list-item>  
             <mat-divider style="width:100%"></mat-divider> 
         </mat-list>
     </mat-grid-tile>
 </mat-grid-list>
+<mat-menu #menu="matMenu" style="font-size: 10px">
+    <button mat-menu-item>
+      <mat-icon>play_circle_outline</mat-icon>
+      <span>Play Next</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>queue_music</mat-icon>
+      <span>Queue Track</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>close</mat-icon>
+      <span>Remove</span>
+    </button>
+  </mat-menu>

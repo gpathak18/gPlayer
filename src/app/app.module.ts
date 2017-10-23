@@ -43,7 +43,7 @@ const appRoutes: Routes = [
     ErrorComponent,
     EqualizerComponent,
     PlayerBodyPlaylistsComponent
-  ],
+   ],
   entryComponents: [SigninComponent, EqualizerComponent],
   imports: [
     RouterModule.forRoot(

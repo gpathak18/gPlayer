@@ -15,7 +15,6 @@ import { Track } from '../track';
 import { Playlist } from '../playlist';
 import { MatSnackBar } from '@angular/material';
 
-
 @Component({
   selector: 'app-player-body-main',
   templateUrl: './player-body-main.component.html',
@@ -26,16 +25,15 @@ export class PlayerBodyMainComponent implements OnInit  {
  @Input('winWdHt') winWdHt  = { tileHeight: '', tileWidth: ''};
  @Input('player') player: any = '';
  @Input('selectedTab') tabIndex;
+ @Input('selectedRowIndex') selectedRowIndex=-1;
  @Output() playEvent = new EventEmitter();
-
+ 
   private displayedColumns = ['TrackNumber', 'Name', 'Link', 'Source'];
   private dataSource: DatastoreService | null;
   private hoverrow = -1;
   private tracks: Array<Track>;
-  private selectedRowIndex = -1;
   private userPlaylists: Array<Playlist>;
   private selectedTrack: any;
-  // selectedIndex = this.ta;
 
   constructor(private playlistService: PlaylistService, private datastore: DatastoreService, public snackBar: MatSnackBar) {
   }
@@ -70,26 +68,46 @@ export class PlayerBodyMainComponent implements OnInit  {
     this.dataSource.currentTracks.subscribe(tracks => this.tracks = tracks);
   }
 
-  // ngOnChanges(){
-  //   console.log(this.tabIndex);
-  //   // this.selectedIndex = this.tabIndex;
-  // }
-
   private setSelectedTrack(_track) {
     this.selectedTrack = _track;
   }
 
   private playTrack(row) {
-    const path = this.getPath(row.TrackNumber)[0].link;
+    // const path = this.getPath(row.TrackNumber)[0].Link;
+    const path = row.Link;
+    
     this.player.loadTrack(path);
-    this.player.loadTrack('/assets/sample.mp3');
+    // this.player.loadTrack('/assets/sample.mp3');
+    // this.player.on('waveform-ready', () => {
+      this.player.playPause();
+    // });
   }
 
-  private getPath(position) {
-    return this.tracks.filter(track => {
-      // track.trackNumber === position
-    });
-  }
+  // private openInFinder(pathToOpen, isFile) {
+  // switch process.platform
+  //   when 'darwin'
+  //     command: 'open'
+  //     label: 'Finder'
+  //     args: ['-R', pathToOpen]
+  //   when 'win32'
+  //     args = ["/select,#{pathToOpen}"]
+
+  //     if process.env.SystemRoot
+  //       command = path.join(process.env.SystemRoot, 'explorer.exe')
+  //     else
+  //       command = 'explorer.exe'
+
+  //     command: command
+  //     label: 'Explorer'
+  //     args: args
+    
+  // }
+
+  // private getPath(position): any{
+  //   return this.tracks.filter((track:any) => {
+  //     track.TrackNumber === position
+  //   });
+  // }
 
   // tslint:disable-next-line:member-ordering
   @ViewChild('filter') filter: ElementRef;

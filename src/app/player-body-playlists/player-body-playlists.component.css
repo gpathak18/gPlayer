@@ -1,5 +1,10 @@
 .item-spacer {
     flex: 1 1 auto;
+    font-size: 14px;
+  }
+
+  span {
+    font-size: 14px;
   }
 
   .mat-list-items {
@@ -14,7 +19,6 @@
   }
 
   .mat-list-style {
-    background-color: rgba(31, 223, 214, 0.473);
     width:100%; 
     height:100%;
     overflow-y: hidden;
@@ -27,5 +31,6 @@
   :host/deep/ .mat-list-item-content {
     width: 100%;
   }
+
 
  

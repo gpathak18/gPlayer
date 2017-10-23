@@ -1,3 +1,5 @@
+'use strict';
+
 const {
   app,
   BrowserWindow
@@ -24,7 +26,7 @@ function createWindow() {
     transparent: true,
     radii: [5, 5, 5, 5],
     backgroundColor: '#282364',
-    opacity: 0.7
+    icon: `file://__dirname/assets/png/64x64.png`
 
   })
 
@@ -42,6 +44,10 @@ function createWindow() {
       // displayNow(splashScreen, win);
       win.show()
     }, 1000);
+  })
+
+  win.webContents.on('will-navigate', ev => {
+    ev.preventDefault()
   })
 
 }
@@ -84,5 +90,35 @@ app.on('window-all-closed', function () {
 app.on('activate', () => {
   if (win === null) {
     createWindow()
+    setListeners()
+    
   }
 })
+
+function setListeners(){
+  win.document.addEventListener('dragover', function (event) {
+    event.preventDefault();
+    return false;
+  }, false);
+  
+  win.document.addEventListener('drop', function (event) {
+    event.preventDefault();
+    return false;
+  }, false);
+}
+// process.argv.forEach(onOpen)
+
+// Open handlers should be added on the first tick.
+// These fire if the app is already running and the user
+// drags files or URLs onto the dock icon, or if they set
+// the app as a handler for a file type and then open a file
+app.on('open-file', (e) => {
+console.log('he',e)
+})
+
+
+app.on('open-url', (e) => {
+  console.log('hes',e)
+})
+
+

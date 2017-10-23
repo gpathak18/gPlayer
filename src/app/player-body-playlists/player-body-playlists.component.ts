@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Playlist } from '../playlist';
 import { PlaylistService } from '../playlist.service';
 import { Track } from '../track';
@@ -32,4 +32,7 @@ export class PlayerBodyPlaylistsComponent implements OnInit {
     this.currentTracks = plylist.Tracks;
     console.log(id);
   }
+
+  @ViewChild('volume') volume: ElementRef;
+  
 }

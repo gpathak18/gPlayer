@@ -5,3 +5,4 @@ interface NodeModule {
 }
 /**Google Drive API */
 declare var gapi:any;
+declare var require: NodeRequire;
