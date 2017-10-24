@@ -5,9 +5,11 @@ import { DatastoreService } from '../datastore.service';
 import { PlaylistService } from '../playlist.service';
 import { Playlist } from '../playlist';
 import { Track } from '../track';
-var fs = require('fs');
-var mm = require('musicmetadata');
-
+// import * as jsmediatags from 'jsmediatags';
+// declare var jsmediatags: any;
+import * as id3 from 'id3js';
+import * as fs from 'fs';
+// declare var id3: any;
 @Component({
   selector: 'app-player-body-header',
   templateUrl: './player-body-header.component.html',
@@ -27,10 +29,7 @@ export class PlayerBodyHeaderComponent implements OnInit {
   constructor(private dbservice: PouchDbService, private datastore: DatastoreService, private playlistService: PlaylistService) { }
 
   ngOnInit() {
-
     this.loadPlaylists();
-
-
   }
 
   setTab(tab) {
@@ -45,14 +44,10 @@ export class PlayerBodyHeaderComponent implements OnInit {
   }
 
   private deletePlaylist($event) {
-    // const plylist = this.playLists.find((value) => value.name === $event.target.id);
     this.playlistService.deletePlaylist($event.target.id);
-    // this.playLists.splice(0, 1);
-    // this.dbservice.delete(plylist.Name);
   }
 
   private loadPlaylists() {
-    // this.playlistService.user_playlists.subscribe(value => this.playLists.push(value));
     this.playlistService.user_playlists.subscribe(value => this.playLists = value);
   }
 
@@ -60,55 +55,25 @@ export class PlayerBodyHeaderComponent implements OnInit {
     event.stopPropagation();
   }
 
-  
-
   private readFiles(inputValue: any): void {
     this.mainLibrary = this.playlistService.getMainLibrary();
     this.fileCntr = Number(this.mainLibrary.trackCount) + 1;
     const files = inputValue.files;
-    const HEADER_SIZE = 10;
-    var arrayBuffer;
-    let synchToInt = synch => {
-      const mask = 0b01111111;
-      let b1 = synch & mask;
-      let b2 = (synch >> 8) & mask;
-      let b3 = (synch >> 16) & mask;
-      let b4 = (synch >> 24) & mask;
-    
-      return b1 | (b2 << 7) | (b3 << 14) | (b4 << 21);
-    };
+
     for (const file of files) {
       if (file.type.match(this.fileType)) {
         const reader = new FileReader();
-       
-        reader.onload = function(e) {
-           arrayBuffer = reader.result;
 
-           let header = new DataView(arrayBuffer, 0, HEADER_SIZE);       
-           let major = header.getUint8(3);
-           let minor = header.getUint8(4);
-           let version = `ID3v2.${major}.${minor}`;
-           console.log(version);
-           let size = synchToInt(header.getUint32(6));
-           let offset = HEADER_SIZE;
-           let id3Size = HEADER_SIZE + size;
-
-           let decodeFrame = (buffer, offset) => {
-            let header = new DataView(buffer, offset, HEADER_SIZE + 1);
-            if (header.getUint8(0) === 0) { return; }
-          };
-         
-          //  while (offset < id3Size) {
-          //   let frame = decodeFrame(arrayBuffer, offset);
-          //   if (!frame) { break; }
-          //   console.log(`${frame.id}: ${frame.value.length > 200 ? '...' : frame.value}`);
-          //   offset += frame.size;
-          //  }
-
+        reader.onload = function (e) {
         };
 
-        reader.readAsArrayBuffer(file);
-          
+        // reader.readAsArrayBuffer(file);
+        reader.readAsDataURL(file);
+        id3(file.path, function(err, tags) {
+            if (err) console.log(err);
+            console.log(tags)
+        });
+
         const track = new Track(file.name);
         track.trackNumber = this.fileCntr;
         track.source = 'local';
@@ -118,10 +83,6 @@ export class PlayerBodyHeaderComponent implements OnInit {
         console.log(this.mainLibrary.tracks);
         this.mainLibrary.tracks.push(track);
 
-        var parser = mm(fs.createReadStream('assets/sample.mp3'), function (err, metadata) {
-          if (err) throw err;
-          console.log(metadata);
-        });
       }
 
 
@@ -135,4 +96,5 @@ export class PlayerBodyHeaderComponent implements OnInit {
     this.readFiles($event.target);
   }
 
+ 
 }
