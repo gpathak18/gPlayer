@@ -1,8 +1,8 @@
 <!-- <div [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'"> -->
 
-    <mat-tab-group [selectedIndex]="tabIndex" [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'">
-        <mat-tab label="library">
-            <mat-table #table [dataSource]="dataSource">
+    <mat-tab-group class="scroll-bar-style" [selectedIndex]="tabIndex" [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'">
+        <mat-tab label="library" >
+            <mat-table #table [dataSource]="dataSource" > 
                 <ng-container matColumnDef="TrackNumber">
                   <mat-header-cell *matHeaderCellDef class="mat-cell-sn"> No. </mat-header-cell>
                   <mat-cell *matCellDef="let track" class="mat-cell-sn" > 
@@ -30,7 +30,7 @@
                 <ng-container matColumnDef="Name">
                   <mat-header-cell *matHeaderCellDef class="mat-cell-song"> Song Name </mat-header-cell>
                   <mat-cell *matCellDef="let track" class="mat-cell-song">
-                    {{track.Name}}
+                    <span>{{track.Name}}</span><br><span *ngIf="track.Name.length<50 && track.Artist!=null" style="font-size: 12px">{{track.Artist}}</span>
                     <!-- <mat-icon class="app-icon-gray" *ngIf="showIcon">timeline</mat-icon> -->
                   </mat-cell>
                 </ng-container>
@@ -70,11 +70,11 @@
               </button>
               <mat-divider></mat-divider>
               <div mat-menu-item>
-                  <mat-icon style="margin-right: 0px">star_border</mat-icon>
-                  <mat-icon style="margin-right: 0px">star_border</mat-icon>
-                  <mat-icon style="margin-right: 0px">star_border</mat-icon>
-                  <mat-icon style="margin-right: 0px">star_border</mat-icon>
-                  <mat-icon style="margin-right: 0px">star_border</mat-icon>
+                  <mat-icon [cellHover]="'#F5F5F5'" style="margin-right: 0px">star_border</mat-icon>
+                  <mat-icon [cellHover]="'#F5F5F5'" style="margin-right: 0px">star_border</mat-icon>
+                  <mat-icon [cellHover]="'#F5F5F5'" style="margin-right: 0px">star_border</mat-icon>
+                  <mat-icon [cellHover]="'#F5F5F5'" style="margin-right: 0px">star_border</mat-icon>
+                  <mat-icon [cellHover]="'#F5F5F5'" style="margin-right: 0px">star_border</mat-icon>
               </div>
             </mat-menu>
             <mat-menu #playlists="matMenu" >

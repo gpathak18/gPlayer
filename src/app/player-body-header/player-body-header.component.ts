@@ -66,15 +66,25 @@ export class PlayerBodyHeaderComponent implements OnInit {
 
         reader.onload = function (e) {
         };
-
+        const track = new Track(file.name);
         // reader.readAsArrayBuffer(file);
         reader.readAsDataURL(file);
-        id3(file.path, function(err, tags) {
-            if (err) console.log(err);
-            console.log(tags)
+
+        id3(file, (err, tags) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(tags)
+              if(tags.title){
+                track.name = tags.title
+              } else{
+                track.name = file.name.replace(/\.[^/.]+$/, "")
+              }             
+              track.artist = tags.artist
+            }       
         });
 
-        const track = new Track(file.name);
+        
         track.trackNumber = this.fileCntr;
         track.source = 'local';
         track.link = file.path;

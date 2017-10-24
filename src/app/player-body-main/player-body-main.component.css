@@ -15,6 +15,14 @@
     margin-right: 0px
   }
   
+  .scroll-bar-style {
+    overflow-y: hidden;
+  }
+
+  .scroll-bar-style:hover {
+    overflow-y: overlay;
+  }
+
   .mat-table {
     overflow: auto;
     max-height: 100%;

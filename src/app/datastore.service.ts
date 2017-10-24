@@ -16,10 +16,12 @@ export class DatastoreService extends DataSource<any> {
   }
 
   addTrack(tracks: Array<Track>) {
+
     this.data.next(tracks);
   }
 
   connect(): Observable<Array<Track>> {
+    console.log(this.currentTracks)
     return this.currentTracks;
   }
 

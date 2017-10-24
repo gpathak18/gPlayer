@@ -13,6 +13,7 @@ export class Track implements Track {
     private Rights?: Array<string>;
     private Subtitle?: string;
     private Album?: Album;
+    private Artist?: string;
     private Artists?: Array<{
         Role: string;
         Artist: Artist;
@@ -60,5 +61,13 @@ export class Track implements Track {
     public set source(value: string) {
         this.Source = value;
     }
+
+    public get artist(): string {
+		return this.Artist;
+	}
+
+	public set artist(value: string) {
+		this.Artist = value;
+	}
 
 }
