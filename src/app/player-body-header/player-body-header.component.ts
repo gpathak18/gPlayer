@@ -5,11 +5,11 @@ import { DatastoreService } from '../datastore.service';
 import { PlaylistService } from '../playlist.service';
 import { Playlist } from '../playlist';
 import { Track } from '../track';
-// import * as jsmediatags from 'jsmediatags';
-// declare var jsmediatags: any;
+
+
 import * as id3 from 'id3js';
 import * as fs from 'fs';
-// declare var id3: any;
+
 @Component({
   selector: 'app-player-body-header',
   templateUrl: './player-body-header.component.html',

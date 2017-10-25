@@ -1,5 +1,5 @@
 'use strict';
-import {PlaylistService} from '../playlist.service';
+import { PlaylistService } from '../playlist.service';
 import { Component, OnInit, ViewChild, ElementRef, Input, Injectable, Output, EventEmitter } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
@@ -14,37 +14,69 @@ import { PlayerService } from '../player.service';
 import { Track } from '../track';
 import { Playlist } from '../playlist';
 import { MatSnackBar } from '@angular/material';
-
+// import { shell } from 'electron';
+declare const window: any;
+const { shell } = window.require("electron").remote
 @Component({
   selector: 'app-player-body-main',
   templateUrl: './player-body-main.component.html',
   styleUrls: ['./player-body-main.component.css']
 })
-export class PlayerBodyMainComponent implements OnInit  {
+export class PlayerBodyMainComponent implements OnInit {
 
- @Input('winWdHt') winWdHt  = { tileHeight: '', tileWidth: ''};
- @Input('player') player: any = '';
- @Input('selectedTab') tabIndex;
- @Input('selectedRowIndex') selectedRowIndex=-1;
- @Output() playEvent = new EventEmitter();
- 
+  @Input('winWdHt') winWdHt = { tileHeight: '', tileWidth: '' };
+  @Input('player') player: any = '';
+  @Input('selectedTab') tabIndex;
+  @Input('selectedRowIndex') selectedRowIndex = -1;
+  @Output() playEvent = new EventEmitter();
+
   private displayedColumns = ['TrackNumber', 'Name', 'Link', 'Source'];
   private dataSource: DatastoreService | null;
   private hoverrow = -1;
   private tracks: Array<Track>;
   private userPlaylists: Array<Playlist>;
   private selectedTrack: any;
-
+  private stars: Array<string> = ['star_border','star_border','star_border','star_border','star_border']
+  private starResetCntr = 0;
   constructor(private playlistService: PlaylistService, private datastore: DatastoreService, public snackBar: MatSnackBar) {
   }
 
-  openSnackBar(plslst: Playlist, action: string) {
+  private setRating(i){
+    this.stars = this.stars.map((star,index) => {
+      if(index <= i){
+          star = 'star'
+      } else {
+        star = 'star_border'
+      }
+      return star;
+    });
+  }
+
+  private resetRating(i){
+    if(i===0 && this.starResetCntr === 1){
+      this.stars[i] = this.stars[i] === 'star_border' ? 'star' : 'star_border';
+      this.starResetCntr = 0;
+    } else if(i===0) {
+      this.starResetCntr++;
+    }
+  }
+
+
+  ngOnInit() {
+    this.dataSource = this.datastore;
+    this.winWdHt.tileHeight = '560';
+    this.winWdHt.tileWidth = '500';
+    this.playlistService.user_playlists.subscribe(value => this.userPlaylists = value);
+    this.dataSource.currentTracks.subscribe(tracks => this.tracks = tracks);
+  }
+
+  private openSnackBar(plslst: Playlist, action: string) {
 
     const theTrack = new Track(this.selectedTrack.Name);
     theTrack.trackNumber = this.selectedTrack.TrackNumber;
     theTrack.link = this.selectedTrack.Link;
     theTrack.source = this.selectedTrack.Source;
- 
+
 
     this.playlistService.addToPlaylist(theTrack, plslst).then((result) => {
       this.showConfirmMessage('Track Added');
@@ -60,12 +92,20 @@ export class PlayerBodyMainComponent implements OnInit  {
     });
   }
 
-  ngOnInit() {
-    this.dataSource = this.datastore;
-    this.winWdHt.tileHeight = '560';
-    this.winWdHt.tileWidth = '500';
-    this.playlistService.user_playlists.subscribe(value => this.userPlaylists = value);
-    this.dataSource.currentTracks.subscribe(tracks => this.tracks = tracks);
+  private openInFinder() {
+    if(!shell.showItemInFolder(this.selectedTrack.Link)){
+      this.showConfirmMessage('Could not open track in finder.');
+    } 
+  }
+
+  private moveToTrash(){
+       if(shell.moveItemToTrash(this.selectedTrack.Link)){
+        const _mainLibrary = this.playlistService.deleteFromMainLibrary(this.selectedTrack)
+        this.datastore.addTrack(_mainLibrary.tracks);
+        this.showConfirmMessage('Track deleted.');
+      } else {
+        this.showConfirmMessage('Could not delete track.');
+      }
   }
 
   private setSelectedTrack(_track) {
@@ -73,42 +113,13 @@ export class PlayerBodyMainComponent implements OnInit  {
   }
 
   private playTrack(row) {
-    // const path = this.getPath(row.TrackNumber)[0].Link;
     const path = row.Link;
-    
     this.player.loadTrack(path);
     // this.player.loadTrack('/assets/sample.mp3');
     // this.player.on('waveform-ready', () => {
-      this.player.playPause();
+    this.player.playPause();
     // });
   }
 
-  // private openInFinder(pathToOpen, isFile) {
-  // switch process.platform
-  //   when 'darwin'
-  //     command: 'open'
-  //     label: 'Finder'
-  //     args: ['-R', pathToOpen]
-  //   when 'win32'
-  //     args = ["/select,#{pathToOpen}"]
-
-  //     if process.env.SystemRoot
-  //       command = path.join(process.env.SystemRoot, 'explorer.exe')
-  //     else
-  //       command = 'explorer.exe'
-
-  //     command: command
-  //     label: 'Explorer'
-  //     args: args
-    
-  // }
-
-  // private getPath(position): any{
-  //   return this.tracks.filter((track:any) => {
-  //     track.TrackNumber === position
-  //   });
-  // }
-
-  // tslint:disable-next-line:member-ordering
   @ViewChild('filter') filter: ElementRef;
 }

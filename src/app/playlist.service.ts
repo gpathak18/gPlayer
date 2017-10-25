@@ -101,8 +101,10 @@ export class PlaylistService {
 
   }
 
-  public deleteFromMainLibrary(track: Track) {
-
+  public deleteFromMainLibrary(track: any) {
+      this.mainLibrary.tracks = this.mainLibrary.tracks.filter((value: any) => value.Name !== track.Name);
+      this.dbservice.put(this.mainLibrary, 'MAIN_LIBRARY');
+      return this.mainLibrary;
   }
 
   public createPlaylist(plyLst: Playlist) {
