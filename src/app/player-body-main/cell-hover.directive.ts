@@ -22,21 +22,20 @@ export class CellHoverDirective {
 
   @HostListener('mouseenter') onMouseEnter() {
     this.highlight(this.hoverColor || this.defaultColor || 'white');
-    // this.el.childNodes[1].nodeValue = '<>'
   }
 
   @HostListener('mouseleave') onMouseLeave() {
     this.highlight(null);
   }
 
-  // @HostListener('click', ['$event']) onClick($event) {
-  //   this.isSelected = true;
-  //   this.highlight(this.selectColor || '#B39DDB');
-  // }
+  @HostListener('click', ['$event']) onClick($event) {
+    //if(play-circle-button)
+    this.el.style.backgroundColor =  '#ffd561';
+    console.log($event)
+  }
 
   private highlight(color: string) {
     this.el.style.backgroundColor = color;
-    // console.log(this.selectedRowIndex)
   }
 
 }

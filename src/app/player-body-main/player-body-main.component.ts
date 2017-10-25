@@ -36,6 +36,7 @@ export class PlayerBodyMainComponent implements OnInit {
   private tracks: Array<Track>;
   private userPlaylists: Array<Playlist>;
   private selectedTrack: any;
+  private nowPlayingTrackIndex: number;
   private stars: Array<string> = ['star_border','star_border','star_border','star_border','star_border']
   private starResetCntr = 0;
   constructor(private playlistService: PlaylistService, private datastore: DatastoreService, public snackBar: MatSnackBar) {
@@ -48,6 +49,7 @@ export class PlayerBodyMainComponent implements OnInit {
       } else {
         star = 'star_border'
       }
+      this.selectedTrack.Rating = i;
       return star;
     });
   }
@@ -55,12 +57,20 @@ export class PlayerBodyMainComponent implements OnInit {
   private resetRating(i){
     if(i===0 && this.starResetCntr === 1){
       this.stars[i] = this.stars[i] === 'star_border' ? 'star' : 'star_border';
+      if(this.stars[0]==='star'){
+        this.selectedTrack.Rating = 1;
+      }else {
+        this.selectedTrack.Rating = -1;
+      }
       this.starResetCntr = 0;
     } else if(i===0) {
       this.starResetCntr++;
     }
   }
 
+  menuCloseEvent(){ 
+    this.playlistService.updateMainLibrary(this.tracks); 
+  }
 
   ngOnInit() {
     this.dataSource = this.datastore;
@@ -100,24 +110,26 @@ export class PlayerBodyMainComponent implements OnInit {
 
   private moveToTrash(){
        if(shell.moveItemToTrash(this.selectedTrack.Link)){
-        const _mainLibrary = this.playlistService.deleteFromMainLibrary(this.selectedTrack)
-        this.datastore.addTrack(_mainLibrary.tracks);
         this.showConfirmMessage('Track deleted.');
       } else {
         this.showConfirmMessage('Could not delete track.');
       }
+      const _mainLibrary = this.playlistService.deleteFromMainLibrary(this.selectedTrack)
+      this.datastore.addTrack(_mainLibrary.tracks);
   }
 
   private setSelectedTrack(_track) {
     this.selectedTrack = _track;
+    this.setRating(_track.Rating);
   }
 
   private playTrack(row) {
     const path = row.Link;
     this.player.loadTrack(path);
-    // this.player.loadTrack('/assets/sample.mp3');
+    this.player.loadTrack('/assets/sample.mp3');
     // this.player.on('waveform-ready', () => {
     this.player.playPause();
+    this.nowPlayingTrackIndex = row.TrackNumber;
     // });
   }
 

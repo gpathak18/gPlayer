@@ -40,6 +40,7 @@ export class PlayerBodyHeaderComponent implements OnInit {
       const plylst = new Playlist(this.playlistname);
       console.log('ADDING playlist');
       this.playlistService.createPlaylist(plylst);
+      $event.target.value=""
     }
   }
 

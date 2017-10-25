@@ -18,16 +18,17 @@ export class Track implements Track {
         Role: string;
         Artist: Artist;
     }>;
-
-    private _Id?: string;
+    private _Id?: string;    
     private Name: string;
     private ImageUrl?: string;
     private Link: string;
     private Source: string;
     private CompatibleSources?: string;
+    private Rating?: number;
 
     constructor(name?: string) {
         this.Name = name;
+        this.Rating = 0;
     }
 
     public get trackNumber(): number {
@@ -69,5 +70,12 @@ export class Track implements Track {
 	public set artist(value: string) {
 		this.Artist = value;
 	}
-
+    
+    public get rating(): number {
+        return this.Rating;
+    }
+    
+    public set rating(value: number) {
+        this.Rating = value;
+    }
 }

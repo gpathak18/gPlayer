@@ -97,8 +97,10 @@ export class PlaylistService {
     return this.mainLibrary;
   }
 
-  public addToMainLibrary(track: Track) {
-
+  public updateMainLibrary(tracks) {
+    this.mainLibrary.tracks = tracks;
+    this.dbservice.put(this.mainLibrary, 'MAIN_LIBRARY');
+    return this.mainLibrary;     
   }
 
   public deleteFromMainLibrary(track: any) {

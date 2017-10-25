@@ -9,7 +9,7 @@
                   <mat-cell *matCellDef="let track" class="mat-cell-sn" > 
                       <div fxLayout="row" fxLayoutAlign="center center"   *ngIf="selectedRowIndex != track.TrackNumber;then trackNum else playButton"></div>
                       <ng-template #playButton>
-                          <button mat-icon-button style="margin-left: -12px" (click)="playTrack(track)">
+                          <button id="play-circle-button"mat-icon-button style="margin-left: -12px" (click)="playTrack(track)">
                             <mat-icon> play_circle_outline</mat-icon>
                           </button>
                         </ng-template>
@@ -31,7 +31,7 @@
                 <ng-container matColumnDef="Name">
                   <mat-header-cell *matHeaderCellDef class="mat-cell-song"> Song Name </mat-header-cell>
                   <mat-cell *matCellDef="let track" class="mat-cell-song">
-                    <span>{{track.Name}}</span><br><span *ngIf="track.Name.length<50 && track.Artist!=null" style="font-size: 12px">{{track.Artist}}</span>
+                    <span>{{track.Name}}</span><br><span *ngIf="track.Name.length<50 && track.Artist!=null" style="font-size: 12px;">{{track.Artist}}</span>
                     <!-- <mat-icon class="app-icon-gray" *ngIf="showIcon">timeline</mat-icon> -->
                   </mat-cell>
                 </ng-container>
@@ -46,15 +46,19 @@
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;" style="height: 20px" 
+                  [ngClass]="{'left-border': nowPlayingTrackIndex==row.TrackNumber}"
                   [cellHover]="'#F5F5F5'" defaultColor="#FFFFFF" selectColor="#B39DDB"  
                   [selectedRowIndex]="row.TrackNumber" (mouseenter)="selectedRowIndex=row.TrackNumber">
                 </mat-row>
               </mat-table>
             
-            <mat-menu #menu="matMenu" style="max-height: 30px">
+            <mat-menu #menu="matMenu" style="max-height: 30px" (close)="menuCloseEvent()">
               <button mat-menu-item >
-                <mat-icon>play_circle_outline</mat-icon>
-                <span> Play Next</span>
+                <div>
+                    <mat-icon>play_circle_outline</mat-icon>
+                    <span> Play Next</span>
+                </div>
+               
               </button>
               <button mat-menu-item>
                 <mat-icon>queue_music</mat-icon>
