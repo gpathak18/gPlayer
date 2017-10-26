@@ -5,7 +5,7 @@
               class="mat-list-items"  [id]="playlist.Name" (click)="selectedPlylst($event)" [cellHover]="'#F5F5F5'">
                   <!-- <button mat-button style="width: 100%"  [id]="playlist.Name" (click)="selectedPlylst($event)" style="background-color: white"> -->
                       <!-- <mat-icon class="app-icon">playlist</mat-icon> -->
-                      <span class="item-spacer">{{playlist.Name}}</span>
+                      <span class="item-spacer">{{truncateString(playlist.Name)}}</span>
                       <span class="item-spacer"></span>
                       <mat-icon class="app-icon">close</mat-icon>                  <!-- </button> -->    
               </mat-list-item>  

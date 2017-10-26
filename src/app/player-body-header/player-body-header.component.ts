@@ -8,6 +8,7 @@ import { PlaylistService } from '../services/playlist.service';
 import { AutoplayService } from '../services/autoplay.service';
 import * as id3 from 'id3js';
 import * as fs from 'fs';
+import Utility from '../Utility';
 
 @Component({
   selector: 'app-player-body-header',
@@ -15,9 +16,9 @@ import * as fs from 'fs';
   styleUrls: ['./player-body-header.component.css']
 })
 export class PlayerBodyHeaderComponent implements OnInit {
-
+  @Input('emptyQueue') isQueueEmpty;
+  
   private playlistname = '';
-
   private selectedTracks: Array<Track> = new Array();
   private fileType = 'audio.*';
   private fileCntr = 1;
@@ -26,11 +27,16 @@ export class PlayerBodyHeaderComponent implements OnInit {
   private playlistName: string;
   public autoPlaylists: Array<Track> = new Array(); 
   selTab = 0;
+  queueLength = 0;
   constructor(private dbservice: PouchDbService, private datastore: DatastoreService, private playlistService: PlaylistService,private autoPlayService: AutoplayService) { }
 
   ngOnInit() {
     this.loadPlaylists();
-    this.autoPlayService.autoPlaylistSubject.subscribe((autoPlayQueue) => this.autoPlaylists = autoPlayQueue);
+    this.autoPlayService.autoPlaylistSubject.subscribe((autoPlayQueue) => {
+      this.autoPlaylists = autoPlayQueue;
+      this.queueLength = this.autoPlaylists.length;
+      console.log(this.autoPlaylists)
+    });
   }
 
   setTab(tab) {
@@ -40,10 +46,22 @@ export class PlayerBodyHeaderComponent implements OnInit {
   private addPlaylist($event) {
     if (this.playlistname != null && this.playlistname.length > 0) {
       const plylst = new Playlist(this.playlistname);
-      console.log('ADDING playlist');
       this.playlistService.createPlaylist(plylst);
-      $event.target.value=""
+      this.playlistname=""
     }
+  }
+
+  private addQueuePlaylist($event){
+    if (this.playlistname != null && this.playlistname.length > 0) {
+      const plylst = new Playlist(this.playlistname);
+      plylst.tracks = this.autoPlaylists;
+      this.playlistService.createPlaylist(plylst);
+      this.playlistname=""
+    }
+  }
+
+  private clearQueue(){
+    this.autoPlayService.clearQueue();
   }
 
   private deletePlaylist($event) {
@@ -62,6 +80,10 @@ export class PlayerBodyHeaderComponent implements OnInit {
     event.stopPropagation();
   }
 
+  private truncateString(str){
+    return Utility.truncateString(str,10);
+  }
+  
   private readFiles(inputValue: any): void {
     this.mainLibrary = this.playlistService.getMainLibrary();
     this.fileCntr = Number(this.mainLibrary.trackCount) + 1;

@@ -8,6 +8,7 @@ import Utility from '../Utility';
 import { MatDialog } from '@angular/material';
 import { EqualizerComponent } from '../equalizer/equalizer.component';
 import { Observable } from 'rxjs/Observable';
+import { AutoplayService } from '../services/autoplay.service';
 
 
 
@@ -95,7 +96,7 @@ export class PlayerComponent implements OnInit {
     }
   ];
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private autoPlayService: AutoplayService) { }
 
   ngOnInit() {
 
@@ -105,7 +106,7 @@ export class PlayerComponent implements OnInit {
     // this.player.load('/assets/sample.mp3');
     this.setupPlayerEvents();
     this.setupPlayerEqFilters();
-    this.player.setVolume(60/100)
+    this.player.setVolume(70/100)
  
   }
 
@@ -141,11 +142,9 @@ export class PlayerComponent implements OnInit {
     this.player.on('finish', () => {
       this.playPauseState = 'pause'
       this.setPalyPauseIcon();
+      this.autoPlayService.dequeueTrackAfterPlay();     
     });
     
-    this.player.on('ready', () => {
-
-    });
 
     this.player.on('stop', () => {
       this.playPauseState = 'pause'

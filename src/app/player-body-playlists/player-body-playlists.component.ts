@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Playlist } from '../playlist';
 import { Track } from '../track';
 import { PlaylistService } from '../services/playlist.service';
+import Utility from '../Utility';
 
 @Component({
   selector: 'app-player-body-playlists',
@@ -25,7 +26,10 @@ export class PlayerBodyPlaylistsComponent implements OnInit {
     this.playlistService.user_playlists.subscribe(value => this.playLists = value);
   }
 
-
+  private truncateString(str){
+    return Utility.truncateString(str,10);
+  }
+  
   private selectedPlylst($event) {
     const id = $event.currentTarget.id;
     const plylist : any= this.playLists.find((value: any) => value.Name === id);

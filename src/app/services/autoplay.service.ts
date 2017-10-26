@@ -39,6 +39,7 @@ export class AutoplayService {
   dequeueTrackAfterPlay() {
     this.autoPlaylists.shift();
     this.updateAutoPlaylist(this.autoPlaylists);
+    console.log(this.autoPlaylists)
   }
 
   dequeueTrackAtIndex(id) {

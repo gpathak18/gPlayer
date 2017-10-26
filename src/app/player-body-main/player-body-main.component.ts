@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material';
 import { DatastoreService } from '../services/datastore.service';
 import { PlaylistService } from '../services/playlist.service';
 import { AutoplayService } from '../services/autoplay.service';
+import Utility from '../Utility';
 // import { shell } from 'electron';
 declare const window: any;
 const { shell } = window.require("electron").remote
@@ -38,6 +39,7 @@ export class PlayerBodyMainComponent implements OnInit {
   private nowPlayingTrackIndex: number;
   private stars: Array<string> = ['star_border','star_border','star_border','star_border','star_border']
   private starResetCntr = 0;
+  emptyQueue = false;
 
   constructor(private autoPlayService: AutoplayService, private playlistService: PlaylistService, private datastore: DatastoreService, public snackBar: MatSnackBar) {
   }
@@ -117,6 +119,10 @@ export class PlayerBodyMainComponent implements OnInit {
     });
   }
 
+  private truncateString(str){
+    return Utility.truncateString(str,Number(this.winWdHt.tileWidth)-465);
+  }
+
   private openInFinder() {
     if(!shell.showItemInFolder(this.selectedTrack.Link)){
       this.showConfirmMessage('Could not open track in finder.');
@@ -125,6 +131,7 @@ export class PlayerBodyMainComponent implements OnInit {
   
   private enqueueTrack(){
     this.autoPlayService.addToQueue(this.selectedTrack);
+    this.emptyQueue = false;
   }
 
   private enqueuePlayNext(){
@@ -148,7 +155,7 @@ export class PlayerBodyMainComponent implements OnInit {
 
   private playTrack(row) {
     const path = row.Link;
-    this.player.loadTrack(path);
+    // this.player.loadTrack(path);
     this.player.loadTrack('/assets/sample.mp3');
     // this.player.on('waveform-ready', () => {
     this.player.playPause();

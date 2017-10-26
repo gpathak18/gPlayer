@@ -6,4 +6,11 @@ export default class Utility {
         return minutes + ':' + seconds;
     }
 
+    static truncateString(string,maxLen){
+        if (string.length > maxLen){
+            return string.substring(0,maxLen)+'...';
+        } else {
+            return string;
+        }        
+     }
 }
