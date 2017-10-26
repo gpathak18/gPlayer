@@ -41,6 +41,7 @@
     "rxjs": "^5.5.0",
     "typings": "^2.1.1",
     "update": "^0.7.4",
+    "uuid": "^3.1.0",
     "wavesurfer.js": "^2.0.0-beta02",
     "zone.js": "^0.8.14"
   },

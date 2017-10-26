@@ -1,5 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import PouchDB from 'pouchdb';
+import { UuidService } from './uuid.service';
 
 @Injectable()
 export class PouchDbService {
@@ -7,9 +8,9 @@ export class PouchDbService {
   private isInstantiated: boolean;
   private database: any;
   private listener: EventEmitter<any> = new EventEmitter();
-  private DB_NAME = 'USER.AABBCC';
+  private DB_NAME = 'GPLAYER';
 
-  constructor() {
+  constructor( private uuidService: UuidService) {
 
     if (!this.isInstantiated) {
       this.database = new PouchDB(this.DB_NAME, { auto_compaction: true});

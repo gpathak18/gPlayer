@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Playlist } from '../playlist';
-import { PlaylistService } from '../playlist.service';
 import { Track } from '../track';
+import { PlaylistService } from '../services/playlist.service';
 
 @Component({
   selector: 'app-player-body-playlists',

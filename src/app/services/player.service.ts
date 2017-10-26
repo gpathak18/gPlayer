@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import MinimapPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js';
-import { PlayerComponent } from './player/player.component';
+import { PlayerComponent } from '../player/player.component';
+
 
 @Injectable()
 export class PlayerService {

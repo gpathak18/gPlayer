@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
-import { Track } from './track';
+import { Track } from '../track';
+
 
 @Injectable()
 export class DatastoreService extends DataSource<any> {
@@ -16,12 +17,10 @@ export class DatastoreService extends DataSource<any> {
   }
 
   addTrack(tracks: Array<Track>) {
-
     this.data.next(tracks);
   }
 
   connect(): Observable<Array<Track>> {
-    console.log(this.currentTracks)
     return this.currentTracks;
   }
 

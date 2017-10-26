@@ -1,6 +1,6 @@
-import {DatastoreService} from '../datastore.service';
-import {PlaylistService} from '../playlist.service';
 import { Component, OnInit, ElementRef } from '@angular/core';
+import { PlaylistService } from '../services/playlist.service';
+import { DatastoreService } from '../services/datastore.service';
 
 @Component({
   selector: 'app-main',

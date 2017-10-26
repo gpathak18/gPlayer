@@ -40,15 +40,35 @@ function createWindow() {
   })
 
   win.once('ready-to-show', () => {
-    setTimeout(function () {
+    // setTimeout(function () {
       // displayNow(splashScreen, win);
+      console.log(win);
       win.show()
-    }, 1000);
+    // }, 1000);
   })
 
-  win.webContents.on('will-navigate', ev => {
-    ev.preventDefault()
-  })
+  // win.webContents.on('will-navigate', ev => {
+  //   console.log(ev);
+  //   ev.preventDefault();
+  // })
+
+  win.ondragover = function(e) {
+    // $('body').addClass('file-hover');
+    console.log(e);
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+    return false;
+  };
+  
+  win.ondrop = function(e) {
+    console.log(e);
+    e.preventDefault();
+    // $('body').removeClass('file-hover');
+    for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+      console.log(e.dataTransfer.files[i].path);
+    }
+    return false;
+  };
 
 }
 
@@ -90,21 +110,27 @@ app.on('window-all-closed', function () {
 app.on('activate', () => {
   if (win === null) {
     createWindow()
-    setListeners()
+    // setListeners()
     
   }
 })
 
 function setListeners(){
-  win.document.addEventListener('dragover', function (event) {
-    event.preventDefault();
+  win.ondragover = function(e) {
+    // $('body').addClass('file-hover');
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
     return false;
-  }, false);
+  };
   
-  win.document.addEventListener('drop', function (event) {
-    event.preventDefault();
+  win.ondrop = function(e) {
+    e.preventDefault();
+    // $('body').removeClass('file-hover');
+    for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+      console.log(e.dataTransfer.files[i].path);
+    }
     return false;
-  }, false);
+  };
 }
 // process.argv.forEach(onOpen)
 
@@ -112,13 +138,13 @@ function setListeners(){
 // These fire if the app is already running and the user
 // drags files or URLs onto the dock icon, or if they set
 // the app as a handler for a file type and then open a file
-app.on('open-file', (e) => {
-console.log('he',e)
-})
+// app.on('open-file', (e) => {
+// console.log('he',e)
+// })
 
 
-app.on('open-url', (e) => {
-  console.log('hes',e)
-})
+// app.on('open-url', (e) => {
+//   console.log('hes',e)
+// })
 
 

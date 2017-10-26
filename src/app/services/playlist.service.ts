@@ -1,10 +1,11 @@
 import { DatastoreService } from './datastore.service';
 import { Injectable } from '@angular/core';
 import { PouchDbService } from './pouch-db.service';
-import { Playlist } from './playlist';
-import { Track } from './track';
 import {Observable} from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
+import { AutoplayService } from './autoplay.service';
+import { Playlist } from '../playlist';
+import { Track } from '../track';
 
 
 @Injectable()
@@ -16,7 +17,7 @@ export class PlaylistService {
   public playlists: Array<Playlist> = new Array();
 
 
-  constructor(private dbservice: PouchDbService, private datastore: DatastoreService) {
+  constructor(private dbservice: PouchDbService, private datastore: DatastoreService,  private autoPlayService: AutoplayService) {
 
   }
 
@@ -25,11 +26,13 @@ export class PlaylistService {
       this.loadMainlibrary().then((result) => {
         this.mainLibrary = result;
         this.datastore.addTrack(this.mainLibrary.tracks);
+        this.autoPlayService.updateAutoPlaylist(this.mainLibrary.tracks)
       }).catch((error) => {
         console.log('Error: Main Library: ', error);
       });
 
       this.loadUserPlaylists();
+     
     }
   }
 
@@ -114,7 +117,6 @@ export class PlaylistService {
       if (result.ok) {
         this.playlists.push(plyLst);
         this.user_playlists.next(this.playlists);
-        console.log(this.user_playlists);
       }
     }).catch((error) => {
       console.log('Error', error);

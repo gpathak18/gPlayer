@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { SigninComponent } from '../signin/signin.component';
+import { Track } from '../track';
 
 @Component({
   selector: 'app-player-body-footer',
@@ -10,8 +11,11 @@ import { SigninComponent } from '../signin/signin.component';
 export class PlayerBodyFooterComponent implements OnInit {
 
   constructor(public dialog: MatDialog) { }
+  
 
+  
   ngOnInit() {
+    
   }
 
   openDialog() {
@@ -21,6 +25,8 @@ export class PlayerBodyFooterComponent implements OnInit {
       }
     });
   }
+
+  
 
 }
 

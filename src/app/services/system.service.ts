@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class AutoplayService {
-
-   
+export class SystemService {
 
   constructor() { }
 

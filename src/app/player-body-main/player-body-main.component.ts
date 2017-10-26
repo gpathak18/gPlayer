@@ -1,5 +1,4 @@
 'use strict';
-import { PlaylistService } from '../playlist.service';
 import { Component, OnInit, ViewChild, ElementRef, Input, Injectable, Output, EventEmitter } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
@@ -8,12 +7,12 @@ import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { PouchDbService } from '../pouch-db.service';
-import { DatastoreService } from '../datastore.service';
-import { PlayerService } from '../player.service';
 import { Track } from '../track';
 import { Playlist } from '../playlist';
 import { MatSnackBar } from '@angular/material';
+import { DatastoreService } from '../services/datastore.service';
+import { PlaylistService } from '../services/playlist.service';
+import { AutoplayService } from '../services/autoplay.service';
 // import { shell } from 'electron';
 declare const window: any;
 const { shell } = window.require("electron").remote
@@ -39,8 +38,24 @@ export class PlayerBodyMainComponent implements OnInit {
   private nowPlayingTrackIndex: number;
   private stars: Array<string> = ['star_border','star_border','star_border','star_border','star_border']
   private starResetCntr = 0;
-  constructor(private playlistService: PlaylistService, private datastore: DatastoreService, public snackBar: MatSnackBar) {
+
+  constructor(private autoPlayService: AutoplayService, private playlistService: PlaylistService, private datastore: DatastoreService, public snackBar: MatSnackBar) {
   }
+
+  onFilesChange(fileList : FileList){
+    console.log(fileList);
+  }
+
+  // handleDrop(e) {
+  //   // this/e.target is current target element.
+  //   e.stopPropagation(); // Stops some browsers from redirecting.
+  //   e.preventDefault();
+  //   var files = e.dataTransfer.files;
+  //   for (var i = 0, f; f = files[i]; i++) {
+  //     console.log(f)
+  //   }
+  //   return false;
+  // }
 
   private setRating(i){
     this.stars = this.stars.map((star,index) => {
@@ -106,6 +121,14 @@ export class PlayerBodyMainComponent implements OnInit {
     if(!shell.showItemInFolder(this.selectedTrack.Link)){
       this.showConfirmMessage('Could not open track in finder.');
     } 
+  }
+  
+  private enqueueTrack(){
+    this.autoPlayService.addToQueue(this.selectedTrack);
+  }
+
+  private enqueuePlayNext(){
+    this.autoPlayService.addPlayNext(this.selectedTrack);
   }
 
   private moveToTrash(){

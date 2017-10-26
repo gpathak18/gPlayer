@@ -9,13 +9,16 @@
             <mat-icon class="app-icon " aria-label="Example icon-button with a heart icon">create_new_folder</mat-icon>
           </button>
           <button mat-icon-button>
-            <mat-icon class="app-icon " (click)="setTab(0)">recent_actors</mat-icon>
+            <mat-icon class="app-icon " (click)="setTab(0)">library_music</mat-icon>
           </button>
           <button mat-icon-button>
-            <mat-icon class="app-icon " mat-icon-button (click)="setTab(1)">library_music</mat-icon>
+            <mat-icon class="app-icon " mat-icon-button (click)="setTab(1)">playlist_play</mat-icon>
           </button>
           <button mat-icon-button>
-            <mat-icon class="app-icon " mat-icon-button [matMenuTriggerFor]="playlistmenu" >queue_music</mat-icon>
+            <mat-icon class="app-icon " mat-icon-button  [matMenuTriggerFor]="autoqueue">queue_music</mat-icon>
+          </button>    
+          <button mat-icon-button>
+              <mat-icon class="app-icon " mat-icon-button [matMenuTriggerFor]="playlistmenu">playlist_add</mat-icon>
           </button>        
           <input type="file" #file style="display:none" (change)='changeListener($event)' multiple/>
 </mat-grid-tile-header>
@@ -23,7 +26,7 @@
     <mat-list dense>
         <mat-list-item>
             <mat-input-container  floatPlaceholder="never" (click)="stopPropagation($event)">
-                <mat-icon class="app-icon-gray " matSuffix style="margin: 0px" (click)="addPlaylist($event)">playlist_add</mat-icon>
+                <mat-icon class="app-icon-gray " matSuffix style="margin: 0px" (click)="addPlaylist($event)">done</mat-icon>
                 <input matInput  placeholder="Add Playlist" [(ngModel)]="playlistname" style=" font-size: 14px">
             </mat-input-container>        
         </mat-list-item>
@@ -40,3 +43,13 @@
         </mat-list-item>       
       </mat-list>   
 </mat-menu>  
+<mat-menu #autoqueue="matMenu" yPosition="below" xPosition="before">
+    <mat-list >
+        <mat-list-item *ngFor="let track of autoPlaylists">
+            <span style="font-size: 14px" [id]="track.Name" >{{track.Name}}</span>
+            <span class="item-spacer"></span>   
+            <!-- <button mat-icon-button >      -->
+            <mat-icon class="app-icon-gray" [id]="track.Name" (click)="stopPropagation($event);dequeueTrack($event)">close</mat-icon>
+        </mat-list-item>       
+      </mat-list>   
+</mat-menu>

@@ -15,14 +15,9 @@ span {
 }
 
 .app-icon {
-    /* padding: 0 14px; */
-    /* color: #282364; */
     color: white;
-  }
-  .app-icon-cl {
+}
+
+.app-icon-cl {
     padding: 0 14px;
-    /* color: #282364; */
-  }
-/* :host/deep/ .mat-input-placeholder {
-    font-size: 12px;
-} */
+ }

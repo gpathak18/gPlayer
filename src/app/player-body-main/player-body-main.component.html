@@ -2,8 +2,8 @@
 
   
     <mat-tab-group class="scroll-bar-style" [selectedIndex]="tabIndex" [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'">
-        <mat-tab label="library" >
-            <mat-table #table [dataSource]="dataSource" > 
+        <mat-tab label="library" appDragndrop>
+            <mat-table #table [dataSource]="dataSource" (filesChangeEmiter)="onFilesChange($event)"> 
                 <ng-container matColumnDef="TrackNumber">
                   <mat-header-cell *matHeaderCellDef class="mat-cell-sn"> No. </mat-header-cell>
                   <mat-cell *matCellDef="let track" class="mat-cell-sn" > 
@@ -53,14 +53,11 @@
               </mat-table>
             
             <mat-menu #menu="matMenu" style="max-height: 30px" (close)="menuCloseEvent()">
-              <button mat-menu-item >
-                <div>
+              <button mat-menu-item (click)="enqueuePlayNext()">
                     <mat-icon>play_circle_outline</mat-icon>
                     <span> Play Next</span>
-                </div>
-               
               </button>
-              <button mat-menu-item>
+              <button mat-menu-item  (click)="enqueueTrack()"> 
                 <mat-icon>queue_music</mat-icon>
                 <span>Queue Track</span>
               </button>
