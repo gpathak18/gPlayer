@@ -45,10 +45,14 @@
                   </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns;" style="height: 20px" 
-                  [ngClass]="{'left-border': nowPlayingTrackIndex==row.TrackNumber}"
-                  [cellHover]="'#F5F5F5'" defaultColor="#FFFFFF" selectColor="#B39DDB"  
-                  [selectedRowIndex]="row.TrackNumber" (mouseenter)="selectedRowIndex=row.TrackNumber">
+                <mat-row 
+                  *matRowDef="let row; columns: displayedColumns;" 
+                  style="height: 20px" 
+                  [ngClass]="{'left-border': nowPlayingTrackIndex==row.TrackNumber, 'selectedRow': isSelectAll, 'selectedRowClc': trkNum==row.TrackNumber}"
+                  [cellHover]="'#F5F5F5'" 
+                  [selectedRowIndex]="row.TrackNumber" 
+                  (mouseenter)="selectedRowIndex=row.TrackNumber"
+                  (click)="trkNum=row.TrackNumber;tableRowClick()">
                 </mat-row>
               </mat-table>
             

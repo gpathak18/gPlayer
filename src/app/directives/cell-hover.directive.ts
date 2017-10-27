@@ -14,28 +14,29 @@ export class CellHoverDirective {
   @Input() defaultColor: string;
   @Input() selectColor: string;
   @Input('cellHover') hoverColor: string;
-  @Input() selectedRowIndex: string;
+  
+  @Input() selectedRowIndex: number = -1;
 
   constructor(el: ElementRef) {
     this.el = el.nativeElement;
   }
 
-  @HostListener('mouseenter') onMouseEnter() {
-    this.highlight(this.hoverColor || this.defaultColor || 'white');
-  }
+  // @HostListener('mouseenter') onMouseEnter() {
+  //     this.highlight(this.hoverColor || this.defaultColor || 'white');      
+  // }
 
-  @HostListener('mouseleave') onMouseLeave() {
-    this.highlight(null);
-  }
+  // @HostListener('mouseleave') onMouseLeave() {
+  //     this.highlight(null);
+  // }
 
-  @HostListener('click', ['$event']) onClick($event) {
-    //if(play-circle-button)
-    this.el.style.backgroundColor =  '#ffd561';
-    console.log($event)
-  }
+  // @HostListener('click', ['$event']) onClick($event) {
+  //   this.el.style.backgroundColor =  '#ffd561';
+  //   // console.log(this.el.style.backgroundColor)
+    
+  // }
 
   private highlight(color: string) {
-    this.el.style.backgroundColor = color;
+      this.el.style.backgroundColor = color;      
   }
 
 }

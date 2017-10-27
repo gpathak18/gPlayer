@@ -27,7 +27,7 @@ export class PlayerBodyPlaylistsComponent implements OnInit {
   }
 
   private truncateString(str){
-    return Utility.truncateString(str,10);
+    return Utility.truncateString(str,15);
   }
   
   private selectedPlylst($event) {

@@ -81,7 +81,7 @@ export class PlayerBodyHeaderComponent implements OnInit {
   }
 
   private truncateString(str){
-    return Utility.truncateString(str,10);
+    return Utility.truncateString(str,15);
   }
   
   private readFiles(inputValue: any): void {

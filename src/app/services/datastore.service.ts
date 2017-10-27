@@ -17,6 +17,7 @@ export class DatastoreService extends DataSource<any> {
   }
 
   addTrack(tracks: Array<Track>) {
+    tracks.map((o:any,i:any) => { o.TrackNumber = i+1})
     this.data.next(tracks);
   }
 

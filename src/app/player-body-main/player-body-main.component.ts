@@ -1,5 +1,5 @@
 'use strict';
-import { Component, OnInit, ViewChild, ElementRef, Input, Injectable, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, Injectable, Output, EventEmitter, HostListener } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -147,9 +147,10 @@ export class PlayerBodyMainComponent implements OnInit {
       const _mainLibrary = this.playlistService.deleteFromMainLibrary(this.selectedTrack)
       this.datastore.addTrack(_mainLibrary.tracks);
   }
-
+trkNum = -1
   private setSelectedTrack(_track) {
     this.selectedTrack = _track;
+   
     this.setRating(_track.Rating);
   }
 
@@ -162,6 +163,19 @@ export class PlayerBodyMainComponent implements OnInit {
     this.nowPlayingTrackIndex = row.TrackNumber;
     // });
   }
+
+  private tableRowClick(){
+    this.isSelectAll=false;
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {     
+    if (event.metaKey && event.keyCode == 65) {
+      this.isSelectAll=true;
+    }
+  }
+
+  isSelectAll=false;
 
   @ViewChild('filter') filter: ElementRef;
 }
