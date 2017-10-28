@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid';
 export default class Utility {
     
     static formatTime(time) {
@@ -13,4 +14,9 @@ export default class Utility {
             return string;
         }        
      }
+
+    static getUUID() {
+        const id: string = uuid();
+        return id;
+    }
 }

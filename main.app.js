@@ -42,7 +42,7 @@ function createWindow() {
   win.once('ready-to-show', () => {
     // setTimeout(function () {
       // displayNow(splashScreen, win);
-      console.log(win);
+
       win.show()
     // }, 1000);
   })
@@ -54,7 +54,6 @@ function createWindow() {
 
   win.ondragover = function(e) {
     // $('body').addClass('file-hover');
-    console.log(e);
     e.preventDefault();
     e.dataTransfer.dropEffect = 'copy';
     return false;
@@ -146,5 +145,6 @@ function setListeners(){
 // app.on('open-url', (e) => {
 //   console.log('hes',e)
 // })
+
 
 

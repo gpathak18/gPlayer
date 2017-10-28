@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 import { AutoplayService } from './autoplay.service';
 import { Playlist } from '../playlist';
 import { Track } from '../track';
+import { FilehandlingService } from './filehandling.service';
 
 
 @Injectable()
@@ -17,16 +18,31 @@ export class PlaylistService {
   public playlists: Array<Playlist> = new Array();
 
 
-  constructor(private dbservice: PouchDbService, private datastore: DatastoreService,  private autoPlayService: AutoplayService) {
+  constructor(
+    private dbservice: PouchDbService, 
+    private datastore: DatastoreService,  
+    private autoPlayService: AutoplayService,
+    private fileHandler: FilehandlingService
+  ) {
 
+    this.fileHandler.tracks.subscribe((tracks) => {
+         tracks.map((track) => {
+            this.mainLibrary.tracks.push(track)
+         })
+         this.datastore.addTrack(this.mainLibrary.tracks);
+         this.dbservice.put(this.mainLibrary, 'MAIN_LIBRARY');
+    });
   }
 
   public initService() {
+    //Load Main Library
     if (!this.isInstantiated) {
       this.loadMainlibrary().then((result) => {
         this.mainLibrary = result;
         this.datastore.addTrack(this.mainLibrary.tracks);
         this.autoPlayService.updateAutoPlaylist(this.mainLibrary.tracks)
+        this.dbservice.put(this.mainLibrary, 'MAIN_LIBRARY');
+     
       }).catch((error) => {
         console.log('Error: Main Library: ', error);
       });
@@ -107,7 +123,7 @@ export class PlaylistService {
   }
 
   public deleteFromMainLibrary(track: any) {
-      this.mainLibrary.tracks = this.mainLibrary.tracks.filter((value: any) => value.Name !== track.Name);
+      this.mainLibrary.tracks = this.mainLibrary.tracks.filter((value: any) => value._Id !== track._Id);
       this.dbservice.put(this.mainLibrary, 'MAIN_LIBRARY');
       return this.mainLibrary;
   }

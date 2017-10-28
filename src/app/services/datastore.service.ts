@@ -8,17 +8,20 @@ import { Track } from '../track';
 @Injectable()
 export class DatastoreService extends DataSource<any> {
 
-  private data: BehaviorSubject<Array<Track>> = new BehaviorSubject<Array<Track>>([]);
+  
+  private libTableData: BehaviorSubject<Array<Track>> = new BehaviorSubject<Array<Track>>([]);
 
-  currentTracks = this.data.asObservable();
+  public currentTracks = this.libTableData.asObservable();
 
   constructor() {
     super();
   }
 
   addTrack(tracks: Array<Track>) {
-    tracks.map((o:any,i:any) => { o.TrackNumber = i+1})
-    this.data.next(tracks);
+    tracks.map((o:any,i:any) => { 
+      o.TrackNumber = i+1
+    })
+    this.libTableData.next(tracks);
   }
 
   connect(): Observable<Array<Track>> {

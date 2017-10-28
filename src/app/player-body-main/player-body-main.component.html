@@ -3,8 +3,9 @@
   
     <mat-tab-group class="scroll-bar-style" [selectedIndex]="tabIndex" [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'">
         <mat-tab label="library" appDragndrop>
-            <mat-table #table [dataSource]="dataSource" (filesChangeEmiter)="onFilesChange($event)"> 
-                <ng-container matColumnDef="TrackNumber">
+            <mat-table #table [dataSource]="dataSource"> 
+
+                <ng-container matColumnDef="Position">
                   <mat-header-cell *matHeaderCellDef class="mat-cell-sn"> No. </mat-header-cell>
                   <mat-cell *matCellDef="let track" class="mat-cell-sn" > 
                       <div fxLayout="row" fxLayoutAlign="center center"   *ngIf="selectedRowIndex != track.TrackNumber;then trackNum else playButton"></div>
@@ -12,22 +13,23 @@
                           <button id="play-circle-button"mat-icon-button style="margin-left: -12px" (click)="playTrack(track)">
                             <mat-icon> play_circle_outline</mat-icon>
                           </button>
-                        </ng-template>
+                      </ng-template>
                       <ng-template #trackNum>
                         <span>{{track.TrackNumber}}</span>
                       </ng-template>                     
                    </mat-cell>
                 </ng-container>
             
-                <ng-container matColumnDef="Link">
-                  <mat-header-cell *matHeaderCellDef class="mat-cell-sl">
-                    <mat-checkbox></mat-checkbox>
+                <ng-container matColumnDef="Selection">
+                  <mat-header-cell *matHeaderCellDef class="mat-cell-sl">             
                   </mat-header-cell>
                   <mat-cell *matCellDef="let track" class="mat-cell-sl">
-                    <mat-checkbox></mat-checkbox>
-                  </mat-cell>
+                          <button mat-icon-button (click)="checkBox()">
+                              <mat-icon>{{chkBoxIcon}}</mat-icon>
+                          </button>
+                   </mat-cell>
                 </ng-container>
-            
+
                 <ng-container matColumnDef="Name">
                   <mat-header-cell *matHeaderCellDef class="mat-cell-song"> Song Name </mat-header-cell>
                   <mat-cell *matCellDef="let track" class="mat-cell-song">
@@ -36,7 +38,7 @@
                   </mat-cell>
                 </ng-container>
             
-                <ng-container matColumnDef="Source">
+                <ng-container matColumnDef="Options">
                   <mat-header-cell *matHeaderCellDef class="mat-cell-op"> Options </mat-header-cell>
                   <mat-cell *matCellDef="let row" class="mat-cell-op" >
                     <button mat-icon-button [matMenuTriggerFor]="menu" (click)="setSelectedTrack(row)" >
@@ -44,6 +46,7 @@
                     </button>
                   </mat-cell>
                 </ng-container>
+
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row 
                   *matRowDef="let row; columns: displayedColumns;" 
@@ -52,8 +55,9 @@
                   [cellHover]="'#F5F5F5'" 
                   [selectedRowIndex]="row.TrackNumber" 
                   (mouseenter)="selectedRowIndex=row.TrackNumber"
-                  (click)="trkNum=row.TrackNumber;tableRowClick()">
+                  (click)="trkNum=row.TrackNumber;handleRowClick(row,$event)">
                 </mat-row>
+
               </mat-table>
             
             <mat-menu #menu="matMenu" style="max-height: 30px" (close)="menuCloseEvent()">

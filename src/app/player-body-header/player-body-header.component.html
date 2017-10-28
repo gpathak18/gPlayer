@@ -53,11 +53,11 @@
         </mat-list-item>
         <mat-list-item *ngFor="let track of autoPlaylists" >
             <div fxLayout="column" fxLayoutAlign="start start">
-                <span style="font-size: 14px;" [id]="track.Name">{{truncateString(track.Name)}}</span>
+                <span style="font-size: 14px;" [id]="track._Id">{{truncateString(track.Name)}}</span>
                 <span *ngIf="track.Name.length<50 && track.Artist!=Null" style="font-size: 12px;color: grey">{{truncateString(track.Artist.trim())}}</span>
             </div>
             <span class="item-spacer"></span>
-            <mat-icon class="app-icon-gray" [id]="track.Name" (click)="stopPropagation($event);dequeueTrack($event)">close</mat-icon>
+            <mat-icon class="app-icon-gray" [id]="track._Id" (click)="stopPropagation($event);dequeueTrack($event)">close</mat-icon>
         </mat-list-item>
         <mat-list-item *ngIf="queueLength > 0">
                 <button mat-icon-button (click)="clearQueue()" style="width:100%">

@@ -27,7 +27,7 @@ import { DatastoreService } from './services/datastore.service';
 import { PlayerService } from './services/player.service';
 import { AutoplayService } from './services/autoplay.service';
 import { PlaylistService } from './services/playlist.service';
-import { UuidService } from './services/uuid.service';
+import { FilehandlingService } from './services/filehandling.service';
 
 const appRoutes: Routes = [
   { path: 'sign', component: SigninComponent },
@@ -85,7 +85,7 @@ const appRoutes: Routes = [
     PlayerService, 
     PlaylistService, 
     AutoplayService,
-    UuidService
+    FilehandlingService
   ],
   bootstrap: [MainComponent]
 })

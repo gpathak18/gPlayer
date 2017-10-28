@@ -30,9 +30,9 @@ export class PlayerBodyMainComponent implements OnInit {
   @Input('selectedRowIndex') selectedRowIndex = -1;
   @Output() playEvent = new EventEmitter();
 
-  private displayedColumns = ['TrackNumber', 'Name', 'Link', 'Source'];
+  private displayedColumns = ['Position', 'Name', 'Selection', 'Options'];
   private dataSource: DatastoreService | null;
-  private hoverrow = -1;
+
   private tracks: Array<Track>;
   private userPlaylists: Array<Playlist>;
   private selectedTrack: any;
@@ -41,7 +41,24 @@ export class PlayerBodyMainComponent implements OnInit {
   private starResetCntr = 0;
   emptyQueue = false;
 
-  constructor(private autoPlayService: AutoplayService, private playlistService: PlaylistService, private datastore: DatastoreService, public snackBar: MatSnackBar) {
+  constructor(
+    private autoPlayService: AutoplayService, 
+    private playlistService: PlaylistService, 
+    private datastore: DatastoreService, 
+    public snackBar: MatSnackBar
+  ) {
+
+  }
+
+  ngOnInit() {
+    this.dataSource = this.datastore;
+    this.winWdHt.tileHeight = '560';
+    this.winWdHt.tileWidth = '500';
+    this.playlistService.user_playlists.subscribe(value => this.userPlaylists = value);
+    this.dataSource.currentTracks.subscribe(tracks => {
+      this.tracks = tracks;
+      console.log(this.tracks,tracks)
+    });
   }
 
   onFilesChange(fileList : FileList){
@@ -85,17 +102,15 @@ export class PlayerBodyMainComponent implements OnInit {
     }
   }
 
-  menuCloseEvent(){ 
+  private menuCloseEvent(){ 
     this.playlistService.updateMainLibrary(this.tracks); 
   }
 
-  ngOnInit() {
-    this.dataSource = this.datastore;
-    this.winWdHt.tileHeight = '560';
-    this.winWdHt.tileWidth = '500';
-    this.playlistService.user_playlists.subscribe(value => this.userPlaylists = value);
-    this.dataSource.currentTracks.subscribe(tracks => this.tracks = tracks);
+  chkBoxIcon = 'check_box_outline_blank'
+  private checkBox(){
+    this.chkBoxIcon = this.chkBoxIcon==='check_box'? 'check_box_outline_blank' : 'check_box';
   }
+  
 
   private openSnackBar(plslst: Playlist, action: string) {
 
@@ -147,10 +162,10 @@ export class PlayerBodyMainComponent implements OnInit {
       const _mainLibrary = this.playlistService.deleteFromMainLibrary(this.selectedTrack)
       this.datastore.addTrack(_mainLibrary.tracks);
   }
-trkNum = -1
+
+  trkNum = -1
   private setSelectedTrack(_track) {
     this.selectedTrack = _track;
-   
     this.setRating(_track.Rating);
   }
 
@@ -163,13 +178,23 @@ trkNum = -1
     this.nowPlayingTrackIndex = row.TrackNumber;
     // });
   }
-
-  private tableRowClick(){
+  shiftKeyFirstIndex = -1
+  private handleRowClick(row, event){
     this.isSelectAll=false;
+    if(event.shiftKey) { 
+      console.log('firest:', this.shiftKeyFirstIndex, 'last:', row.TrackNumber)     
+    } else {
+      
+    }
+    this.shiftKeyFirstIndex = row.TrackNumber;
+  }
+
+  private toggleSelected(obj, event) {
+    
   }
 
   @HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {     
+  private handleKeyboardEvent(event: KeyboardEvent) {     
     if (event.metaKey && event.keyCode == 65) {
       this.isSelectAll=true;
     }

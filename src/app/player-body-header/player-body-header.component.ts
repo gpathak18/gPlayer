@@ -2,11 +2,9 @@ import { Component, OnInit, Output, Input } from '@angular/core';
 import { EventEmitter } from 'events';
 import { Playlist } from '../playlist';
 import { Track } from '../track';
-import { PouchDbService } from '../services/pouch-db.service';
-import { DatastoreService } from '../services/datastore.service';
 import { PlaylistService } from '../services/playlist.service';
 import { AutoplayService } from '../services/autoplay.service';
-import * as id3 from 'id3js';
+import { FilehandlingService } from '../services/filehandling.service';
 import * as fs from 'fs';
 import Utility from '../Utility';
 
@@ -16,11 +14,12 @@ import Utility from '../Utility';
   styleUrls: ['./player-body-header.component.css']
 })
 export class PlayerBodyHeaderComponent implements OnInit {
+
   @Input('emptyQueue') isQueueEmpty;
   
   private playlistname = '';
   private selectedTracks: Array<Track> = new Array();
-  private fileType = 'audio.*';
+  
   private fileCntr = 1;
   private mainLibrary: Playlist;
   private playLists: Array<Playlist> = new Array();
@@ -28,14 +27,18 @@ export class PlayerBodyHeaderComponent implements OnInit {
   public autoPlaylists: Array<Track> = new Array(); 
   selTab = 0;
   queueLength = 0;
-  constructor(private dbservice: PouchDbService, private datastore: DatastoreService, private playlistService: PlaylistService,private autoPlayService: AutoplayService) { }
+
+  constructor(
+    private playlistService: PlaylistService,
+    private autoPlayService: AutoplayService,
+    private fileHandlingSerice: FilehandlingService
+  ) { }
 
   ngOnInit() {
     this.loadPlaylists();
     this.autoPlayService.autoPlaylistSubject.subscribe((autoPlayQueue) => {
       this.autoPlaylists = autoPlayQueue;
       this.queueLength = this.autoPlaylists.length;
-      console.log(this.autoPlaylists)
     });
   }
 
@@ -83,56 +86,9 @@ export class PlayerBodyHeaderComponent implements OnInit {
   private truncateString(str){
     return Utility.truncateString(str,15);
   }
-  
-  private readFiles(inputValue: any): void {
-    this.mainLibrary = this.playlistService.getMainLibrary();
-    this.fileCntr = Number(this.mainLibrary.trackCount) + 1;
-    const files = inputValue.files;
 
-    for (const file of files) {
-      if (file.type.match(this.fileType)) {
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-        };
-        const track = new Track(file.name);
-        // reader.readAsArrayBuffer(file);
-        reader.readAsDataURL(file);
-
-        id3(file, (err, tags) => {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log(tags)
-              if(tags.title){
-                track.name = tags.title
-              } else{
-                track.name = file.name.replace(/\.[^/.]+$/, "")
-              }             
-              track.artist = tags.artist
-            }       
-        });
-        
-        track.trackNumber = this.fileCntr;
-        track.source = 'local';
-        track.link = file.path;
-
-        this.fileCntr++;
-        console.log(this.mainLibrary.tracks);
-        this.mainLibrary.tracks.push(track);
-
-      }
-
-
-    }
-    this.mainLibrary.trackCount = this.mainLibrary.tracks.length;
-    this.datastore.addTrack(this.mainLibrary.tracks);
-    this.dbservice.put(this.mainLibrary, 'MAIN_LIBRARY');
+  private changeListener($event): void {
+    this.fileHandlingSerice.readFiles($event.target.files)
   }
-
-  changeListener($event): void {
-    this.readFiles($event.target);
-  }
-
  
 }
