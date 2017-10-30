@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material';
 import { EqualizerComponent } from '../equalizer/equalizer.component';
 import { Observable } from 'rxjs/Observable';
 import { AutoplayService } from '../services/autoplay.service';
+import { PlayerService } from '../services/player.service';
 
 
 
@@ -30,8 +31,8 @@ import { AutoplayService } from '../services/autoplay.service';
 })
 export class PlayerComponent implements OnInit {
 
-  private songName: string = "Beat It"
-  private artist: string = "Michael Jackson"
+  private songName: string = ''
+  private artist: string = ''
   private zoomState = 'zoomOut'
   private playPauseState = 'pause'
   private volumeIcon = 'volume_up'
@@ -54,7 +55,9 @@ export class PlayerComponent implements OnInit {
     backend: 'WebAudio',
     autoCenter: true
   };
-
+  private nowPlayingSong = ''
+  private progress = 100;
+  private isLoading = true;
   private zoomValue;
   private zoomMin;
 
@@ -96,17 +99,34 @@ export class PlayerComponent implements OnInit {
     }
   ];
 
-  constructor(public dialog: MatDialog, private autoPlayService: AutoplayService) { }
+  constructor(
+    public dialog: MatDialog, 
+    private autoPlayService: AutoplayService,
+    private playerService: PlayerService
+  ) { }
 
   ngOnInit() {
 
     this.player = new WaveSurfer(this.options);
     this.player.init();
     this.player.createBackend();
-    // this.player.load('/assets/sample.mp3');
     this.setupPlayerEvents();
     this.setupPlayerEqFilters();
-    this.player.setVolume(70/100)
+    this.player.setVolume(70/100);
+
+    this.playerService.nowPlaying.subscribe((track: any) => {
+      this.player.load(track.Link); 
+      this.songName = track.Name;
+      this.artist = track.Artist;
+      this.player.on('ready',this.player.play.bind(this.player));
+      this.playerService.playPause.next('play');
+      this.setPlayPuseIcon();  
+    });
+
+    this.playerService.playPause.subscribe((playPauseState: any) => {
+      this.playPauseState = playPauseState;
+      this.setPlayPuseIcon();     
+    });
  
   }
 
@@ -136,23 +156,38 @@ export class PlayerComponent implements OnInit {
 
     this.player.on('play', () => {
       let time = this.player.getDuration();
+      this.songDuration = Utility.formatTime(time);
+      this.playerService.playPause.next('play');
+    });
+
+    this.player.on('pause', () => {
+      this.playerService.playPause.next('pause');
+    });
+
+    this.player.on('load', () => {
+      let time = this.player.getDuration();
       this.songDuration = Utility.formatTime(time)
     });
-
-    this.player.on('finish', () => {
-      this.playPauseState = 'pause'
-      this.setPalyPauseIcon();
-      this.autoPlayService.dequeueTrackAfterPlay();     
-    });
     
+    this.player.on('finish', () => {
+      this.playerService.playNext();   
+    });
 
     this.player.on('stop', () => {
-      this.playPauseState = 'pause'
-      this.setPalyPauseIcon();
+      this.playerService.playPause.next('pause');      
     });
+
+    this.player.on('loading', (a,b) => {
+      this.isLoading = true
+      this.progress = a;
+      if(a===100){
+        this.isLoading = false;
+      }
+    });
+   
   }
 
-  updateVolume($event){
+  private updateVolume($event){
     let value = $event.value
 
     if(value === 0){
@@ -182,53 +217,37 @@ export class PlayerComponent implements OnInit {
     }
   }
  
-  private setPalyPauseIcon(){
-    if (this.playPauseState === 'play') {
-      this.icon = 'pause';
-    } else {
-      this.icon = 'play_arrow';
-    }
+  private setPlayPuseIcon(){
+   this.icon = this.playPauseState === 'pause'? 'play_arrow': 'pause';
   }
 
-  private togglePlayPauseState(){
-    this.playPauseState = this.playPauseState === 'play' ? 'pause' : 'play';
-    this.setPalyPauseIcon();
-    this.player.playPause();      
+  private togglePlayPauseState(){  
+    this.player.playPause(); 
+    this.setPlayPuseIcon();
   }
 
   public onResize($event) {
-    if (this.player != null && this.player.drawer != null) {
+    if (this.player.backend.buffer != null) {
       this.player.drawer.containerWidth = this.player.drawer.container.clientWidth;
       this.player.drawBuffer();
     }
   }
 
-  private onReady() {
-
-  }
-
-  private onPause() {
-    this.player.params.container.style.opacity = 0.9;
-  }
-
-  public play() {
-
-  }
-
-  public loadTrack(path: string) {
-    this.player.load(path);
-  }
-
-  public pause() {
-    this.player.pause();
-  }
+  // private onPause() {
+  //   this.player.params.container.style.opacity = 0.8;
+  //   this.player.pause();
+  // }
 
   public stop() {
     this.player.stop();
   }
 
-  public playPause() {
-    this.player.playPause();
+  private playNext(){
+    this.playerService.playNext();   
+  }
+
+  private playPrevious(){
+    this.playerService.playPrevious();   
   }
 
 }

@@ -13,37 +13,43 @@ export class AutoplayService {
     this.autoPlaylistSubject.subscribe((tracks) => this.autoPlaylists = tracks);
   }
 
-  updateAutoPlaylist(tracks){
+  public updateAutoPlaylist(tracks){
     this.autoPlaylistSubject.next(tracks);
   }
 
-  addPlayNext(track) {
+  public addPlayNext(track) {
     this.autoPlaylists.unshift(track);
     this.updateAutoPlaylist(this.autoPlaylists);
   }
 
-  addToQueue(track) {
+  public addToQueue(track) {
     this.autoPlaylists.push(track);
     this.updateAutoPlaylist(this.autoPlaylists);
   }
 
-  clearQueue(){
+  public clearQueue(){
     this.autoPlaylists.length = 0;
     this.updateAutoPlaylist(this.autoPlaylists);
   }
 
-  getTrackToPlay(){
-    return this.autoPlaylists[0];
-  }
-
-  dequeueTrackAfterPlay() {
-    this.autoPlaylists.shift();
+  public getTrackToPlay(){
+    let track = this.autoPlaylists.shift();
+    if(track){
+      this.autoPlaylists.push(track);      
+    }
     this.updateAutoPlaylist(this.autoPlaylists);
-    console.log(this.autoPlaylists)
+    return track;
   }
 
-  dequeueTrackAtIndex(id) {
-     this.autoPlaylists = this.autoPlaylists.filter((track:any) => track.Name != id)
+  public getPreviousTrackToPlay(){
+    let track = this.autoPlaylists.pop();
+    this.autoPlaylists.unshift(track);
+    this.updateAutoPlaylist(this.autoPlaylists);
+    return track;
+  }
+
+  public dequeueTrackAtIndex(id) {
+     this.autoPlaylists = this.autoPlaylists.filter((track:any) => track._Id != id)
      this.updateAutoPlaylist(this.autoPlaylists);
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input } from '@angular/core';
+import { Component, OnInit, Output, Input, ViewChild, ElementRef } from '@angular/core';
 import { EventEmitter } from 'events';
 import { Playlist } from '../playlist';
 import { Track } from '../track';
@@ -7,6 +7,8 @@ import { AutoplayService } from '../services/autoplay.service';
 import { FilehandlingService } from '../services/filehandling.service';
 import * as fs from 'fs';
 import Utility from '../Utility';
+import { Observable } from 'rxjs';
+import { DatastoreService } from '../services/datastore.service';
 
 @Component({
   selector: 'app-player-body-header',
@@ -16,29 +18,43 @@ import Utility from '../Utility';
 export class PlayerBodyHeaderComponent implements OnInit {
 
   @Input('emptyQueue') isQueueEmpty;
+  @ViewChild('filter') filter: ElementRef;
   
   private playlistname = '';
   private selectedTracks: Array<Track> = new Array();
-  
-  private fileCntr = 1;
   private mainLibrary: Playlist;
   private playLists: Array<Playlist> = new Array();
   private playlistName: string;
   public autoPlaylists: Array<Track> = new Array(); 
-  selTab = 0;
-  queueLength = 0;
+  private selTab = 0;
+  private queueLength = 0;
+  private dataSource: DatastoreService | null;
 
   constructor(
     private playlistService: PlaylistService,
     private autoPlayService: AutoplayService,
-    private fileHandlingSerice: FilehandlingService
-  ) { }
+    private fileHandlingSerice: FilehandlingService,
+    private datastore: DatastoreService
+  ) { 
+
+  }
 
   ngOnInit() {
+    this.dataSource = this.datastore;
     this.loadPlaylists();
     this.autoPlayService.autoPlaylistSubject.subscribe((autoPlayQueue) => {
       this.autoPlaylists = autoPlayQueue;
       this.queueLength = this.autoPlaylists.length;
+    });
+
+    Observable.fromEvent(this.filter.nativeElement, 'keyup')
+    .debounceTime(10)
+    .distinctUntilChanged()
+    .subscribe(() => {
+      if (!this.dataSource) { 
+        return; 
+      }
+      this.dataSource.filter = this.filter.nativeElement.value;
     });
   }
 

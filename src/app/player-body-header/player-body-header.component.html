@@ -1,15 +1,20 @@
 <mat-grid-tile-header style="background-color: #282364">
     <mat-form-field style="width: 100%;margin-left: 10px" floatPlaceholder="never" color="warn">
         <!--        <mat-icon class="app-icon-gray " matPrefix>search</mat-icon>-->
-        <input matInput dividerColor="warn" value="" #filter placeholder="Find your music" style="color: white; font-size: 12px">
+        <input matInput dividerColor="warn" value="" #filter placeholder="Find your music" 
+        style="color: white; font-size: 14px">
     </mat-form-field>
+    <!-- <button mat-icon-button (click)="filter.value=''">
+        <mat-icon class="app-icon"  >close</mat-icon>    
+    </button> -->
+    
     <span class="item-spacer"></span>
     <!-- <div fxLayout=" row " fxLayoutAlign="start center"> -->
     <button mat-icon-button (click)="file.click()">
-        <mat-icon class="app-icon " aria-label="Example icon-button with a heart icon">create_new_folder</mat-icon>
+        <mat-icon class="app-icon " aria-label="open folder">create_new_folder</mat-icon>
     </button>
     <button mat-icon-button>
-        <mat-icon class="app-icon " (click)="setTab(0)">library_music</mat-icon>
+        <mat-icon class="app-icon " (click)="setTab(0)">list</mat-icon>
     </button>
     <button mat-icon-button>
         <mat-icon class="app-icon " mat-icon-button (click)="setTab(1)">playlist_play</mat-icon>
@@ -20,7 +25,7 @@
     <button mat-icon-button>
         <mat-icon class="app-icon " mat-icon-button [matMenuTriggerFor]="playlistmenu">playlist_add</mat-icon>
     </button>
-    <input type="file" #file style="display:none" (change)='changeListener($event)' multiple/>
+    <input type="file" #file style="display:none" (change)='changeListener($event)' accept="audio/*" multiple/>
 </mat-grid-tile-header>
 <mat-menu #playlistmenu="matMenu">
     <mat-list dense>
@@ -54,7 +59,7 @@
         <mat-list-item *ngFor="let track of autoPlaylists" >
             <div fxLayout="column" fxLayoutAlign="start start">
                 <span style="font-size: 14px;" [id]="track._Id">{{truncateString(track.Name)}}</span>
-                <span *ngIf="track.Name.length<50 && track.Artist!=Null" style="font-size: 12px;color: grey">{{truncateString(track.Artist.trim())}}</span>
+                <span *ngIf="track.Name.length<50 && track.Artist!=Null" style="font-size: 12px;color: grey">{{truncateString(track.Artist)}}</span>
             </div>
             <span class="item-spacer"></span>
             <mat-icon class="app-icon-gray" [id]="track._Id" (click)="stopPropagation($event);dequeueTrack($event)">close</mat-icon>

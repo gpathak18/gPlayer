@@ -8,26 +8,22 @@ import { Input } from '@angular/core';
 })
 export class CellHoverDirective {
 
-  private el: HTMLElement;
-  private isSelected: boolean = false;
-
   @Input() defaultColor: string;
-  @Input() selectColor: string;
   @Input('cellHover') hoverColor: string;
-  
-  @Input() selectedRowIndex: number = -1;
+
+  private el: HTMLElement;
 
   constructor(el: ElementRef) {
     this.el = el.nativeElement;
   }
 
-  // @HostListener('mouseenter') onMouseEnter() {
-  //     this.highlight(this.hoverColor || this.defaultColor || 'white');      
-  // }
+  @HostListener('mouseenter') onMouseEnter() {
+      this.highlight(this.hoverColor || 'white');      
+  }
 
-  // @HostListener('mouseleave') onMouseLeave() {
-  //     this.highlight(null);
-  // }
+  @HostListener('mouseleave') onMouseLeave() {
+      this.highlight(null);
+  }
 
   // @HostListener('click', ['$event']) onClick($event) {
   //   this.el.style.backgroundColor =  '#ffd561';

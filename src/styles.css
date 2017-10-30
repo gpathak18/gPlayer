@@ -1,5 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+@keyframes flicker {
+  0% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
 
 @keyframes fadein {
   from {
@@ -8,6 +16,14 @@
   to {
     opacity: 1;
   }
+}
+
+.fadetext {
+  animation: fadein 2.2s ease alternate infinite;
+}
+
+body {
+  animation: fadein 2s;
 }
 
 .app {
@@ -38,8 +54,9 @@ html, body, material-app, md-sidenav-container, .my-content {
   height: 100%;
 }
 
+
 ::-webkit-scrollbar {
-  width:9px;
+  width:8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -61,3 +78,4 @@ html, body, material-app, md-sidenav-container, .my-content {
 ::-webkit-scrollbar-thumb:window-inactive {
   background:rgba(0,0,0,0.05);
 }
+

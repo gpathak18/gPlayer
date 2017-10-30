@@ -14,7 +14,7 @@
     <mat-grid-tile colspan="2"  style="background-color: white">
         <mat-list  class="mat-list-style">
             <mat-list-item  *ngFor="let track of currentTracks" fxLayout="row" fxLayoutAlign="start" 
-            class="mat-list-items"  [id]="track.Name"  [cellHover]="'#F5F5F5'">
+            class="mat-list-items"  [id]="track._Id"  [cellHover]="'#F5F5F5'">
                 <!-- <button mat-button style="width: 100%"  [id]="playlist.Name" (click)="selectedPlylst($event)" style="background-color: white"> -->
                     <!-- <mat-icon class="app-icon">playlist</mat-icon> -->
                     <span class="item-spacer" >{{track.Name}}</span>

@@ -26,12 +26,12 @@ function createWindow() {
     transparent: true,
     radii: [5, 5, 5, 5],
     backgroundColor: '#282364',
-    icon: `file://__dirname/assets/png/64x64.png`
+    icon: 'file:///' + __dirname + '/dist/assets/png/64x64.png'
 
   })
 
-  win.loadURL('http://localhost:4200')
-  // win.loadURL('file:///' + __dirname + '/dist/index.html')
+  // win.loadURL('http://localhost:4200')
+  win.loadURL('file:///' + __dirname + '/dist/index.html')
   win.setMaximumSize(700, 860)
   win.setMinimumSize(500, 700)
 
@@ -40,11 +40,10 @@ function createWindow() {
   })
 
   win.once('ready-to-show', () => {
-    // setTimeout(function () {
+    setTimeout(function () {
       // displayNow(splashScreen, win);
-
       win.show()
-    // }, 1000);
+    }, 1000);
   })
 
   // win.webContents.on('will-navigate', ev => {
@@ -72,7 +71,7 @@ function createWindow() {
 }
 
 function displayNow(splashScreen, win) {
-  // splashScreen.close()
+  splashScreen.close()
   win.show()
 }
 app.on('ready', function () {
@@ -86,13 +85,9 @@ app.on('ready', function () {
   //   radii: [5, 5, 5, 5],
   //   backgroundColor: '#EFEFEF'
   // })
-  //
-  // splashScreen.loadURL(url.format({
-  //   pathname: path.join(__dirname, 'splash.html'),
-  //   protocol: 'file:',
-  //   slashes: true
-  // }))
-  //
+  
+  // splashScreen.loadURL('http://localhost:4200/splash.html')
+  
   // splashScreen.once('ready-to-show', () => {
   //   splashScreen.show();
   // })
@@ -131,20 +126,7 @@ function setListeners(){
     return false;
   };
 }
-// process.argv.forEach(onOpen)
 
-// Open handlers should be added on the first tick.
-// These fire if the app is already running and the user
-// drags files or URLs onto the dock icon, or if they set
-// the app as a handler for a file type and then open a file
-// app.on('open-file', (e) => {
-// console.log('he',e)
-// })
-
-
-// app.on('open-url', (e) => {
-//   console.log('hes',e)
-// })
 
 
 

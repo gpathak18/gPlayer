@@ -17,7 +17,11 @@ export class MainComponent implements OnInit {
   private tileHeight: string;
   private tileWidth: string;
 
-  constructor(private el: ElementRef, private playlistService: PlaylistService, private datastore: DatastoreService) { }
+  constructor(
+    private el: ElementRef, 
+    private playlistService: PlaylistService, 
+    private datastore: DatastoreService
+  ) { }
 
   ngOnInit() {
     this.playlistService.initService();

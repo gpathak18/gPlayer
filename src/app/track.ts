@@ -22,19 +22,37 @@ export class Track implements Track {
     private _Id: string;    
     private Name: string;
     private ImageUrl?: string;
-    private Image: any;
     private Link: string;
     private Source: string;
 	private CompatibleSources?: string;
     private Rating?: number;
     private Year: number;
+    private Position: number;
+    private Selection: boolean = true;
+
 
     constructor(name?: string) {
         this.Name = name;
         this.Rating = 0;
     }
 
+	public get position(): number {
+		return this.Position;
+	}
 
+	public set position(value: number) {
+		this.Position = value;
+	}
+
+
+	public get selection(): boolean {
+		return this.Selection;
+	}
+
+	public set selection(value: boolean) {
+		this.Selection = value;
+	}
+    
 	public get id(): string {
 		return this._Id;
 	}
@@ -92,11 +110,11 @@ export class Track implements Track {
     }
 
     public get image(): any {
-		return this.Image;
+		return this.ImageUrl;
 	}
 
 	public set image(value: any) {
-		this.Image = value;
+		this.ImageUrl = value;
     }
     
 	public get album(): Album {

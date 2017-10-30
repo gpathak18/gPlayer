@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en" ng-app="gSplash">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Angular Material style sheet -->
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>Welcome to gShot</title>
+  <style>
+    /*circle {
+      fill: #b9f6ca;
+      stroke: #b388ff;
+      stroke-width: 2px;
+      stroke-opacity: 0.3;
+    }*/
+
+    @keyframes flicker {
+      0% {
+        opacity: 0.6;
+      }
+      100% {
+        opacity: 0.4;
+      }
+    }
+
+    #gray {
+      fill: #f5f5f5;
+      animation: flicker 2s ease alternate infinite;
+    }
+
+    #green {
+      fill: #b9f6ca;
+      animation: flicker 2.5s ease alternate infinite;
+    }
+
+    #yellow {
+      fill: #ffff8d;
+      animation: flicker 3s ease alternate infinite;
+    }
+
+    #blue {
+      fill: #84ffff;
+      animation: flicker 2.8s ease alternate infinite;
+    }
+
+    #purple {
+      fill: #b388ff;
+      animation: flicker 2.6s ease alternate infinite;
+    }
+
+    #red {
+      fill: #ff8a80;
+      animation: flicker 2.2s ease alternate infinite;
+    }
+
+    @keyframes fadein {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .fadetext {
+      animation: fadein 2.2s ease alternate infinite;
+    }
+
+    body {
+      animation: fadein 2s;
+    }
+  </style>
+</head>
+
+<body>
+  <div layout="column" layout-align="center center" layout-fill ng-cloak style="background: none">
+    <svg width="100%" height="100%" viewBox="0 0 800 400" style="position: absolute; top: 0;z-index: 0">
+
+      <defs>
+        <path id="svg-half-plane"
+          d="M 0,-5
+             A 1,1 0 0 1 1,-4
+             L 1,-1 5,1 5,2 1,1 1,3 2,4 2,5 0,4
+             Z"></path>
+        <symbol viewBox="0 0 10 10" id="svg-plane" overflow="visible">
+            <use xlink:href="#svg-half-plane"></use>
+            <use xlink:href="#svg-half-plane" transform="scale(-1, 1)"></use>
+        </symbol>
+      </defs>
+
+          <g id="Group">
+            <circle id="red"  cx="800" cy="300" r="70"></circle>
+            <circle id="green"  cx="200" cy="200" r="50"></circle>
+            <circle id="purple"  cx="500" cy="400" r="40"></circle>
+            <circle id="yellow"  cx="60" cy="100" r="20"></circle>
+            <circle id="blue"  cx="300" cy="50" r="30"></circle>
+            <circle id="gray"  cx="10" cy="350" r="60"></circle>
+            <circle id="red"  cx="400" cy="150" r="70"></circle>
+            <circle id="green"  cx="800" cy="10" r="50"></circle>
+            <circle id="purple"  cx="600" cy="60" r="40"></circle>
+            <circle id="yellow"  cx="500" cy="10" r="20"></circle>
+            <circle id="blue"  cx="210" cy="50" r="30"></circle>
+            <circle id="gray"  cx="120" cy="310" r="60"></circle>
+            <use class="plane" x="100" y ="200" xlink:href="#svg-plane" width="100" height="20"></use>
+          </g>
+
+      <animateTransform
+                xlink:href="#Group"
+                attributeName="transform"
+                begin="0s"
+                dur="40s"
+                type="rotate"
+                from="0 0 0"
+                to="60 60 60"
+                repeatCount="indefinite"/>
+        <use id="plane" class="plane" x="400" y ="200" xlink:href="#svg-plane" width="100" height="20"></use>
+         <animateMotion
+              xlink:href="#plane"
+              path="M 25,75 Q 50,150 75,100 T 150,150"
+              begin="0s" dur="10s" repeatCount="indefinite"
+              rotate="auto"/>
+  </svg>
+
+    <div layout="row" layout-align="center center">
+      <p class="md-headline" style="margin: 20px">Please</p>
+      <md-progress-circular class="md-warn md-hue-3" md-diameter="90">To</md-progress-circular>
+      <p class="md-headline" style="margin: 20px">Wait</p>
+    </div>
+    <div class="md-subhead fadetext" style="margin: 50px">We are preparing good stuff for you.</div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+  <!-- Angular Material Library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+  <script src="https://angular-ui.github.io/ui-router/release/angular-ui-router.min.js"></script>
+  <script>
+    angular
+      .module('gSplash', ['ngMaterial'], function() {})
+
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+  </script>
+</body>
+
+</html>

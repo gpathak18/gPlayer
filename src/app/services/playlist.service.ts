@@ -26,11 +26,11 @@ export class PlaylistService {
   ) {
 
     this.fileHandler.tracks.subscribe((tracks) => {
-         tracks.map((track) => {
-            this.mainLibrary.tracks.push(track)
+         tracks.map((track:any) => {
+            this.mainLibrary.tracks.push(track)            
          })
          this.datastore.addTrack(this.mainLibrary.tracks);
-         this.dbservice.put(this.mainLibrary, 'MAIN_LIBRARY');
+         this.dbservice.put(this.mainLibrary, 'MAIN_LIBRARY');         
     });
   }
 

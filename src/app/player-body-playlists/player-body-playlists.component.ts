@@ -22,12 +22,11 @@ export class PlayerBodyPlaylistsComponent implements OnInit {
   }
 
   private loadPlaylists() {
-    // this.playlistService.user_playlists.subscribe(value => this.playLists.push(value));
     this.playlistService.user_playlists.subscribe(value => this.playLists = value);
   }
 
   private truncateString(str){
-    return Utility.truncateString(str,15);
+    return Utility.truncateString(str,20);
   }
   
   private selectedPlylst($event) {

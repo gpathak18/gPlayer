@@ -11,9 +11,7 @@ import { Track } from '../track';
 export class PlayerBodyFooterComponent implements OnInit {
 
   constructor(public dialog: MatDialog) { }
-  
-
-  
+ 
   ngOnInit() {
     
   }
@@ -25,8 +23,6 @@ export class PlayerBodyFooterComponent implements OnInit {
       }
     });
   }
-
-  
 
 }
 

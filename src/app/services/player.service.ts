@@ -3,27 +3,51 @@ import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import MinimapPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js';
 import { PlayerComponent } from '../player/player.component';
+import { Subject } from 'rxjs';
+import { Track } from '../track';
+import { AutoplayService } from './autoplay.service';
 
 
 @Injectable()
 export class PlayerService {
 
-
-  constructor(private playerComponent: PlayerComponent) {
+  public nowPlaying = new Subject<Track>();
+  public playPause = new Subject();
+  
+  constructor(
+    private autoPlayService: AutoplayService
+  ) {
 
   }
 
-  public loadTrack(path: string) {
-    this.playerComponent.loadTrack(path);
+  public playNow(track) {
+    this.nowPlaying.next(track);
   }
 
   public play() {
-    this.playerComponent.play();
+    this.playPause.next('play');
   }
 
   public pause() {
-    this.playerComponent.pause();
+    this.playPause.next('pause');
   }
-   //this.player.on('ready', this.player.play.bind(this.player));
+
+  public playNext() {
+    let track = this.autoPlayService.getTrackToPlay();
+    if(track){
+        this.playNow(track);
+    }else {
+      this.playPause.next('pause');
+    }
+  }
+
+  public  playPrevious() {
+    let track = this.autoPlayService.getPreviousTrackToPlay();
+    if(track){
+        this.playNow(track);
+    }else {
+        this.playPause.next('pause');
+    }
+  } 
 
 }

@@ -14,6 +14,7 @@ import { DatastoreService } from '../services/datastore.service';
 import { PlaylistService } from '../services/playlist.service';
 import { AutoplayService } from '../services/autoplay.service';
 import Utility from '../Utility';
+import { PlayerService } from '../services/player.service';
 // import { shell } from 'electron';
 declare const window: any;
 const { shell } = window.require("electron").remote
@@ -32,37 +33,68 @@ export class PlayerBodyMainComponent implements OnInit {
 
   private displayedColumns = ['Position', 'Name', 'Selection', 'Options'];
   private dataSource: DatastoreService | null;
-
+  private noimage = 'assets/png/no-image.png';
   private tracks: Array<Track>;
   private userPlaylists: Array<Playlist>;
   private selectedTrack: any;
-  private nowPlayingTrackIndex: number;
+  private nowPlayingTrackId: string;
   private stars: Array<string> = ['star_border','star_border','star_border','star_border','star_border']
+  
+  private play_circle_icon = 'play_circle_outline';
   private starResetCntr = 0;
-  emptyQueue = false;
+  private shiftKeyFirstIndex = -1;  
+  private emptyQueue = false;
+  private isSelectAll=false;
+  private isCheckAll = false;
 
   constructor(
     private autoPlayService: AutoplayService, 
     private playlistService: PlaylistService, 
     private datastore: DatastoreService, 
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    private playerService: PlayerService
   ) {
 
   }
+
+  private setSelection(track){
+    console.log(track.Selection)
+  }
+
 
   ngOnInit() {
     this.dataSource = this.datastore;
     this.winWdHt.tileHeight = '560';
     this.winWdHt.tileWidth = '500';
+
     this.playlistService.user_playlists.subscribe(value => this.userPlaylists = value);
-    this.dataSource.currentTracks.subscribe(tracks => {
-      this.tracks = tracks;
-      console.log(this.tracks,tracks)
+    
+    this.dataSource.currentTracks.subscribe(addedTracks => {
+      this.tracks = addedTracks;
     });
+
+    this.playerService.nowPlaying.subscribe((track: any) => {
+        this.nowPlayingTrackId = track._Id;
+        // this.clickRowIndex = track.Position;
+    });
+
+    this.playerService.playPause.subscribe((state: any) => {
+      if(state === 'pause'){
+        
+      }
+      // this.clickRowIndex = track.Position;
+    });
+
   }
 
-  onFilesChange(fileList : FileList){
+  private onFilesChange(fileList : FileList){
     console.log(fileList);
+  }
+
+  private setCheckAll(_isCheckAll){
+    this.isCheckAll = _isCheckAll;
+    this.tracks.map((track:any) => track.Selection = _isCheckAll); 
+    // this.playlistService.updateMainLibrary(this.tracks); 
   }
 
   // handleDrop(e) {
@@ -106,12 +138,6 @@ export class PlayerBodyMainComponent implements OnInit {
     this.playlistService.updateMainLibrary(this.tracks); 
   }
 
-  chkBoxIcon = 'check_box_outline_blank'
-  private checkBox(){
-    this.chkBoxIcon = this.chkBoxIcon==='check_box'? 'check_box_outline_blank' : 'check_box';
-  }
-  
-
   private openSnackBar(plslst: Playlist, action: string) {
 
     const theTrack = new Track(this.selectedTrack.Name);
@@ -130,7 +156,7 @@ export class PlayerBodyMainComponent implements OnInit {
 
   private showConfirmMessage(msg) {
     this.snackBar.open(msg, 'Done', {
-      duration: 2000,
+      duration: 1000,
     });
   }
 
@@ -163,30 +189,42 @@ export class PlayerBodyMainComponent implements OnInit {
       this.datastore.addTrack(_mainLibrary.tracks);
   }
 
-  trkNum = -1
   private setSelectedTrack(_track) {
     this.selectedTrack = _track;
     this.setRating(_track.Rating);
   }
 
   private playTrack(row) {
-    const path = row.Link;
-    // this.player.loadTrack(path);
-    this.player.loadTrack('/assets/sample.mp3');
-    // this.player.on('waveform-ready', () => {
-    this.player.playPause();
-    this.nowPlayingTrackIndex = row.TrackNumber;
-    // });
+    this.playerService.playNow(row)
+    this.nowPlayingTrackId = row._Id;
   }
-  shiftKeyFirstIndex = -1
+
+  private pauseTrack(){
+    this.playerService.pause();
+    this.nowPlayingTrackId = '';
+  }
+
+  private clickRowIndex = -1
   private handleRowClick(row, event){
+    this.clickRowIndex = row.Position;
     this.isSelectAll=false;
     if(event.shiftKey) { 
-      console.log('firest:', this.shiftKeyFirstIndex, 'last:', row.TrackNumber)     
+      console.log('firest:', this.shiftKeyFirstIndex, 'last:', row.Position)    
+      this.tracks.map((track:any) => {
+        if(this.shiftKeyFirstIndex <  row.Position){
+            if(track.Position >= this.shiftKeyFirstIndex && track.Position <= row.Position ){
+              track.Selection = true;
+            }
+        }else{
+          if(track.Position <= this.shiftKeyFirstIndex && track.Position >= row.Position ){
+            track.Selection = true;
+          }
+        }
+      });  
     } else {
-      
+      // this.tracks.map((track:any) => track.Selection = false);
     }
-    this.shiftKeyFirstIndex = row.TrackNumber;
+    this.shiftKeyFirstIndex = row.Position;
   }
 
   private toggleSelected(obj, event) {
@@ -199,8 +237,6 @@ export class PlayerBodyMainComponent implements OnInit {
       this.isSelectAll=true;
     }
   }
-
-  isSelectAll=false;
 
   @ViewChild('filter') filter: ElementRef;
 }
