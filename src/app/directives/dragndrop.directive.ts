@@ -10,13 +10,15 @@ export class DragndropDirective {
   constructor() { }
 
   @HostListener('drop', ['$event']) public onDrop(evt){
+    console.log('here')
     evt.preventDefault();
     evt.stopPropagation();
-    // this.background = '#eee';
+
     let files = evt.dataTransfer.files;
     if(files.length > 0){
       this.filesChangeEmiter.emit(files);
     }
+    console.log('there')
   }
-
+  
 }

@@ -126,6 +126,15 @@ export class PlayerComponent implements OnInit {
     this.playerService.playPause.subscribe((playPauseState: any) => {
       this.playPauseState = playPauseState;
       this.setPlayPuseIcon();     
+
+      if(this.playPauseState === 'play') {
+        this.player.play()
+      } else if(this.playPauseState === 'pause') {
+        this.player.pause()
+      } else {
+        this.player.stop()
+      }
+
     });
  
   }
@@ -157,11 +166,9 @@ export class PlayerComponent implements OnInit {
     this.player.on('play', () => {
       let time = this.player.getDuration();
       this.songDuration = Utility.formatTime(time);
-      this.playerService.playPause.next('play');
     });
 
     this.player.on('pause', () => {
-      this.playerService.playPause.next('pause');
     });
 
     this.player.on('load', () => {
@@ -174,15 +181,9 @@ export class PlayerComponent implements OnInit {
     });
 
     this.player.on('stop', () => {
-      this.playerService.playPause.next('pause');      
     });
 
     this.player.on('loading', (a,b) => {
-      this.isLoading = true
-      this.progress = a;
-      if(a===100){
-        this.isLoading = false;
-      }
     });
    
   }
@@ -197,7 +198,6 @@ export class PlayerComponent implements OnInit {
     }else{
       this.volumeIcon = 'volume_up'
     }
-
     this.player.setVolume($event.value/100)
   }
 
@@ -222,8 +222,11 @@ export class PlayerComponent implements OnInit {
   }
 
   private togglePlayPauseState(){  
-    this.player.playPause(); 
-    this.setPlayPuseIcon();
+    if(this.playPauseState == 'play'){
+      this.playerService.pause();   
+    } else {
+      this.playerService.play();   
+    }
   }
 
   public onResize($event) {

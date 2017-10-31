@@ -1,136 +1,152 @@
 <!-- <div [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'"> -->
 
-  
-    <mat-tab-group class="scroll-bar-style" [selectedIndex]="tabIndex" [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'">
-        <mat-tab label="library" appDragndrop>
-            <mat-table #table [dataSource]="dataSource"> 
 
-                <ng-container matColumnDef="Position">
-                  <mat-header-cell *matHeaderCellDef class="mat-cell-sn"> No. </mat-header-cell>
-                  <mat-cell *matCellDef="let track" class="mat-cell-sn" > 
-                      <div fxLayout="row" fxLayoutAlign="center center" *ngIf="track.Position != hoverRowIndex && track._Id != nowPlayingTrackId;then trackPosition else playButton"></div>
-                      <ng-template #playButton>
-                          <div *ngIf="nowPlayingTrackId != track._Id; then playIcon else pauseIcon"></div>
-                          <ng-template #playIcon>
-                          <button id="play-circle-button" mat-icon-button style="margin-left: -12px" (click)="playTrack(track)">
-                            <mat-icon>play_circle_outline</mat-icon>
-                          </button>
-                          </ng-template>
-                          <ng-template #pauseIcon>
-                          <button id="pause-circle-button" mat-icon-button style="margin-left: -12px" (click)="pauseTrack()">
-                            <mat-icon>pause_circle_outline</mat-icon>
-                          </button>
-                          </ng-template> 
-                      </ng-template>
-                      <ng-template #trackPosition>
-                           <span>{{track.Position}}</span>   
-                      </ng-template>                     
-                   </mat-cell>
-                </ng-container>
-            
-                <ng-container matColumnDef="Selection">
-                  <mat-header-cell *matHeaderCellDef class="mat-cell-sl">   
-                      <div *ngIf="isCheckAll;then chkHeader else unchkHeader"></div>
-                      <ng-template #unchkHeader>
-                          <button mat-icon-button (click)="setCheckAll(true)">
-                            <mat-icon>check_box_outline_blank</mat-icon>
-                          </button>
-                      </ng-template>
-                      <ng-template #chkHeader>
-                          <button mat-icon-button (click)="setCheckAll(false)">
-                              <mat-icon>check_box</mat-icon>  
-                          </button>
-                      </ng-template>           
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let track" class="mat-cell-sl">
-                      <div *ngIf="track.Selection;then checked else unchecked"></div>
-                      <ng-template #unchecked>
-                          <button mat-icon-button (click)="track.Selection=true">
-                            <mat-icon>check_box_outline_blank</mat-icon>
-                          </button>
-                      </ng-template>
-                      <ng-template #checked>
-                          <button mat-icon-button (click)="track.Selection=false">
-                              <mat-icon>check_box</mat-icon>  
-                          </button>
-                      </ng-template>                    
-                   </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="Name">
-                  <mat-header-cell *matHeaderCellDef class="mat-cell-song"> Song Name </mat-header-cell>
-                  <mat-cell *matCellDef="let track" class="mat-cell-song">
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                      <div style="margin-right:16px;margin-top:4px">
-                          <img [src]="track.ImageUrl" alt="..." *ngIf="track.ImageUrl!= 'None'" style="width:44px;height:44px;border-radius: 5%;">
-                          <img [src]="noimage" alt="..." *ngIf="track.ImageUrl == 'None'" style="width:46px;height:46px;border-radius: 5%;">
-                      </div>
-                      <div>
-                          <span>{{truncateString(track.Name)}}</span><br>
-                          <span *ngIf="track.Name.length<50 && track.Artist!=null" style="font-size: 12px;">{{track.Artist}}</span>
-                      </div>
-                    </div>                    
-                  </mat-cell>
-                </ng-container>
-            
-                <ng-container matColumnDef="Options">
-                  <mat-header-cell *matHeaderCellDef class="mat-cell-op"> Options </mat-header-cell>
-                  <mat-cell *matCellDef="let row" class="mat-cell-op" >
-                    <button mat-icon-button [matMenuTriggerFor]="menu" (click)="setSelectedTrack(row)" >
-                      <mat-icon>more_vert</mat-icon>
+<mat-tab-group class="scroll-bar-style" [selectedIndex]="tabIndex" [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'">
+  <mat-tab label="library" (dragover)="false" (dragend)="false" (drop)="handleDrop($event)">
+    <div *ngIf="isShowDropZone;then dropZone else contentTable"></div>
+    <ng-template #dropZone>
+        <div fxLayout="row" fxLayoutAlign="center center" [style.height]="winWdHt.tileHeight-90+'px'" [style.width]="winWdHt.tileWidth+'px'">
+            <div fxLayout="row" fxLayoutAlign="center center" (dragover)="false" (dragend)="false" (drop)="handleDrop($event)"
+             style="width:80%;height:80%; border: 5px dashed rgba(119, 107, 107, 0.76)">
+                <p style="color: white;font-family: Roboto;font-size: 14px;">
+                  <strong>Drop Your Items Here</strong>
+                </p>
+            </div>
+        </div>      
+    </ng-template>
+    <ng-template #contentTable>
+      <mat-table #table [dataSource]="dataSource">
+        <ng-container matColumnDef="Position">
+          <mat-header-cell *matHeaderCellDef class="mat-cell-sn"> No. </mat-header-cell>
+          <mat-cell *matCellDef="let track" class="mat-cell-sn">
+            <div fxLayout="row" fxLayoutAlign="center center" *ngIf="track.Position != hoverRowIndex && track._Id != nowPlayingTrackId;then trackPosition else playButton"></div>
+            <ng-template #playButton>
+              <div *ngIf="nowPlayingTrackId != track._Id; then playIcon else pauseIcon"></div>
+              <ng-template #playIcon>
+                <button id="play-circle-button" mat-icon-button style="margin-left: -12px" (click)="playTrack(track)">
+                  <mat-icon>play_circle_outline</mat-icon>
+                </button>
+              </ng-template>
+              <ng-template #pauseIcon>
+                <div *ngIf="!isPaused; then pIcon else plIcon"></div>
+                <ng-template #pIcon>
+                    <button id="pause-circle-button" mat-icon-button style="margin-left: -12px" (click)="pauseTrack()">
+                        <mat-icon>pause_circle_outline</mat-icon>
                     </button>
-                  </mat-cell>
-                </ng-container>
+                </ng-template>
+                <ng-template #plIcon>
+                    <button id="pause-circle-button"  mat-icon-button style="margin-left: -12px" (click)="playTrack(track)">
+                        <mat-icon>volume_mute</mat-icon>
+                    </button>
+                </ng-template>
+             </ng-template>
+            </ng-template>
+            <ng-template #trackPosition>
+              <span>{{track.Position}}</span>
+            </ng-template>
+          </mat-cell>
+        </ng-container>
 
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row 
-                  *matRowDef="let row; columns: displayedColumns;"      
-                  [ngClass]="{'clicked-row': clickRowIndex===row.Position }"                 
-                  (mouseenter)="hoverRowIndex=row.Position"
-                  (click)="handleRowClick(row,$event)"
-                  (dblclick)="playTrack(row)">
-                </mat-row>
-              </mat-table>
-            
-            <mat-menu #menu="matMenu" style="max-height: 30px" (close)="menuCloseEvent()">
-              <button mat-menu-item (click)="enqueuePlayNext()">
-                    <mat-icon>play_circle_outline</mat-icon>
-                    <span> Play Next</span>
+        <ng-container matColumnDef="Selection">
+          <mat-header-cell *matHeaderCellDef class="mat-cell-sl">
+            <div *ngIf="isCheckAll;then chkHeader else unchkHeader"></div>
+            <ng-template #unchkHeader>
+              <button mat-icon-button (click)="setCheckAll(true)">
+                <mat-icon>check_box_outline_blank</mat-icon>
               </button>
-              <button mat-menu-item  (click)="enqueueTrack()"> 
-                <mat-icon>queue_music</mat-icon>
-                <span>Queue Track</span>
+            </ng-template>
+            <ng-template #chkHeader>
+              <button mat-icon-button (click)="setCheckAll(false)">
+                <mat-icon>check_box</mat-icon>
               </button>
-              <button mat-menu-item [matMenuTriggerFor]="playlists">
-                <mat-icon>playlist_add</mat-icon>
-                <span>Add to Playlist</span>
+            </ng-template>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let track" class="mat-cell-sl">
+            <div *ngIf="track.Selection;then checked else unchecked"></div>
+            <ng-template #unchecked>
+              <button mat-icon-button (click)="track.Selection=true">
+                <mat-icon>check_box_outline_blank</mat-icon>
               </button>
-              <mat-divider></mat-divider>
-              <button mat-menu-item (click)="openInFinder()" >
-                  <mat-icon>folder_open</mat-icon>
-                  <span>Open in Finder</span>
+            </ng-template>
+            <ng-template #checked>
+              <button mat-icon-button (click)="track.Selection=false">
+                <mat-icon>check_box</mat-icon>
               </button>
-              <button mat-menu-item (click)="moveToTrash()" >
-                <mat-icon>close</mat-icon>
-                <span>Remove</span>
-              </button>
-              <mat-divider></mat-divider>
-              <div>
-                  <button mat-icon-button  *ngFor="let star of stars; let i = index" style="width:35px;">
-                     <mat-icon class="menu-icon"  (mouseenter)="setRating(i)" (mouseleave)="resetRating(i)" (click)="setRating(i)" style="margin-right: 0px">{{star}}</mat-icon> 
-                  </button>
+            </ng-template>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Name">
+          <mat-header-cell *matHeaderCellDef class="mat-cell-song"> Song Name </mat-header-cell>
+          <mat-cell *matCellDef="let track" class="mat-cell-song">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <div style="margin-right:16px;margin-top:4px">
+                <img [src]="track.ImageUrl" alt="..." *ngIf="track.ImageUrl!= 'None'" style="width:44px;height:44px;border-radius: 5%;">
+                <img [src]="noimage" alt="..." *ngIf="track.ImageUrl == 'None'" style="width:46px;height:46px;border-radius: 5%;">
               </div>
-            </mat-menu>
-            <mat-menu #playlists="matMenu" >
-              <button mat-menu-item (click)="openSnackBar(playlist, 'Done')" *ngFor="let playlist of userPlaylists"> 
-                <mat-icon style="margin: 2px">playlist_add</mat-icon>
-                <span>{{playlist.Name}}</span>
-              </button>
-            </mat-menu>
-        </mat-tab>
-        <mat-tab label="playlists" >
-          <app-player-body-playlists  [winWdHt]="winWdHt"></app-player-body-playlists>
-        </mat-tab>
-      </mat-tab-group>
+              <div>
+                <span>{{truncateString(track.Name)}}</span>
+                <br>
+                <span *ngIf="track.Name.length<50 && track.Artist!=null" style="font-size: 12px;">{{track.Artist}}</span>
+              </div>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Options">
+          <mat-header-cell *matHeaderCellDef class="mat-cell-op"> Options </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="mat-cell-op">
+            <button mat-icon-button [matMenuTriggerFor]="menu" (click)="setSelectedTrack(row)">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'clicked-row': clickRowIndex===row.Position }" (mouseenter)="hoverRowIndex=row.Position"
+          (click)="handleRowClick(row,$event)" (dblclick)="playTrack(row)">
+        </mat-row>
+      </mat-table>
+    </ng-template>
+
+    <mat-menu #menu="matMenu" style="max-height: 30px" (close)="menuCloseEvent()">
+      <button mat-menu-item (click)="enqueuePlayNext()">
+        <mat-icon>play_circle_outline</mat-icon>
+        <span> Play Next</span>
+      </button>
+      <button mat-menu-item (click)="enqueueTrack()">
+        <mat-icon>queue_music</mat-icon>
+        <span>Queue Track</span>
+      </button>
+      <button mat-menu-item [matMenuTriggerFor]="playlists">
+        <mat-icon>playlist_add</mat-icon>
+        <span>Add to Playlist</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="openInFinder()">
+        <mat-icon>folder_open</mat-icon>
+        <span>Open in Finder</span>
+      </button>
+      <button mat-menu-item (click)="moveToTrash()">
+        <mat-icon>close</mat-icon>
+        <span>Remove</span>
+      </button>
+      <mat-divider></mat-divider>
+      <div>
+        <button mat-icon-button *ngFor="let star of stars; let i = index" style="width:35px;">
+          <mat-icon class="menu-icon" (mouseenter)="setRating(i)" (mouseleave)="resetRating(i)" (click)="setRating(i)" style="margin-right: 0px">{{star}}</mat-icon>
+        </button>
+      </div>
+    </mat-menu>
+    <mat-menu #playlists="matMenu">
+      <button mat-menu-item (click)="openSnackBar(playlist, 'Done')" *ngFor="let playlist of userPlaylists">
+        <mat-icon style="margin: 2px">playlist_add</mat-icon>
+        <span>{{playlist.Name}}</span>
+      </button>
+    </mat-menu>
+  </mat-tab>
+  <mat-tab label="playlists">
+    <app-player-body-playlists [winWdHt]="winWdHt"></app-player-body-playlists>
+  </mat-tab>
+</mat-tab-group>
 <!-- </div> -->
-  

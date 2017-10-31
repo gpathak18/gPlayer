@@ -15,6 +15,7 @@ import { PlaylistService } from '../services/playlist.service';
 import { AutoplayService } from '../services/autoplay.service';
 import Utility from '../Utility';
 import { PlayerService } from '../services/player.service';
+import { FilehandlingService } from '../services/filehandling.service';
 // import { shell } from 'electron';
 declare const window: any;
 const { shell } = window.require("electron").remote
@@ -46,13 +47,15 @@ export class PlayerBodyMainComponent implements OnInit {
   private emptyQueue = false;
   private isSelectAll=false;
   private isCheckAll = false;
+  private isShowDropZone = true;
 
   constructor(
     private autoPlayService: AutoplayService, 
     private playlistService: PlaylistService, 
     private datastore: DatastoreService, 
     public snackBar: MatSnackBar,
-    private playerService: PlayerService
+    private playerService: PlayerService,
+    private fileHandlingSerice: FilehandlingService,
   ) {
 
   }
@@ -71,6 +74,11 @@ export class PlayerBodyMainComponent implements OnInit {
     
     this.dataSource.currentTracks.subscribe(addedTracks => {
       this.tracks = addedTracks;
+      if(this.tracks && this.tracks.length <= 0){
+        this.isShowDropZone = true;
+      } else {
+        this.isShowDropZone = false;
+      }
     });
 
     this.playerService.nowPlaying.subscribe((track: any) => {
@@ -80,11 +88,19 @@ export class PlayerBodyMainComponent implements OnInit {
 
     this.playerService.playPause.subscribe((state: any) => {
       if(state === 'pause'){
-        
+        this.isPaused = true;
+      } else {
+        this.isPaused = false;
       }
       // this.clickRowIndex = track.Position;
     });
 
+  }
+
+  private handleDrop(e) {
+    let files:File = e.dataTransfer.files;
+    this.fileHandlingSerice.readFiles(files);
+    return false;
   }
 
   private onFilesChange(fileList : FileList){
@@ -193,15 +209,20 @@ export class PlayerBodyMainComponent implements OnInit {
     this.selectedTrack = _track;
     this.setRating(_track.Rating);
   }
-
+ private isPaused = false;
   private playTrack(row) {
-    this.playerService.playNow(row)
-    this.nowPlayingTrackId = row._Id;
+    this.isPaused = false;
+    if(this.nowPlayingTrackId !='' && this.nowPlayingTrackId === row._Id){
+      this.playerService.play();
+    } else {
+      this.playerService.playNow(row)
+      this.nowPlayingTrackId = row._Id;
+    }
   }
 
   private pauseTrack(){
+    this.isPaused = true;
     this.playerService.pause();
-    this.nowPlayingTrackId = '';
   }
 
   private clickRowIndex = -1
