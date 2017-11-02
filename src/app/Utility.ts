@@ -9,7 +9,7 @@ export default class Utility {
 
     static truncateString(string,maxLen){
         if (string.length > maxLen){
-            return string.substring(0,maxLen)+'...';
+            return string.substring(0,maxLen-3)+'...';
         } else {
             return string;
         }        

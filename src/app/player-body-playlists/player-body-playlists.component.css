@@ -32,5 +32,27 @@
     width: 100%;
   }
 
+  /* :host/deep/ .example-headers-align .mat-expansion-panel-header-title, 
+  .example-headers-align .mat-expansion-panel-header-description {
+    flex-basis: 0;
+  } */
+  
+  :host/deep/ .mat-expansion-panel-content {
+    justify-content: space-between;
+    background-color: rgb(99, 72, 206);
+    box-shadow: 0 0 100px rgba(0, 0, 0, 0.2) inset;
+  }
 
+  :host/deep/ .mat-expansion-panel-body {
+    margin: 4px;
+  }
  
+  .mat-accordion-style {
+    width:100%; 
+    height:100%;
+    overflow-y: hidden;
+  }
+
+  .mat-accordion-style:hover {
+    overflow-y: overlay;
+  }

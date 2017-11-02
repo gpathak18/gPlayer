@@ -18,7 +18,8 @@ import {
   MatSidenavModule, MatListModule, MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule,
   MatIconModule, MatTabsModule, MatGridListModule, MatInputModule, MatTableModule, MatDialogModule,
   MatProgressBarModule, MatSliderModule, MatAutocompleteModule, MatFormFieldModule, MatButtonToggleModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatExpansionModule
 } from '@angular/material';
 import { DragndropDirective } from './directives/dragndrop.directive';
 import { CellHoverDirective } from './directives/cell-hover.directive';
@@ -77,7 +78,8 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     MatButtonToggleModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatExpansionModule
   ],
   providers: [
     PouchDbService, 

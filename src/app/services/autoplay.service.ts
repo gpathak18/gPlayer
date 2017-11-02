@@ -1,4 +1,4 @@
-import {PlaylistService} from './playlist.service';
+import { PlaylistService} from './playlist.service';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Track } from '../track';
@@ -10,7 +10,9 @@ export class AutoplayService {
   private autoPlaylists : Array<Track> = new Array();
 
   constructor() { 
-    this.autoPlaylistSubject.subscribe((tracks) => this.autoPlaylists = tracks);
+    this.autoPlaylistSubject.subscribe((tracks) => {
+      this.autoPlaylists = tracks;
+    });
   }
 
   public updateAutoPlaylist(tracks){

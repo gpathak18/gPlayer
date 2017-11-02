@@ -28,11 +28,11 @@
     <input type="file" #file style="display:none" (change)='changeListener($event)' accept="audio/*" multiple/>
 </mat-grid-tile-header>
 <mat-menu #playlistmenu="matMenu">
-    <mat-list dense>
+    <mat-list dense  style="width:200px;max-height:400px">
         <mat-list-item>
             <mat-input-container floatPlaceholder="never" (click)="stopPropagation($event)">
                 <mat-icon class="app-icon-gray " matSuffix style="margin: 0px" (click)="addPlaylist($event)">done</mat-icon>
-                <input matInput placeholder="Create Playlist" [(ngModel)]="playlistname" style=" font-size: 14px" type="text">
+                <input matInput placeholder="Create Playlist" [(ngModel)]="playlistname" style=" font-size: 12px" type="text">
             </mat-input-container>
         </mat-list-item>
         <!-- <mat-divider></mat-divider>         -->
@@ -40,7 +40,7 @@
             <button mat-icon-button (click)="stopPropagation($event)">
                 <mat-icon class="app-icon-gray" [id]="playlist.Name">playlist_play</mat-icon>
             </button>
-            <span style="margin-left: 10px;font-size: 14px" [id]="playlist.Name">{{truncateString(playlist.Name)}}</span>
+            <span style="margin-left: 10px;font-size: 12px" [id]="playlist.Name">{{truncateString(playlist.Name)}}</span>
             <span class="item-spacer"></span>
             <!-- <button mat-icon-button >      -->
             <mat-icon class="app-icon-gray" [id]="playlist.Name" (click)="stopPropagation($event);deletePlaylist($event)">close</mat-icon>
@@ -49,16 +49,16 @@
     </mat-list>
 </mat-menu>
 <mat-menu #autoqueue="matMenu" yPosition="below" xPosition="after" style="max-height:200px">
-    <mat-list dense>
+    <mat-list dense style="width:200px;max-height:400px">
         <mat-list-item *ngIf="queueLength > 0">
             <mat-input-container floatPlaceholder="never" (click)="stopPropagation($event)">
                 <mat-icon class="app-icon-gray " matSuffix style="margin: 0px" (click)="addQueuePlaylist($event)">done</mat-icon>
-                <input matInput placeholder="Save as Playlist" [(ngModel)]="playlistname" type="text" style=" font-size: 14px" >
+                <input matInput placeholder="Save as Playlist" [(ngModel)]="playlistname" type="text" style=" font-size: 12px" >
             </mat-input-container>
         </mat-list-item>
-        <mat-list-item *ngFor="let track of autoPlaylists" >
+        <mat-list-item *ngFor="let track of autoPlaylists | slice:0:maxMenuItems; let i=index" >
             <div fxLayout="column" fxLayoutAlign="start start">
-                <span style="font-size: 14px;" [id]="track._Id">{{truncateString(track.Name)}}</span>
+                <span style="font-size: 12px;" [id]="track._Id" (click)="playNow(track)">{{truncateString(track.Name)}}</span>
                 <span *ngIf="track.Name.length<50 && track.Artist!=Null" style="font-size: 12px;color: grey">{{truncateString(track.Artist)}}</span>
             </div>
             <span class="item-spacer"></span>

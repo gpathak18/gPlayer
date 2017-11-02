@@ -39,16 +39,15 @@ export class PlaylistService {
     if (!this.isInstantiated) {
       this.loadMainlibrary().then((result) => {
         this.mainLibrary = result;
+        this.dbservice.put(this.mainLibrary, 'MAIN_LIBRARY'); 
+        const autoPlayTracks = [];
+        this.mainLibrary.tracks.map((o,i) => { if(i<10) autoPlayTracks.push(o) });
         this.datastore.addTrack(this.mainLibrary.tracks);
-        this.autoPlayService.updateAutoPlaylist(this.mainLibrary.tracks)
-        this.dbservice.put(this.mainLibrary, 'MAIN_LIBRARY');
-     
+        this.autoPlayService.updateAutoPlaylist(autoPlayTracks)       
       }).catch((error) => {
         console.log('Error: Main Library: ', error);
       });
-
       this.loadUserPlaylists();
-     
     }
   }
 

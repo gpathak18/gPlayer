@@ -6,7 +6,7 @@
   </span> 
   <span class="item-spacer"></span>
   <span>
-    <mat-icon class="app-icon-gray" style="-webkit-user-select: none;-webkit-app-region: no-drag;cursor: pointer">menu</mat-icon>
+    <mat-icon class="app-icon-gray" style="-webkit-user-select: none;-webkit-app-region: no-drag;cursor: pointer" (click)="sidenav.open()">menu</mat-icon>
   </span>
 </mat-grid-tile-header>
 <div  (window:resize)="onResize($event)" id="waveform" style="justify-content:center;align-items:center;" fxLayout="column" fxLayoutAlign="center stretch">
@@ -61,7 +61,6 @@
     </button>
     <!-- <button mat-icon-button [@zoomState]="zoomState" (click)="toggleZoomState()"> -->
         <button mat-icon-button  (click)="toggleZoomState()">
-            
       <mat-icon class="app-icon-gray">timeline</mat-icon>
     </button>
     <span style="color: #282364;opacity: 0.7;font-family: Roboto;font-size: 14px;margin-left:5px"> 
@@ -71,3 +70,4 @@
 <mat-menu #volumecontrol="matMenu">
   <div><mat-slider class="slider-class" min="0" max="100" step="1" value="60" vertical=false (input)="updateVolume($event)"></mat-slider></div>
 </mat-menu>  
+

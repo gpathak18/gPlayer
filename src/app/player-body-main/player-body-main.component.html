@@ -19,7 +19,8 @@
         <ng-container matColumnDef="Position">
           <mat-header-cell *matHeaderCellDef class="mat-cell-sn"> No. </mat-header-cell>
           <mat-cell *matCellDef="let track" class="mat-cell-sn">
-            <div fxLayout="row" fxLayoutAlign="center center" *ngIf="track.Position != hoverRowIndex && track._Id != nowPlayingTrackId;then trackPosition else playButton"></div>
+            <div fxLayout="row" fxLayoutAlign="center center" 
+            *ngIf="track.Position != hoverRowIndex && track._Id != nowPlayingTrackId;then trackPosition else playButton"></div>
             <ng-template #playButton>
               <div *ngIf="nowPlayingTrackId != track._Id; then playIcon else pauseIcon"></div>
               <ng-template #playIcon>

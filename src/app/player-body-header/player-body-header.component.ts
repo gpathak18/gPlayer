@@ -9,6 +9,7 @@ import * as fs from 'fs';
 import Utility from '../Utility';
 import { Observable } from 'rxjs';
 import { DatastoreService } from '../services/datastore.service';
+import { PlayerService } from '../services/player.service';
 
 @Component({
   selector: 'app-player-body-header',
@@ -20,21 +21,26 @@ export class PlayerBodyHeaderComponent implements OnInit {
   @Input('emptyQueue') isQueueEmpty;
   @ViewChild('filter') filter: ElementRef;
   
-  private playlistname = '';
+  
   private selectedTracks: Array<Track> = new Array();
-  private mainLibrary: Playlist;
   private playLists: Array<Playlist> = new Array();
-  private playlistName: string;
   public autoPlaylists: Array<Track> = new Array(); 
+
+  private playlistName: string;
+  private mainLibrary: Playlist;
+  private playlistname = '';
+
   private selTab = 0;
   private queueLength = 0;
+  private maxMenuItems = 100;
   private dataSource: DatastoreService | null;
 
-  constructor(
+  constructor (
     private playlistService: PlaylistService,
     private autoPlayService: AutoplayService,
     private fileHandlingSerice: FilehandlingService,
-    private datastore: DatastoreService
+    private datastore: DatastoreService,
+    private playerService: PlayerService
   ) { 
 
   }
@@ -56,9 +62,10 @@ export class PlayerBodyHeaderComponent implements OnInit {
       }
       this.dataSource.filter = this.filter.nativeElement.value;
     });
+
   }
 
-  setTab(tab) {
+  private setTab(tab) {
     this.selTab = tab;
   }
 
@@ -66,20 +73,20 @@ export class PlayerBodyHeaderComponent implements OnInit {
     if (this.playlistname != null && this.playlistname.length > 0) {
       const plylst = new Playlist(this.playlistname);
       this.playlistService.createPlaylist(plylst);
-      this.playlistname=""
+      this.playlistname="";
     }
   }
 
-  private addQueuePlaylist($event){
+  private addQueuePlaylist($event) {
     if (this.playlistname != null && this.playlistname.length > 0) {
       const plylst = new Playlist(this.playlistname);
       plylst.tracks = this.autoPlaylists;
       this.playlistService.createPlaylist(plylst);
-      this.playlistname=""
+      this.playlistname="";
     }
   }
 
-  private clearQueue(){
+  private clearQueue() {
     this.autoPlayService.clearQueue();
   }
 
@@ -99,8 +106,12 @@ export class PlayerBodyHeaderComponent implements OnInit {
     event.stopPropagation();
   }
 
-  private truncateString(str){
-    return Utility.truncateString(str,15);
+  private truncateString(str) {
+    return Utility.truncateString(str,23);
+  }
+
+  private playNow(track) {
+    this.playerService.playNow(track)
   }
 
   private changeListener($event): void {

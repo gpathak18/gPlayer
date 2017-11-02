@@ -39,20 +39,24 @@ export class PlayerBodyMainComponent implements OnInit {
   private userPlaylists: Array<Playlist>;
   private selectedTrack: any;
   private nowPlayingTrackId: string;
-  private stars: Array<string> = ['star_border','star_border','star_border','star_border','star_border']
-  
+  private stars: Array<string> = ['star_border', 'star_border', 'star_border', 'star_border', 'star_border']
+
   private play_circle_icon = 'play_circle_outline';
   private starResetCntr = 0;
-  private shiftKeyFirstIndex = -1;  
+  private shiftKeyFirstIndex = -1;
+  private clickRowIndex = -1
+
   private emptyQueue = false;
-  private isSelectAll=false;
+  private isSelectAll = false;
   private isCheckAll = false;
   private isShowDropZone = true;
+  private isPaused = false;
+
 
   constructor(
-    private autoPlayService: AutoplayService, 
-    private playlistService: PlaylistService, 
-    private datastore: DatastoreService, 
+    private autoPlayService: AutoplayService,
+    private playlistService: PlaylistService,
+    private datastore: DatastoreService,
     public snackBar: MatSnackBar,
     private playerService: PlayerService,
     private fileHandlingSerice: FilehandlingService,
@@ -60,7 +64,7 @@ export class PlayerBodyMainComponent implements OnInit {
 
   }
 
-  private setSelection(track){
+  private setSelection(track) {
     console.log(track.Selection)
   }
 
@@ -71,10 +75,10 @@ export class PlayerBodyMainComponent implements OnInit {
     this.winWdHt.tileWidth = '500';
 
     this.playlistService.user_playlists.subscribe(value => this.userPlaylists = value);
-    
+
     this.dataSource.currentTracks.subscribe(addedTracks => {
       this.tracks = addedTracks;
-      if(this.tracks && this.tracks.length <= 0){
+      if (this.tracks && this.tracks.length <= 0) {
         this.isShowDropZone = true;
       } else {
         this.isShowDropZone = false;
@@ -82,12 +86,12 @@ export class PlayerBodyMainComponent implements OnInit {
     });
 
     this.playerService.nowPlaying.subscribe((track: any) => {
-        this.nowPlayingTrackId = track._Id;
-        // this.clickRowIndex = track.Position;
+      this.nowPlayingTrackId = track._Id;
+      // this.clickRowIndex = track.Position;
     });
 
     this.playerService.playPause.subscribe((state: any) => {
-      if(state === 'pause'){
+      if (state === 'pause') {
         this.isPaused = true;
       } else {
         this.isPaused = false;
@@ -98,18 +102,18 @@ export class PlayerBodyMainComponent implements OnInit {
   }
 
   private handleDrop(e) {
-    let files:File = e.dataTransfer.files;
+    let files: File = e.dataTransfer.files;
     this.fileHandlingSerice.readFiles(files);
     return false;
   }
 
-  private onFilesChange(fileList : FileList){
+  private onFilesChange(fileList: FileList) {
     console.log(fileList);
   }
 
-  private setCheckAll(_isCheckAll){
+  private setCheckAll(_isCheckAll) {
     this.isCheckAll = _isCheckAll;
-    this.tracks.map((track:any) => track.Selection = _isCheckAll); 
+    this.tracks.map((track: any) => track.Selection = _isCheckAll);
     // this.playlistService.updateMainLibrary(this.tracks); 
   }
 
@@ -124,10 +128,10 @@ export class PlayerBodyMainComponent implements OnInit {
   //   return false;
   // }
 
-  private setRating(i){
-    this.stars = this.stars.map((star,index) => {
-      if(index <= i){
-          star = 'star'
+  private setRating(i) {
+    this.stars = this.stars.map((star, index) => {
+      if (index <= i) {
+        star = 'star'
       } else {
         star = 'star_border'
       }
@@ -136,22 +140,22 @@ export class PlayerBodyMainComponent implements OnInit {
     });
   }
 
-  private resetRating(i){
-    if(i===0 && this.starResetCntr === 1){
+  private resetRating(i) {
+    if (i === 0 && this.starResetCntr === 1) {
       this.stars[i] = this.stars[i] === 'star_border' ? 'star' : 'star_border';
-      if(this.stars[0]==='star'){
+      if (this.stars[0] === 'star') {
         this.selectedTrack.Rating = 1;
-      }else {
+      } else {
         this.selectedTrack.Rating = -1;
       }
       this.starResetCntr = 0;
-    } else if(i===0) {
+    } else if (i === 0) {
       this.starResetCntr++;
     }
   }
 
-  private menuCloseEvent(){ 
-    this.playlistService.updateMainLibrary(this.tracks); 
+  private menuCloseEvent() {
+    this.playlistService.updateMainLibrary(this.tracks);
   }
 
   private openSnackBar(plslst: Playlist, action: string) {
@@ -160,6 +164,11 @@ export class PlayerBodyMainComponent implements OnInit {
     theTrack.trackNumber = this.selectedTrack.TrackNumber;
     theTrack.link = this.selectedTrack.Link;
     theTrack.source = this.selectedTrack.Source;
+    theTrack.year = this.selectedTrack.Year
+    theTrack.album = this.selectedTrack.Album
+    theTrack.artist = this.selectedTrack.Artist;
+    theTrack.id = this.selectedTrack._Id
+    theTrack.image = this.selectedTrack.ImageUrl;
 
 
     this.playlistService.addToPlaylist(theTrack, plslst).then((result) => {
@@ -176,43 +185,44 @@ export class PlayerBodyMainComponent implements OnInit {
     });
   }
 
-  private truncateString(str){
-    return Utility.truncateString(str,Number(this.winWdHt.tileWidth)-465);
+  private truncateString(str) {
+    return Utility.truncateString(str, Number(this.winWdHt.tileWidth) - 465);
   }
 
   private openInFinder() {
-    if(!shell.showItemInFolder(this.selectedTrack.Link)){
+    if (!shell.showItemInFolder(this.selectedTrack.Link)) {
       this.showConfirmMessage('Could not open track in finder.');
-    } 
+    }
   }
-  
-  private enqueueTrack(){
+
+  private enqueueTrack() {
     this.autoPlayService.addToQueue(this.selectedTrack);
     this.emptyQueue = false;
   }
 
-  private enqueuePlayNext(){
+  private enqueuePlayNext() {
     this.autoPlayService.addPlayNext(this.selectedTrack);
   }
 
-  private moveToTrash(){
-       if(shell.moveItemToTrash(this.selectedTrack.Link)){
-        this.showConfirmMessage('Track deleted.');
-      } else {
-        this.showConfirmMessage('Could not delete track.');
-      }
-      const _mainLibrary = this.playlistService.deleteFromMainLibrary(this.selectedTrack)
-      this.datastore.addTrack(_mainLibrary.tracks);
+  private moveToTrash() {
+    if (shell.moveItemToTrash(this.selectedTrack.Link)) {
+      this.showConfirmMessage('Track deleted.');
+    } else {
+      this.showConfirmMessage('Could not delete track.');
+    }
+    const _mainLibrary = this.playlistService.deleteFromMainLibrary(this.selectedTrack)
+    this.datastore.addTrack(_mainLibrary.tracks);
   }
 
   private setSelectedTrack(_track) {
     this.selectedTrack = _track;
     this.setRating(_track.Rating);
   }
- private isPaused = false;
+
+
   private playTrack(row) {
     this.isPaused = false;
-    if(this.nowPlayingTrackId !='' && this.nowPlayingTrackId === row._Id){
+    if (this.nowPlayingTrackId != '' && this.nowPlayingTrackId === row._Id) {
       this.playerService.play();
     } else {
       this.playerService.playNow(row)
@@ -220,28 +230,28 @@ export class PlayerBodyMainComponent implements OnInit {
     }
   }
 
-  private pauseTrack(){
+  private pauseTrack() {
     this.isPaused = true;
     this.playerService.pause();
   }
 
-  private clickRowIndex = -1
-  private handleRowClick(row, event){
+
+  private handleRowClick(row, event) {
     this.clickRowIndex = row.Position;
-    this.isSelectAll=false;
-    if(event.shiftKey) { 
-      console.log('firest:', this.shiftKeyFirstIndex, 'last:', row.Position)    
-      this.tracks.map((track:any) => {
-        if(this.shiftKeyFirstIndex <  row.Position){
-            if(track.Position >= this.shiftKeyFirstIndex && track.Position <= row.Position ){
-              track.Selection = true;
-            }
-        }else{
-          if(track.Position <= this.shiftKeyFirstIndex && track.Position >= row.Position ){
+    this.isSelectAll = false;
+    if (event.shiftKey) {
+      console.log('firest:', this.shiftKeyFirstIndex, 'last:', row.Position)
+      this.tracks.map((track: any) => {
+        if (this.shiftKeyFirstIndex < row.Position) {
+          if (track.Position >= this.shiftKeyFirstIndex && track.Position <= row.Position) {
+            track.Selection = true;
+          }
+        } else {
+          if (track.Position <= this.shiftKeyFirstIndex && track.Position >= row.Position) {
             track.Selection = true;
           }
         }
-      });  
+      });
     } else {
       // this.tracks.map((track:any) => track.Selection = false);
     }
@@ -249,13 +259,13 @@ export class PlayerBodyMainComponent implements OnInit {
   }
 
   private toggleSelected(obj, event) {
-    
+
   }
 
   @HostListener('document:keydown', ['$event'])
-  private handleKeyboardEvent(event: KeyboardEvent) {     
+  private handleKeyboardEvent(event: KeyboardEvent) {
     if (event.metaKey && event.keyCode == 65) {
-      this.isSelectAll=true;
+      this.isSelectAll = true;
     }
   }
 
