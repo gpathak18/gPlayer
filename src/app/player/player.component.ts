@@ -119,7 +119,8 @@ export class PlayerComponent implements OnInit {
       this.songName = track.Name;
       this.artist = track.Artist;
       this.player.on('ready',this.player.play.bind(this.player));
-      this.playerService.playPause.next('play');
+      // this.playerService.playPause.next('play');
+      this.playPauseState = 'play';
       this.setPlayPuseIcon();  
     });
 

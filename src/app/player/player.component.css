@@ -93,3 +93,9 @@
   :host{
     width: 100%;
   }
+
+  canvas {
+    -webkit-box-shadow: 0px 2px 20px 1px rgba(0,0,0,0.28);
+    -moz-box-shadow: 0px 2px 20px 1px rgba(0,0,0,0.28);
+    box-shadow: 0px 2px 20px 1px rgba(0,0,0,0.28);
+  }

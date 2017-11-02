@@ -12,9 +12,17 @@
     cursor: pointer;
   }
 
+  img {
+    -webkit-box-shadow: 0px 2px 20px 1px rgba(0,0,0,0.28);
+    -moz-box-shadow: 0px 2px 20px 1px rgba(0,0,0,0.28);
+    box-shadow: 0px 2px 20px 1px rgba(0,0,0,0.28);
+    filter: brightness(120%);
+    filter: contrast(110%);
+  }
   .app-icon {
     padding: 0 4px;
     color: #282364;
+    margin-right: 16px
     /* color: white; */
   }
 
@@ -39,9 +47,14 @@
   
   :host/deep/ .mat-expansion-panel-content {
     justify-content: space-between;
-    background-color: rgb(99, 72, 206);
+    background-color:  #ffd561;
     box-shadow: 0 0 100px rgba(0, 0, 0, 0.2) inset;
   }
+
+  /* :host/deep/ .mat-expansion-panel-header {
+    /* margin: 4px; */
+    /* background-color:  #302d26; */
+  /* } */
 
   :host/deep/ .mat-expansion-panel-body {
     margin: 4px;

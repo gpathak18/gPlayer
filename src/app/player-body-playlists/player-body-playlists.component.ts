@@ -15,7 +15,7 @@ export class PlayerBodyPlaylistsComponent implements OnInit {
   private playLists: Array<Playlist> = new Array();
   private currentTracks: Array<Track>;
   step = 0;
-
+  private noimage = 'assets/png/no-image.png';
   constructor(private playlistService: PlaylistService) { }
 
 
