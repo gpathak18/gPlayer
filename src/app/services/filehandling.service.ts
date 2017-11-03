@@ -46,6 +46,7 @@ export class FilehandlingService {
       for (const file of filteredFiles) {
 
           const track = new Track(file.name);
+          track.id = Utility.getUUID();
 
           jsmediatags.read(file, {
             onSuccess: (tag) => {
@@ -70,9 +71,11 @@ export class FilehandlingService {
 
                 track.year = tags.year
                 track.album = tags.album
-                track.id = Utility.getUUID();
+                track.genres = [file.genre];
+                track.lyrics = file.lyrics;
                 track.source = 'local';
                 track.link = file.path;
+                
 
                 let image = tags.picture;
                 if (image) {

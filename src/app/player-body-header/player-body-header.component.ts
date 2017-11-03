@@ -80,7 +80,7 @@ export class PlayerBodyHeaderComponent implements OnInit {
   private addQueuePlaylist($event) {
     if (this.playlistname != null && this.playlistname.length > 0) {
       const plylst = new Playlist(this.playlistname);
-      plylst.tracks = this.autoPlaylists;
+      plylst.tracks = this.autoPlaylists.slice(0);
       this.playlistService.createPlaylist(plylst);
       this.playlistname="";
     }

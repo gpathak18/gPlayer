@@ -3,6 +3,8 @@ import { Playlist } from '../playlist';
 import { Track } from '../track';
 import { PlaylistService } from '../services/playlist.service';
 import Utility from '../Utility';
+import { AutoplayService } from '../services/autoplay.service';
+import { PlayerService } from '../services/player.service';
 
 @Component({
   selector: 'app-player-body-playlists',
@@ -16,7 +18,12 @@ export class PlayerBodyPlaylistsComponent implements OnInit {
   private currentTracks: Array<Track>;
   step = 0;
   private noimage = 'assets/png/no-image.png';
-  constructor(private playlistService: PlaylistService) { }
+
+  constructor(
+    private playlistService: PlaylistService,
+    private autoplayService: AutoplayService,
+    private playerService: PlayerService
+  ) { }
 
 
   setStep(index: number) {
@@ -45,11 +52,17 @@ export class PlayerBodyPlaylistsComponent implements OnInit {
   
   private selectedPlylst($event) {
     const id = $event.currentTarget.id;
-    const plylist : any= this.playLists.find((value: any) => value.Name === id);
+    const plylist : any = this.playLists.find((value: any) => value.Name === id);
     this.currentTracks = plylist.Tracks;
     console.log(id);
   }
 
+  private playPlaylist($event) {
+    const id = $event.currentTarget.id;
+    const plylist : any = this.playLists.find((value: any) => value.Name === id);
+    this.autoplayService.updateAutoPlaylist(plylist.Tracks)
+    this.playerService.playNow(this.autoplayService.getTrackToPlay());
+  }
 
   @ViewChild('volume') volume: ElementRef;
   

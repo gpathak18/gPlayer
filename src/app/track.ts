@@ -29,6 +29,7 @@ export class Track implements Track {
     private Year: number;
     private Position: number;
     private Selection: boolean = true;
+    private Lyrics: string = '';
 
 
     constructor(name?: string) {
@@ -42,6 +43,22 @@ export class Track implements Track {
 
 	public set position(value: number) {
 		this.Position = value;
+    }
+
+    public get lyrics(): string {
+		return this.Lyrics;
+	}
+
+	public set lyrics(value: string) {
+		this.Lyrics = value;
+    }
+    
+    public get genres(): Array<string> {
+		return this.Genres;
+	}
+
+	public set genres(value: Array<string>) {
+		this.Genres=value;
 	}
 
 

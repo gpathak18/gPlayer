@@ -104,7 +104,7 @@
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'clicked-row': clickRowIndex===row.Position }" (mouseenter)="hoverRowIndex=row.Position"
+        <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'clicked-row': clickRowIndex===row.Position}" (mouseenter)="hoverRowIndex=row.Position"
           (click)="handleRowClick(row,$event)" (dblclick)="playTrack(row)">
         </mat-row>
       </mat-table>
