@@ -21,8 +21,8 @@
   }
   .app-icon {
     padding: 0 4px;
-    color: #282364;
-    margin-right: 16px
+    margin-right: 16px;
+    cursor: pointer;
     /* color: white; */
   }
 

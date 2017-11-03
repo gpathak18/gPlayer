@@ -23,6 +23,13 @@
     cursor: pointer;
   }
   
+  .app-icon-slelected {
+    padding: 0 0px;
+    color: #ff4081;
+    opacity: 1;
+    cursor: pointer;
+  }
+
   .item-spacer {
     flex: 1 1 auto;
   }

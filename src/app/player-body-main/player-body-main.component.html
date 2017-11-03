@@ -62,6 +62,7 @@
               </button>
             </ng-template>
           </mat-header-cell>
+
           <mat-cell *matCellDef="let track" class="mat-cell-sl">
             <div *ngIf="track.Selection;then checked else unchecked"></div>
             <ng-template #unchecked>
@@ -79,8 +80,8 @@
 
         <ng-container matColumnDef="Name">
           <mat-header-cell *matHeaderCellDef class="mat-cell-song"> Song Name </mat-header-cell>
-          <mat-cell *matCellDef="let track" class="mat-cell-song">
-            <div fxLayout="row" fxLayoutAlign="start center">
+          <mat-cell *matCellDef="let track" class="mat-cell-song" >
+            <div fxLayout="row" fxLayoutAlign="start center" matTooltip="{{track.Name}}" matTooltipPosition="above" matTooltipShowDelay="1000" matTooltipHideDelay="1000"> 
               <div style="margin-right:16px;margin-top:4px">
                 <img [src]="track.ImageUrl" alt="..." *ngIf="track.ImageUrl!= 'None'" style="width:44px;height:44px;border-radius: 5%;">
                 <img [src]="noimage" alt="..." *ngIf="track.ImageUrl == 'None'" style="width:46px;height:46px;border-radius: 5%;">

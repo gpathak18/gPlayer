@@ -60,8 +60,12 @@ export class PlayerBodyPlaylistsComponent implements OnInit {
   private playPlaylist($event) {
     const id = $event.currentTarget.id;
     const plylist : any = this.playLists.find((value: any) => value.Name === id);
-    this.autoplayService.updateAutoPlaylist(plylist.Tracks)
+    this.autoplayService.updateAutoPlaylist(plylist.Tracks.slice(0))
     this.playerService.playNow(this.autoplayService.getTrackToPlay());
+  }
+
+  private playTrack(track) {
+    this.playerService.playNow(track);
   }
 
   @ViewChild('volume') volume: ElementRef;

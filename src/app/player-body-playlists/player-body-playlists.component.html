@@ -12,8 +12,8 @@
     <mat-grid-tile colspan="7" style="background-color: white" fxLayout="column" fxLayoutAlign="start center">
         <mat-accordion class="mat-accordion-style" style="height:100%">
             <mat-expansion-panel *ngFor="let track of currentTracks" [id]="track._Id" [cellHover]="'#F5F5F5'">
-                <mat-expansion-panel-header>
-                        <mat-icon class="app-icon">play_circle_filled</mat-icon>
+                <mat-expansion-panel-header (dblclick)="playTrack(track)">
+                        <!-- <mat-icon class="app-icon">play_circle_filled</mat-icon> -->
                     <mat-panel-title fxLayout="column" fxLayoutAlign="start start">
                         <span>{{truncateString(track.Name,40)}}</span>
                         <!-- <span style="font-size:12px"> {{truncateString(track.Artist,50)}}</span> -->

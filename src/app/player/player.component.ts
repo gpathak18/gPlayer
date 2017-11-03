@@ -58,6 +58,7 @@ export class PlayerComponent implements OnInit {
   private nowPlayingSong = ''
   private progress = 100;
   private isLoading = true;
+  private isShuffle = false;
   private zoomValue;
   private zoomMin;
 
