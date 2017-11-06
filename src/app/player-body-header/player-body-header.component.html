@@ -17,7 +17,7 @@
         <mat-icon class="app-icon " (click)="setTab(0)">list</mat-icon>
     </button>
     <button mat-icon-button>
-        <mat-icon class="app-icon " mat-icon-button (click)="setTab(1)">playlist_play</mat-icon>
+        <mat-icon class="app-icon " mat-icon-button (click)="setTab(1)" onClickToggle  (toggleSelectionEvent)='scratch()'>playlist_play</mat-icon>
     </button>
     <button mat-icon-button>
         <mat-icon class="app-icon " mat-icon-button [matMenuTriggerFor]="autoqueue">queue_music</mat-icon>

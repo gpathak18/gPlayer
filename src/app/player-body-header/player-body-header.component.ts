@@ -118,4 +118,7 @@ export class PlayerBodyHeaderComponent implements OnInit {
     this.fileHandlingSerice.readFiles($event.target.files)
   }
  
+  private scratch(){
+    console.log('here')
+  }
 }

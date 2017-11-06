@@ -30,6 +30,7 @@ import { PlayerService } from './services/player.service';
 import { AutoplayService } from './services/autoplay.service';
 import { PlaylistService } from './services/playlist.service';
 import { FilehandlingService } from './services/filehandling.service';
+import { OnClickToggleDirective } from './directives/on-click-toggle.directive';
 
 const appRoutes: Routes = [
   { path: 'sign', component: SigninComponent },
@@ -48,7 +49,8 @@ const appRoutes: Routes = [
     ErrorComponent,
     EqualizerComponent,
     PlayerBodyPlaylistsComponent,
-    DragndropDirective
+    DragndropDirective,
+    OnClickToggleDirective
    ],
   entryComponents: [SigninComponent, EqualizerComponent],
   imports: [
