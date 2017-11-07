@@ -1,5 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import PouchDB from 'pouchdb';
+import { emit } from 'cluster';
 
 @Injectable()
 export class PouchDbService {

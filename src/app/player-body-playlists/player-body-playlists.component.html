@@ -16,11 +16,11 @@
                         <!-- <mat-icon class="app-icon">play_circle_filled</mat-icon> -->
                     <mat-panel-title fxLayout="column" fxLayoutAlign="start start">
                         <span>{{truncateString(track.Name,40)}}</span>
-                        <!-- <span style="font-size:12px"> {{truncateString(track.Artist,50)}}</span> -->
+                        <span style="font-size:12px"> {{truncateString(track.Artist,50)}}</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div fxLayout="column" fxLayoutAlign="start start">
-                    <div fxLayout="row" fxLayoutAlign="start start" style="max-width:100%;height:120px">
+                    <div fxLayout="row" fxLayoutAlign="start start" style="max-width:100%;height:130px">
                         <div style="margin:10px;">
                             <img [src]="track.ImageUrl" alt="..." *ngIf="track.ImageUrl!= 'None'" style="width:100px;height:100px;border-radius: 5%;">
                             <img [src]="noimage" alt="..." *ngIf="track.ImageUrl == 'None'" style="width:100px;height:100px;border-radius: 5%;">
@@ -32,17 +32,18 @@
                             <span style="font-size:12px">Year: {{truncateString(track.Year,4)}}</span>
                             <!-- <span style="font-size:12px">{{track._Id}}</span> -->
                             <span style="font-size:12px" *ngIf="track.Genres">Genre: {{track.Genres[0]}}</span>
+                            <div fxLayout="row" fxLayoutAlign="center center" style="width:100%;height:40px">
+                                <mat-icon class="app-icon">play_circle_filled</mat-icon>
+                                <mat-icon class="app-icon">queue_music</mat-icon>
+                                <mat-icon class="app-icon">folder_open</mat-icon>
+                                <!-- <mat-icon class="app-icon" [matMenuTriggerFor]="menu">more_vert</mat-icon> -->
+                                <mat-icon class="app-icon">close</mat-icon>
+                            </div>
                          </div>
                         <!-- <span class="item-spacer"></span> -->
                         <!-- <mat-icon class="app-icon" [matMenuTriggerFor]="menu">more_vert</mat-icon> -->
                     </div>
-                    <div fxLayout="row" fxLayoutAlign="center center" style="width:100%;height:50px">
-                        <mat-icon class="app-icon">play_circle_filled</mat-icon>
-                        <mat-icon class="app-icon">queue_music</mat-icon>
-                        <mat-icon class="app-icon">folder_open</mat-icon>
-                        <!-- <mat-icon class="app-icon" [matMenuTriggerFor]="menu">more_vert</mat-icon> -->
-                        <mat-icon class="app-icon">close</mat-icon>
-                    </div>
+                    
                 </div>
             </mat-expansion-panel>
         </mat-accordion>

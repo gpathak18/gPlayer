@@ -1,0 +1,12 @@
+<mat-grid-list gutterSize="2" cols="8" rowHeight="1:2" [style.height]="winWdHt.tileHeight-90+'px'">
+  <mat-grid-tile colspan="2"  *ngFor="let track of tracks; let i = index" >
+    <!-- <div fxLayout="row" fxLayoutAlign="center center">  -->
+      <div fxLayout="column" fxLayoutAlign="start center" style="margin:16px;">
+        <img [src]="track.ImageUrl" alt="..." *ngIf="track.ImageUrl!= 'None'" style="width:100px;height:100px;border-radius: 5%;">
+        <img [src]="noimage" alt="..." *ngIf="track.ImageUrl == 'None'" style="width:100px;height:100px;border-radius: 5%;">
+        <span style="font-size: 14px">{{track.Album}}</span>
+        <span style="font-size: 12px">{{track.Artist}}</span>
+      </div>
+    <!-- </div> -->
+  </mat-grid-tile>
+</mat-grid-list>

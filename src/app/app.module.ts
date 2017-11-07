@@ -31,6 +31,7 @@ import { AutoplayService } from './services/autoplay.service';
 import { PlaylistService } from './services/playlist.service';
 import { FilehandlingService } from './services/filehandling.service';
 import { OnClickToggleDirective } from './directives/on-click-toggle.directive';
+import { PlayerBodyAlbumComponent } from './player-body-album/player-body-album.component';
 
 const appRoutes: Routes = [
   { path: 'sign', component: SigninComponent },
@@ -50,7 +51,8 @@ const appRoutes: Routes = [
     EqualizerComponent,
     PlayerBodyPlaylistsComponent,
     DragndropDirective,
-    OnClickToggleDirective
+    OnClickToggleDirective,
+    PlayerBodyAlbumComponent
    ],
   entryComponents: [SigninComponent, EqualizerComponent],
   imports: [
