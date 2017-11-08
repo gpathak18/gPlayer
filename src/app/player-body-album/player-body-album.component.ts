@@ -5,6 +5,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PlayerService } from '../services/player.service';
 import { Track } from '../track';
 import { Observable } from 'rxjs';
+import Utility from '../Utility';
 
 @Component({
   selector: 'app-player-body-album',
@@ -17,7 +18,9 @@ export class PlayerBodyAlbumComponent implements OnInit {
   // private dataSource: DatastoreService | null;
   private noimage = 'assets/png/no-image.png';
   private tracks: Array<Track>;
+  private track;
   private albums: any;
+  private isFront = true;
 
   constructor(  
     private playlistService: PlaylistService,
@@ -29,9 +32,9 @@ export class PlayerBodyAlbumComponent implements OnInit {
 
   ngOnInit() {
 
-
     this.datastore.currentTracks.subscribe(addedTracks => {
       this.tracks = addedTracks;
+      this.track = this.tracks[0]
       const source = Observable.from(this.tracks);
       console.log('here it is',this.tracks)
       
@@ -45,6 +48,10 @@ export class PlayerBodyAlbumComponent implements OnInit {
     });
 
     this.albums.subscribe(val => console.log(val));
+  }
+
+  private truncateString(str, len) {
+    return Utility.truncateString(str, len);
   }
 
 }

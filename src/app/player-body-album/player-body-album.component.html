@@ -1,12 +1,36 @@
-<mat-grid-list gutterSize="2" cols="8" rowHeight="1:2" [style.height]="winWdHt.tileHeight-90+'px'">
-  <mat-grid-tile colspan="2"  *ngFor="let track of tracks; let i = index" >
-    <!-- <div fxLayout="row" fxLayoutAlign="center center">  -->
-      <div fxLayout="column" fxLayoutAlign="start center" style="margin:16px;">
-        <img [src]="track.ImageUrl" alt="..." *ngIf="track.ImageUrl!= 'None'" style="width:100px;height:100px;border-radius: 5%;">
-        <img [src]="noimage" alt="..." *ngIf="track.ImageUrl == 'None'" style="width:100px;height:100px;border-radius: 5%;">
-        <span style="font-size: 14px">{{track.Album}}</span>
-        <span style="font-size: 12px">{{track.Artist}}</span>
-      </div>
-    <!-- </div> -->
-  </mat-grid-tile>
-</mat-grid-list>
+<!-- <mat-grid-list gutterSize="1" cols="1" rowHeight="fit" [style.height]="winWdHt.tileHeight-90+'px'">
+  <mat-grid-tile  colspan="1" > -->
+    <div fxLayout="row" fxLayoutWrap  fxLayoutAlign="center center">
+        <div class="container" *ngFor="let track of tracks; let i = index" >
+            <div class="box-front" >
+              <img mat-card-image [src]="track.ImageUrl" alt="..." *ngIf="track.ImageUrl!= 'None'">
+              <img mat-card-image [src]="noimage" alt="..." *ngIf="track.ImageUrl == 'None'">
+              <!-- <mat-card-actions>
+                <span style="margin-top:2px;font-size: 14px;color:rgb(31, 27, 27)">{{truncateString(track.Album,20)}}</span>
+                <span style="font-size: 12px;color:rgb(26, 22, 22)">{{truncateString(track.Artist,20)}}</span>
+              </mat-card-actions> -->
+            </div>
+            <div class="box-back">
+              <mat-list dense>
+                <mat-list-item>
+                  ABC
+                </mat-list-item>
+                <mat-list-item>
+                  ABC
+                </mat-list-item>
+                <mat-list-item>
+                  ABC
+                </mat-list-item>
+                <mat-list-item>
+                  ABC
+                </mat-list-item>
+              </mat-list>
+              <!-- <mat-card-actions> -->
+                <!-- <button mat-button>Play</button> -->
+              <!-- </mat-card-actions> -->
+            </div>
+          </div>
+    </div>
+    
+  <!-- </mat-grid-tile>
+</mat-grid-list> -->
