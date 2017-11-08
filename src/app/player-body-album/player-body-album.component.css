@@ -43,24 +43,28 @@ img {
   .example-card {
         width: 100px;
   }
-
+ 
   .container {
         margin:16px;
         perspective: 1000px;
-        width:120px;
-        height:120px;
+        width:100px;
+        height:100px;
         position:relative;
         /* vertical-align:middle; */
         cursor:pointer;
+        border-radius: 5px;
         /* background-color: green;  */
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        /* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); */
 }
 
+.box-front {
+    z-index: -1;
+}
 .box-front,.box-back{
 		transform-style: preserve-3d;
 		backface-visibility: hidden;
-		width:120px;
-		height:120px;
+		width:100px;
+		height:100px;
 		position:absolute;
         transition:1s;
         /* text-align:center; */
@@ -69,17 +73,33 @@ img {
 }
 
 .box-back{
+        z-index: 101;
         transform: rotateY(180deg);
         background-color: white;
 }
 
-.container:hover .box-front{
-         transform: rotateY(180deg);
+.box-front-click{
+    transform: rotateY(180deg);
 }
 
-.container:hover .box-back{
+.box-back-click{
         transform-origin: 0 0;
         /* transform: scale3d(2);  */
-        transform: scale3d(2) translateY(-50%) translateX(50%);
+        transform: scaleX(4) scaleY(8) translate(0px,0px);
         /* transform: rotateY(360deg); */
 }
+
+bigdiv::after {
+    content: '';
+    filter:url(#f1); /* apply the svg blur filter */
+    position: absolute;
+    left: -15px; /* move the container off the parent the same amount of pixels as the svg blur radius - stdDeviation */
+    top: -15px;
+    bottom: -15px;
+    right: -15px;
+    background: inherit;
+    z-index: 0; /* place the pseudo-element behind the text */
+  }
+  svg {
+    height:0;
+  }

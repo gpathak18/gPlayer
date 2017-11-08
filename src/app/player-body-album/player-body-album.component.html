@@ -1,36 +1,37 @@
-<!-- <mat-grid-list gutterSize="1" cols="1" rowHeight="fit" [style.height]="winWdHt.tileHeight-90+'px'">
-  <mat-grid-tile  colspan="1" > -->
-    <div fxLayout="row" fxLayoutWrap  fxLayoutAlign="center center">
-        <div class="container" *ngFor="let track of tracks; let i = index" >
-            <div class="box-front" >
-              <img mat-card-image [src]="track.ImageUrl" alt="..." *ngIf="track.ImageUrl!= 'None'">
+<mat-grid-list cols="1" rowHeight="fit" [style.height]="winWdHt.tileHeight-90+'px'">
+    <mat-grid-tile colspan="1" fxLayout="row" fxLayoutWrap fxLayoutAlign="center center" style="background-color: rgb(216, 114, 114)">
+    <!-- <di v fxLayout="row" fxLayoutWrap  fxLayoutAlign="center center" style="overflow-y: auto;"> -->
+        <div class="container" style="background-color: rgb(114, 216, 119)" *ngFor="let track of tracks; let i = index" (click)="track.Selection=!track.Selection">
+            <div class="box-front" [ngClass]="{'box-front-click': track.Selection}">
+              <img blurred mat-card-image [src]="track.ImageUrl" alt="..." *ngIf="track.ImageUrl!= 'None'">
               <img mat-card-image [src]="noimage" alt="..." *ngIf="track.ImageUrl == 'None'">
               <!-- <mat-card-actions>
                 <span style="margin-top:2px;font-size: 14px;color:rgb(31, 27, 27)">{{truncateString(track.Album,20)}}</span>
                 <span style="font-size: 12px;color:rgb(26, 22, 22)">{{truncateString(track.Artist,20)}}</span>
               </mat-card-actions> -->
             </div>
-            <div class="box-back">
-              <mat-list dense>
-                <mat-list-item>
-                  ABC
+            <div class="box-back"  [ngClass]="{'box-back-click': track.Selection}">
+              hello
+              <!-- <mat-list dense style="height:360px">
+                <mat-list-item *ngFor="let t of tracks; let i = index">  
+                  <span style="margin-top:2px;font-size: 14px;color:rgb(31, 27, 27)">{{truncateString(t.Album,20)}}</span>
+                  <span style="font-size: 12px;color:rgb(26, 22, 22)">{{truncateString(t.Artist,20)}}</span>
                 </mat-list-item>
-                <mat-list-item>
-                  ABC
-                </mat-list-item>
-                <mat-list-item>
-                  ABC
-                </mat-list-item>
-                <mat-list-item>
-                  ABC
-                </mat-list-item>
-              </mat-list>
+              </mat-list> -->
               <!-- <mat-card-actions> -->
                 <!-- <button mat-button>Play</button> -->
               <!-- </mat-card-actions> -->
             </div>
           </div>
-    </div>
+    <!-- </div> -->
     
-  <!-- </mat-grid-tile>
-</mat-grid-list> -->
+  </mat-grid-tile>
+</mat-grid-list>
+
+<!-- <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <defs>
+    <filter id="f1" x="0" y="0">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="15" />
+    </filter>
+  </defs>
+</svg> -->
