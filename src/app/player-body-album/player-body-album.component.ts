@@ -21,18 +21,19 @@ import {
   animations: [
     trigger('flipStateTrigger', [
       state('false', style({
-        zindex: '10px',
-        top: '10px',
-        left: '-50px',
-        height: '400px',
+        top: '10%',
+        left: '10%',
+        right: '10%',
+        height: '440px',
         width: '400px',
         transform: 'rotateY(180deg) translate(0px,0px)'
       })),
       state('true', style({
-        transform: 'rotateY(0)'
+        transform: 'rotateY(0)',
       })),
-      transition('true => false', animate('1s ease-out')),
-      transition('false => true', animate('1s ease-in'))
+      transition('true => false', animate('1s cubic-bezier(0.23, 1, 0.32, 1)')),
+      transition('false => true', animate('1s cubic-bezier(0.23, 1, 0.32, 1)')),
+      // transition(':enter',  style({position: '*'})),
     ])
   ]
 })
@@ -44,7 +45,7 @@ export class PlayerBodyAlbumComponent implements OnInit {
   private tracks: Array<Track>;
   private track;
   private albums: any;
-  private isFlipped = true;
+  private isFlipped = false;
 
   constructor(  
     private playlistService: PlaylistService,
@@ -82,6 +83,17 @@ export class PlayerBodyAlbumComponent implements OnInit {
   }
 
   private flippingDone(e){
-    console.log(e)
+    var viewportOffset = e.element.getBoundingClientRect();
+    // these are relative to the viewport, i.e. the window
+    var top = viewportOffset.top;
+    var left = viewportOffset.left;
   }
+
+  private flippingStarted(e){
+    var viewportOffset = e.element.getBoundingClientRect();
+    // these are relative to the viewport, i.e. the window
+    var top = viewportOffset.top;
+    var left = viewportOffset.left;
+  }
+
 }

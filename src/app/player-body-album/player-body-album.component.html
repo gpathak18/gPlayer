@@ -1,17 +1,21 @@
 <mat-grid-list cols="1" rowHeight="fit" [style.height]="winWdHt.tileHeight-90+'px'">
-  <mat-grid-tile colspan="1" fxLayout="row" fxLayoutAlign="center center">
-    <div *ngIf="!isFlipped" class="tile-style"></div>
-    <div fxLayout="row" fxLayoutWrap fxLayoutAlign="start start" style="overflow-y: auto;width:100%;height:100%;justify-content: space-between;">
+  <mat-grid-tile colspan="1" fxLayout="row" fxLayoutAlign="center center" >
+    <!-- <div *ngIf="!isFlipped" class="tile-style"></div> -->
+    <div  class="card-container" fxLayout="row" fxLayoutWrap fxLayoutAlign="start start" >
       <!-- [ngClass]="{'tile-style': !isFlipped}" -->
-      <div class="card-wrapper" *ngFor="let track of tracks;let i=index" [style.margin-left.px]="winWdHt.tileWidth-100*i">
-        <div class="card-box" (click)="track.Selection = !track.Selection;isFlipped = track.Selection" [@flipStateTrigger]="track.Selection"
-          (@flipStateTrigger.done)="flippingDone($event)">
-          <div class="card-box__side card-box__front">
+      <div class="card-wrapper" *ngFor="let track of tracks;let i=index" [ngClass]="{'div-style': track.Selection}">
+        <div class="card-box" 
+          (click)="track.Selection = !track.Selection;isFlipped = track.Selection" 
+          [@flipStateTrigger]="!track.Selection"
+          (@flipStateTrigger.start)="flippingStarted($event)"
+          (@flipStateTrigger.done)="flippingDone($event)"
+          [ngClass]="{'card-style': track.Selection,'blurred': isFlipped && !track.Selection}">
+          <div class="card-box__side card-box__front box"  >
             <img mat-card-image [src]="track.ImageUrl" alt="..." *ngIf="track.ImageUrl!= 'None'">
             <img mat-card-image [src]="noimage" alt="..." *ngIf="track.ImageUrl == 'None'">
           </div>
-          <div class="card-box__side card-box__back">
-            text
+          <div class="card-box__side card-box__back"  fxLayout="row"  fxLayoutAlign="center center"> 
+            <img mat-card-image [src]="track.ImageUrl" alt="..." *ngIf="track.ImageUrl!= 'None'">
           </div>
         </div>
       </div>

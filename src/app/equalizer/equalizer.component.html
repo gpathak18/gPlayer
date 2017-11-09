@@ -40,7 +40,9 @@
       </mat-button-toggle> -->
 </mat-button-toggle-group>
 <div fxLayoutAlign="center center" style="width:100%">
-    <span>{{group.value}}</span>
+    <span *ngIf="group.value">{{group.value}}</span>
+    <span *ngIf="group.value===''">Flat</span>
+    
 </div>
 <div cdk-focus-region-start fxLayout="row" fxLayoutAlign="start center"> 
   <div cdk-focus-region-start fxLayout="column" fxLayoutAlign="start center" *ngFor="let eqSlider of eqSliders " style="width:35px">  
