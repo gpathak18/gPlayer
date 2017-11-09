@@ -13,6 +13,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
+import { DomSanitizer } from '@angular/platform-browser';
  
 @Component({
   selector: 'app-player-body-album',
@@ -46,12 +47,14 @@ export class PlayerBodyAlbumComponent implements OnInit {
   private track;
   private albums: any;
   private isFlipped = false;
+  thisstyle = '';
 
   constructor(  
     private playlistService: PlaylistService,
     private autoplayService: AutoplayService,
     private playerService: PlayerService,
     private datastore: DatastoreService,
+    private sanitizer: DomSanitizer
     
   ) { }
 
@@ -83,17 +86,24 @@ export class PlayerBodyAlbumComponent implements OnInit {
   }
 
   private flippingDone(e){
-    var viewportOffset = e.element.getBoundingClientRect();
-    // these are relative to the viewport, i.e. the window
-    var top = viewportOffset.top;
-    var left = viewportOffset.left;
+    // var viewportOffset = e.element.getBoundingClientRect();
+    // // these are relative to the viewport, i.e. the window
+    // var top = viewportOffset.top;
+    // var left = viewportOffset.left;
+    if(!e){
+      this.isSetStyleNow = false;
+    }
+    
   }
-
+  isSetStyleNow = false;
   private flippingStarted(e){
-    var viewportOffset = e.element.getBoundingClientRect();
-    // these are relative to the viewport, i.e. the window
-    var top = viewportOffset.top;
-    var left = viewportOffset.left;
+    // var viewportOffset = e.element.getBoundingClientRect();
+    // // these are relative to the viewport, i.e. the window
+    // var top = viewportOffset.top;
+    // var left = viewportOffset.left;
+    if(e){
+      this.isSetStyleNow = true;
+    }  
   }
 
 }

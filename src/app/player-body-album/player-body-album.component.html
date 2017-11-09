@@ -3,13 +3,15 @@
     <!-- <div *ngIf="!isFlipped" class="tile-style"></div> -->
     <div  class="card-container" fxLayout="row" fxLayoutWrap fxLayoutAlign="start start" >
       <!-- [ngClass]="{'tile-style': !isFlipped}" -->
-      <div class="card-wrapper" *ngFor="let track of tracks;let i=index" [ngClass]="{'div-style': track.Selection}">
+      <div class="card-wrapper" *ngFor="let track of tracks;let i=index" 
+      [ngClass]="{'div-style': isSetStyleNow && track.Selection,'div-reset-style': !isSetStyleNow && !track.Selection}">
         <div class="card-box" 
           (click)="track.Selection = !track.Selection;isFlipped = track.Selection" 
           [@flipStateTrigger]="!track.Selection"
-          (@flipStateTrigger.start)="flippingStarted($event)"
-          (@flipStateTrigger.done)="flippingDone($event)"
-          [ngClass]="{'card-style': track.Selection,'blurred': isFlipped && !track.Selection}">
+          (@flipStateTrigger.start)="flippingStarted(track.Selection)"
+          (@flipStateTrigger.done)="flippingDone(track.Selection)"
+          [ngClass]="{'blurred': isFlipped && !track.Selection,'card-style': isSetStyleNow,'card-reset-style': !isSetStyleNow}"
+          [style]="thisstyle">
           <div class="card-box__side card-box__front box"  >
             <img mat-card-image [src]="track.ImageUrl" alt="..." *ngIf="track.ImageUrl!= 'None'">
             <img mat-card-image [src]="noimage" alt="..." *ngIf="track.ImageUrl == 'None'">
