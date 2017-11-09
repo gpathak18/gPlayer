@@ -11,7 +11,9 @@ import {
   state,
   style,
   animate,
-  transition
+  transition,
+  query,
+  animateChild
 } from '@angular/animations';
 import { DomSanitizer } from '@angular/platform-browser';
  
@@ -20,21 +22,41 @@ import { DomSanitizer } from '@angular/platform-browser';
   templateUrl: './player-body-album.component.html',
   styleUrls: ['./player-body-album.component.css'],
   animations: [
+    trigger('zindexStateTrigger', [
+      state('false', style({
+        zIndex: 11
+      })),
+      state('true', style({
+        zIndex: 0
+      })),
+      transition('true => false', animate(1000)),
+      transition('false => true', animate(1000)),
+    ]),
     trigger('flipStateTrigger', [
       state('false', style({
         top: '10%',
         left: '10%',
         right: '10%',
-        height: '440px',
+        height: '420px',
         width: '400px',
-        transform: 'rotateY(180deg) translate(0px,0px)'
+        transform: 'rotateY(180deg) translate(0px,0px)',
+        // position: 'absolute'
       })),
       state('true', style({
         transform: 'rotateY(0)',
+        // position: 'relative'
       })),
-      transition('true => false', animate('1s cubic-bezier(0.23, 1, 0.32, 1)')),
-      transition('false => true', animate('1s cubic-bezier(0.23, 1, 0.32, 1)')),
-      // transition(':enter',  style({position: '*'})),
+      transition('true => false',[animate('600ms cubic-bezier(0.23, 1, 0.32, 1)')]),
+      transition('false => true',[animate('1s cubic-bezier(0.23, 1, 0.32, 1)')])
+    ]),
+    trigger('blurStateTrigger', [
+      state('true', style({
+        filter: 'blur(5px)'
+      })),
+      state('false', style({
+        filter: 'blur(0px)'
+      })),
+      transition('true <=> false',animate('600ms cubic-bezier(0.23, 1, 0.32, 1)'))
     ])
   ]
 })
@@ -85,25 +107,29 @@ export class PlayerBodyAlbumComponent implements OnInit {
     return Utility.truncateString(str, len);
   }
 
-  private flippingDone(e){
-    // var viewportOffset = e.element.getBoundingClientRect();
-    // // these are relative to the viewport, i.e. the window
-    // var top = viewportOffset.top;
-    // var left = viewportOffset.left;
-    if(!e){
-      this.isSetStyleNow = false;
-    }
-    
-  }
-  isSetStyleNow = false;
+
+  isPositionO = false;
   private flippingStarted(e){
     // var viewportOffset = e.element.getBoundingClientRect();
     // // these are relative to the viewport, i.e. the window
     // var top = viewportOffset.top;
     // var left = viewportOffset.left;
+    console.log(e)
     if(e){
-      this.isSetStyleNow = true;
+      this.isPositionO = true;
     }  
+  }
+
+  private flippingDone(e){
+    // var viewportOffset = e.element.getBoundingClientRect();
+    // // these are relative to the viewport, i.e. the window
+    // var top = viewportOffset.top;
+    // var left = viewportOffset.left;
+    console.log(e)
+    if(!e){
+      this.isPositionO = false;
+    }
+    
   }
 
 }

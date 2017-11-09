@@ -1,23 +1,20 @@
 <mat-grid-list cols="1" rowHeight="fit" [style.height]="winWdHt.tileHeight-90+'px'">
   <mat-grid-tile colspan="1" fxLayout="row" fxLayoutAlign="center center" >
-    <!-- <div *ngIf="!isFlipped" class="tile-style"></div> -->
     <div  class="card-container" fxLayout="row" fxLayoutWrap fxLayoutAlign="start start" >
-      <!-- [ngClass]="{'tile-style': !isFlipped}" -->
-      <div class="card-wrapper" *ngFor="let track of tracks;let i=index" 
-      [ngClass]="{'div-style': isSetStyleNow && track.Selection,'div-reset-style': !isSetStyleNow && !track.Selection}">
+      <div class="card-wrapper" *ngFor="let track of tracks;let i=index" [@zindexStateTrigger]="!track.Selection">
         <div class="card-box" 
           (click)="track.Selection = !track.Selection;isFlipped = track.Selection" 
           [@flipStateTrigger]="!track.Selection"
           (@flipStateTrigger.start)="flippingStarted(track.Selection)"
           (@flipStateTrigger.done)="flippingDone(track.Selection)"
-          [ngClass]="{'blurred': isFlipped && !track.Selection,'card-style': isSetStyleNow,'card-reset-style': !isSetStyleNow}"
-          [style]="thisstyle">
+          [ngClass]="{'blurred': isFlipped && !track.Selection,'card-style': isPositionO,'card-reset-style': !isPositionO}"
+         >
           <div class="card-box__side card-box__front box"  >
             <img mat-card-image [src]="track.ImageUrl" alt="..." *ngIf="track.ImageUrl!= 'None'">
             <img mat-card-image [src]="noimage" alt="..." *ngIf="track.ImageUrl == 'None'">
           </div>
           <div class="card-box__side card-box__back"  fxLayout="row"  fxLayoutAlign="center center"> 
-            <img mat-card-image [src]="track.ImageUrl" alt="..." *ngIf="track.ImageUrl!= 'None'">
+            Hello
           </div>
         </div>
       </div>
@@ -31,3 +28,7 @@
     </svg>
   </mat-grid-tile>
 </mat-grid-list>
+
+<!-- (@flipStateTrigger.start)="flippingStarted(track.Selection)"
+(@flipStateTrigger.done)="flippingDone(track.Selection)"
+,'card-style': isPositionO,'card-reset-style': !isPositionO -->

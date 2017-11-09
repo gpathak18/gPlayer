@@ -83,7 +83,7 @@ img {
     width: 90px;
     height: 90px;
     transform-style: preserve-3d;
-    transition: transform 1s;
+    /* transition: transform 1s; */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
   }
@@ -107,24 +107,20 @@ img {
   }
 
   .blurred {
-    filter: blur(3px);
+    animation-name: blur;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
   }
 
-  .div-style {
-    /* position: absolute; */
-    z-index: 11;
-  }
-
-  .div-reset-style {
-    /* position: absolute; */
-    z-index: 0;
+  @keyframes blur {
+    from { filter: blur(0px);}
+    to { filter: blur(2px);}
   }
 
   .card-style {
     position: absolute;
-    /* z-index: 11; */
   }
- 
+
   .card-reset-style {
     position: relative;
   }
