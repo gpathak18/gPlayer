@@ -34,20 +34,20 @@ import { DomSanitizer } from '@angular/platform-browser';
     ]),
     trigger('flipStateTrigger', [
       state('false', style({
-        top: '10%',
-        left: '10%',
-        right: '10%',
+        top: '{{y}}',
+        left: '{{x}}',
+        right: '5px',
         height: '420px',
         width: '400px',
         transform: 'rotateY(180deg) translate(0px,0px)',
         // position: 'absolute'
-      })),
+      }), {params: {x: '0px',y: '0px'}}),
       state('true', style({
         transform: 'rotateY(0)',
         // position: 'relative'
       })),
       transition('true => false',[animate('600ms cubic-bezier(0.23, 1, 0.32, 1)')]),
-      transition('false => true',[animate('1s cubic-bezier(0.23, 1, 0.32, 1)')])
+      transition('false => true',[animate('1s cubic-bezier(0.23, 1, 0.32, 1)')]),
     ]),
     trigger('blurStateTrigger', [
       state('true', style({
@@ -107,21 +107,25 @@ export class PlayerBodyAlbumComponent implements OnInit {
     return Utility.truncateString(str, len);
   }
 
-
+ x = 0;
+ y = 0;
   isPositionO = false;
-  private flippingStarted(e){
-    // var viewportOffset = e.element.getBoundingClientRect();
-    // // these are relative to the viewport, i.e. the window
-    // var top = viewportOffset.top;
-    // var left = viewportOffset.left;
-    console.log(e)
+  private flippingStarted(ev,e){
+    var viewportOffset = ev.element.getBoundingClientRect();
+    // these are relative to the viewport, i.e. the window
+    var top = viewportOffset.top;
+    var left = viewportOffset.left;
+    this.x = 5-left
+    this.y = 5-top
+    console.log('y',top-(top-5))
+    console.log('x',left-(left-5))
     if(e){
       this.isPositionO = true;
     }  
   }
 
   private flippingDone(e){
-    // var viewportOffset = e.element.getBoundingClientRect();
+    // var viewportOffset = ev.element.getBoundingClientRect();
     // // these are relative to the viewport, i.e. the window
     // var top = viewportOffset.top;
     // var left = viewportOffset.left;

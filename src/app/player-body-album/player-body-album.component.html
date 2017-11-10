@@ -5,7 +5,7 @@
         <div class="card-box" 
           (click)="track.Selection = !track.Selection;isFlipped = track.Selection" 
           [@flipStateTrigger]="!track.Selection"
-          (@flipStateTrigger.start)="flippingStarted(track.Selection)"
+          (@flipStateTrigger.start)="flippingStarted($event,track.Selection)"
           (@flipStateTrigger.done)="flippingDone(track.Selection)"
           [ngClass]="{'blurred': isFlipped && !track.Selection,'card-style': isPositionO,'card-reset-style': !isPositionO}"
          >
