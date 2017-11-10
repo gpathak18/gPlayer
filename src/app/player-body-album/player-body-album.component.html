@@ -3,8 +3,8 @@
     <div  class="card-container" fxLayout="row" fxLayoutWrap fxLayoutAlign="start start" >
       <div class="card-wrapper" *ngFor="let track of tracks;let i=index" [@zindexStateTrigger]="!track.Selection">
         <div class="card-box" 
-          (click)="track.Selection = !track.Selection;isFlipped = track.Selection" 
-          [@flipStateTrigger]="!track.Selection"
+          (click)="onClick($event,track)" 
+          [@flipStateTrigger]="{value:!track.Selection,params: {x: x,y: y}}"
           (@flipStateTrigger.start)="flippingStarted($event,track.Selection)"
           (@flipStateTrigger.done)="flippingDone(track.Selection)"
           [ngClass]="{'blurred': isFlipped && !track.Selection,'card-style': isPositionO,'card-reset-style': !isPositionO}"
@@ -14,18 +14,11 @@
             <img mat-card-image [src]="noimage" alt="..." *ngIf="track.ImageUrl == 'None'">
           </div>
           <div class="card-box__side card-box__back"  fxLayout="row"  fxLayoutAlign="center center"> 
-            Hello
+            <app-album-info></app-album-info>
           </div>
         </div>
       </div>
     </div>
-    <svg style="position: absolute; top: 0;z-index: 0">
-      <defs>
-        <filter id="f1" x="0" y="0">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="15" />
-        </filter>
-      </defs>
-    </svg>
   </mat-grid-tile>
 </mat-grid-list>
 
