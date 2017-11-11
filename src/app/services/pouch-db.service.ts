@@ -1,5 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import PouchDB from 'pouchdb';
+import PouchdbFind from 'pouchdb-find';
 import { emit } from 'cluster';
 
 @Injectable()
@@ -11,12 +12,14 @@ export class PouchDbService {
   private DB_NAME = 'GPLAYER';
 
   constructor( ) {
-
+    PouchDB.plugin(PouchdbFind);
     if (!this.isInstantiated) {
       this.database = new PouchDB(this.DB_NAME, { auto_compaction: true});
+      this.database.createIndex({
+        index: {fields: ['Album']}
+      });
       this.isInstantiated = true;
     }
-
   }
 
   public fetchAll() {
@@ -45,6 +48,13 @@ export class PouchDbService {
                 reject(error);
             });
         }
+    });
+  }
+
+  public getAlbumTracks(album) {
+    console.log("here db")
+    return this.database.find({
+      selector: {Album: "NewAlbum"}
     });
   }
 

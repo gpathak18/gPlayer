@@ -38,6 +38,7 @@
     "music-tag": "0.0.9",
     "musicmetadata": "^2.0.5",
     "pouchdb": "^6.3.4",
+    "pouchdb-find": "^6.3.4",
     "rxjs": "^5.5.0",
     "typings": "^2.1.1",
     "update": "^0.7.4",
