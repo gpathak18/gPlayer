@@ -61,7 +61,7 @@ export class PlayerBodyMainComponent implements OnInit {
     private playerService: PlayerService,
     private fileHandlingSerice: FilehandlingService,
   ) {
-
+    this.dataSource = this.datastore;
   }
 
   private setSelection(track) {
@@ -70,8 +70,8 @@ export class PlayerBodyMainComponent implements OnInit {
 
 
   ngOnInit() {
-    this.dataSource = this.datastore;
-    this.winWdHt.tileHeight = '560';
+    // this.dataSource = this.datastore;
+    this.winWdHt.tileHeight = '580';
     this.winWdHt.tileWidth = '500';
 
     this.playlistService.user_playlists.subscribe(value => this.userPlaylists = value);

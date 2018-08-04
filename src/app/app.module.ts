@@ -16,12 +16,11 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PlayerBodyPlaylistsComponent } from './player-body-playlists/player-body-playlists.component';
 import {
   MatSidenavModule, MatListModule, MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule,
-  MatIconModule, MatTabsModule, MatGridListModule, MatInputModule, MatTableModule, MatDialogModule,
+  MatIconModule, MatTabsModule, MatGridListModule, MatInputModule, MatDialogModule,
   MatProgressBarModule, MatSliderModule, MatAutocompleteModule, MatFormFieldModule, MatButtonToggleModule,
-  MatSnackBarModule,
-  MatExpansionModule,
-  MatTooltipModule
+  MatSnackBarModule,MatExpansionModule,MatTooltipModule
 } from '@angular/material';
+import {MatTableModule} from '@angular/material/table';
 import { DragndropDirective } from './directives/dragndrop.directive';
 import { CellHoverDirective } from './directives/cell-hover.directive';
 import { PouchDbService } from './services/pouch-db.service';

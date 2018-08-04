@@ -5,6 +5,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PlayerService } from '../services/player.service';
 import { Track } from '../track';
 import { Observable } from 'rxjs';
+import { from } from 'rxjs/observable/from';
+import { groupBy, mergeMap, toArray } from 'rxjs/operators';
 import Utility from '../Utility';
 import {
   trigger,
@@ -16,6 +18,7 @@ import {
   animateChild
 } from '@angular/animations';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Album } from '../album';
  
 @Component({
   selector: 'app-player-body-album',
@@ -45,7 +48,7 @@ import { DomSanitizer } from '@angular/platform-browser';
         transform: 'rotateY(0)',
         // position: 'relative'
       })),
-      transition('true => false',[animate('600ms cubic-bezier(0.19, 1, 0.22, 1)')]),
+      transition('true => false',[animate('600ms cubic-bezier(0.32, 1, 0.32, 1)')]),
       transition('false => true',[animate('600ms cubic-bezier(0.23, 1, 0.32, 1)')]),
     ]),
     trigger('blurStateTrigger', [
@@ -66,9 +69,12 @@ export class PlayerBodyAlbumComponent implements OnInit {
   private noimage = 'assets/png/no-image.png';
   private tracks: Array<Track>;
   private track;
-  private albums: any;
+  private albums: Array<Album> = new Array();
   private isFlipped = false;
-  thisstyle = '';
+  private thisstyle = '';
+  private x = '0px';
+  private y = '0px';
+  private isPositionO = false;
 
   constructor(  
     private playlistService: PlaylistService,
@@ -77,7 +83,8 @@ export class PlayerBodyAlbumComponent implements OnInit {
     private datastore: DatastoreService,
     private sanitizer: DomSanitizer
     
-  ) { }
+  ) {    
+   }
 
   ngOnInit() {
 
@@ -85,20 +92,26 @@ export class PlayerBodyAlbumComponent implements OnInit {
 
       this.tracks = addedTracks;
       this.track = this.tracks[0]
-      const source = Observable.from(this.tracks);
-      console.log('here it is',this.tracks)
-      
-      this.albums = source
+      const source = from(this.tracks);
 
-      .groupBy((track:any) => {
-        track.Album;
-        console.log('here it is',track)   
-      })
-      .flatMap(album => album.reduce((acc, curr) => [...acc, curr], []));
+      const albumsObs = source.pipe(
+        groupBy((track:any) => track.Album),
+        mergeMap(group => group.pipe(toArray()))
+      );
 
+
+      albumsObs.subscribe(albumTrkArr => {
+        let album = new Album(albumTrkArr[0].Album);
+        album.imageUrl = albumTrkArr[0].ImageUrl;
+        album.tracks = albumTrkArr;
+        this.albums.push(album);
+      });
+      console.log("albums ",this.albums);
     });
 
-    this.albums.subscribe(val => console.log(val));
+    
+
+    //this.albums.subscribe(val => console.log(val));
   }
 
 
@@ -106,9 +119,7 @@ export class PlayerBodyAlbumComponent implements OnInit {
     return Utility.truncateString(str, len);
   }
 
- x = '0px';
- y = '0px';
-  isPositionO = false;
+
   private flippingStarted(ev,e){
     var viewportOffset = ev.element.getBoundingClientRect();
     // these are relative to the viewport, i.e. the window
@@ -116,8 +127,8 @@ export class PlayerBodyAlbumComponent implements OnInit {
     var left = viewportOffset.left;
     // this.x = 5-left
     // this.y = top
-    console.log('y',top-(top-5))
-    console.log('x',left-(left-5))
+    //console.log('y',top-(top-5))
+    //console.log('x',left-(left-5))
     if(e){
       this.isPositionO = true;
     }  
@@ -131,14 +142,14 @@ export class PlayerBodyAlbumComponent implements OnInit {
     let top = viewportOffset.top;
     let left = viewportOffset.left;
     this.x = (50-left)+'px';
-    this.y = (210-top)+'px';
+    this.y = (200-top)+'px';
   }
   private flippingDone(e){
     // var viewportOffset = ev.element.getBoundingClientRect();
     // // these are relative to the viewport, i.e. the window
     // var top = viewportOffset.top;
     // var left = viewportOffset.left;
-    console.log(e)
+    //console.log(e)
     if(!e){
       this.isPositionO = false;
     }

@@ -1,0 +1,38 @@
+.album-wrapper {
+    /* display: grid;
+    grid-template-columns: 1fr; */
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+
+
+}
+img {
+    -webkit-box-shadow: 0px 2px 20px 1px rgba(0,0,0,0.28);
+    -moz-box-shadow: 0px 2px 20px 1px rgba(0,0,0,0.28);
+    box-shadow: 0px 2px 20px 1px rgba(0,0,0,0.28);
+    filter: brightness(120%);
+    filter: contrast(110%);
+  }
+.topBgColor {
+
+    background: #ffd561;  /* fallback for old browsers */
+/* background: -webkit-linear-gradient(to top, #ffc831, #ffd561);  
+background: linear-gradient(to top, #ffcb3c, #ffd561);  */
+ border-radius: 5px 5px 0 0;
+ box-shadow: 0 0 100px rgba(0, 0, 0, 0.2) inset;
+}
+
+.bottomBgColor {
+    background: #282364;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #e2e2e7, #e2e2e7);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #e2e2e7, #e2e2e7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    border-radius: 0 0 5px 5px;
+
+}
+
+.list {
+    overflow-y: scroll;
+}
+/* .album-wrapper > div {
+    padding: 1px;
+    background: green;
+} */

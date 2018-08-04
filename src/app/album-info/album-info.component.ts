@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PouchDbService } from '../services/pouch-db.service';
+import { Album } from '../album';
+import { Track } from '../track';
 
 @Component({
   selector: 'app-album-info',
@@ -8,16 +10,22 @@ import { PouchDbService } from '../services/pouch-db.service';
 })
 export class AlbumInfoComponent implements OnInit {
 
+  @Input('album') album: any = '';
+
+  private tracks: Array<Track>;
+
+  
   constructor(
     private dbservice: PouchDbService
   ) { }
 
   ngOnInit() {
-    this.dbservice.getAlbumTracks("NewAlbum").then(function (result) {
-      console.log(result)
-    }).catch(function (err) {
-      console.log(err);
-    });
+    this.tracks = this.album.tracks;
+    console.log("album tracks", this.tracks)
+  }
+
+  playSong(event) {
+    event.stopPropagation();
   }
 
 }

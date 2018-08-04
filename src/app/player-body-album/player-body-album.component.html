@@ -1,20 +1,24 @@
 <mat-grid-list cols="1" rowHeight="fit" [style.height]="winWdHt.tileHeight-90+'px'">
   <mat-grid-tile colspan="1" fxLayout="row" fxLayoutAlign="center center" >
     <div  class="card-container" fxLayout="row" fxLayoutWrap fxLayoutAlign="start start" >
-      <div class="card-wrapper" *ngFor="let track of tracks;let i=index" [@zindexStateTrigger]="!track.Selection">
+      <div class="card-wrapper" *ngFor="let album of albums;let i=index" [@zindexStateTrigger]="!album.Selection">
         <div class="card-box" 
-          (click)="onClick($event,track)" 
-          [@flipStateTrigger]="{value:!track.Selection,params: {x: x,y: y}}"
-          (@flipStateTrigger.start)="flippingStarted($event,track.Selection)"
-          (@flipStateTrigger.done)="flippingDone(track.Selection)"
-          [ngClass]="{'blurred': isFlipped && !track.Selection,'card-style': isPositionO,'card-reset-style': !isPositionO}"
+          (click)="onClick($event,album)" 
+          [@flipStateTrigger]="{value:!album.Selection,params: {x: x,y: y}}"
+          (@flipStateTrigger.start)="flippingStarted($event,album.Selection)"
+          (@flipStateTrigger.done)="flippingDone(album.Selection)"
+          [ngClass]="{'blurred': isFlipped && !album.Selection,'card-style': isPositionO,'card-reset-style': !isPositionO}"
          >
           <div class="card-box__side card-box__front box"  >
-            <img mat-card-image [src]="track.ImageUrl" alt="..." *ngIf="track.ImageUrl!= 'None'">
-            <img mat-card-image [src]="noimage" alt="..." *ngIf="track.ImageUrl == 'None'">
+            <img mat-card-image [src]="album.ImageUrl" alt="..." *ngIf="album.ImageUrl!= 'None'">
+            <img mat-card-image [src]="noimage" alt="..." *ngIf="album.ImageUrl == 'None'">
           </div>
           <div class="card-box__side card-box__back"  fxLayout="row"  fxLayoutAlign="center center"> 
-            <app-album-info></app-album-info>
+            <!-- <mat-list> -->
+              <!-- <img mat-card-image [src]="album.ImageUrl" alt="..." *ngIf="album.ImageUrl!= 'None'">
+              <img mat-card-image [src]="noimage" alt="..." *ngIf="album.ImageUrl == 'None'"> -->
+              <app-album-info [album]="album" [ngClass]="{'displayNone': isFlipped && !album.Selection}"></app-album-info>
+             <!-- </mat-list> -->
           </div>
         </div>
       </div>
@@ -22,6 +26,6 @@
   </mat-grid-tile>
 </mat-grid-list>
 
-<!-- (@flipStateTrigger.start)="flippingStarted(track.Selection)"
-(@flipStateTrigger.done)="flippingDone(track.Selection)"
+<!-- (@flipStateTrigger.start)="flippingStarted(album.Selection)"
+(@flipStateTrigger.done)="flippingDone(album.Selection)"
 ,'card-style': isPositionO,'card-reset-style': !isPositionO -->

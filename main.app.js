@@ -20,7 +20,7 @@ function createWindow() {
     },
     titleBarStyle: 'hidden',
     width: 500,
-    height: 700,
+    height: 720,
     frame: false,
     show: false,
     transparent: true,
@@ -31,7 +31,7 @@ function createWindow() {
   })
 
   win.loadURL('http://localhost:4200')
-  // win.loadURL('file:///' + __dirname + '/dist/index.html')
+  //win.loadURL('file:///' + __dirname + '/dist/index.html')
   win.setMaximumSize(700, 860)
   win.setMinimumSize(500, 700)
 
